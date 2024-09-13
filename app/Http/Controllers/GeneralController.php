@@ -12,8 +12,3 @@ class GeneralController extends Controller
     }
 }
 
-// inertia
-// vue
-// admin-let npm
-// pasang di app.css
-// pasang di bootstrap.js

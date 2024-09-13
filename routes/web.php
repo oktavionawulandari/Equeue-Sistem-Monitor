@@ -22,4 +22,9 @@ Route::get('/', function () {
 
 Route::get('/', [AuthController::class, 'index'])->name('login');
 Route::get('/dashboard', [GeneralController::class, 'index'])->name('dashboard');
-Route::get('/loket', [LoketController::class, 'index'])->name('loket');
+Route::get('/loket', [LoketController::class, 'index'])->name('loket.index');
+Route::get('/loket/create', [LoketController::class, 'create'])->name('loket.create');
+Route::post('/loket', [LoketController::class, 'store'])->name('loket.store');
+Route::get('/loket/{id}/edit', [LoketController::class, 'edit'])->name('loket.edit');
+Route::put('/loket/{id}', [LoketController::class, 'update'])->name('loket.update');
+Route::delete('/loket/{id}', [LoketController::class, 'destroy'])->name('loket.destroy');

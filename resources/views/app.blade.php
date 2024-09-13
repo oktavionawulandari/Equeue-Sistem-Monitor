@@ -7,6 +7,7 @@
     <title>AdminLTE 3 | Dashboard</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @inertiaHead
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -39,11 +40,16 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#" role="button">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </li>
+                {{-- <li class="nav-item">
                     <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true"
                         href="#" role="button">
                         <i class="fas fa-th-large"></i>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </nav>
 
@@ -81,7 +87,7 @@
                         </li>
                         <li class="nav-header">DATA</li>
                         <li class="nav-item">
-                            <a href="{{ route('loket') }}" class="nav-link">
+                            <a href="{{ route('loket.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-calendar-check"></i>
                                 <p>Daftar Loket</p>
                             </a>
