@@ -3,12 +3,12 @@
         <div class="container-fluid">
             <div class="row mb-4">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Daftar Loket</h1>
+                    <h1 class="m-0">Jenis Antrian</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><router-link to="/dashboard">Home</router-link></li>
-                        <li class="breadcrumb-item active">Daftar Loket</li>
+                        <li class="breadcrumb-item active">Jenis Antrian</li>
                     </ol>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <Link href="/loket/create" class="btn btn-primary">
+                            <Link href="/category/create" class="btn btn-primary">
                                 <i class="fas fa-plus pr-2"></i>Tambah
                             </Link>
                         </div>
@@ -37,25 +37,23 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nomer Loket</th>
-                                        <th>Nama Loket</th>
-                                        <th>Jenis Antrian</th>
+                                        <th>Nama Antrian</th>
+                                        <th>Catatan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(loket, index) in props.lokets" :key="loket.id">
+                                    <tr v-for="(category, index) in props.categories" :key="category.id">
                                         <td>{{ index + 1 }}</td>
-                                        <td>{{ loket.no }}</td>
-                                        <td>{{ loket.name }}</td>
-                                        <td>{{ loket.category ? loket.category.name : 'N/A' }}</td>
+                                        <td>{{ category.name }}</td>
+                                        <td>{{ category.catatan }}</td>
                                         <td>
                                             <div class="row">
                                                 <div class="col-0">
-                                                    <button @click="editLoket(loket.id)" class="btn btn-warning btn-sm">Edit</button>
+                                                    <button @click="editLoket(category.id)" class="btn btn-warning btn-sm">Edit</button>
                                                 </div>
                                                 <div class="col-1">
-                                                    <button @click="confirmDelete(loket.id)" class="btn btn-danger btn-sm">Delete</button>
+                                                    <button @click="confirmDelete(category.id)" class="btn btn-danger btn-sm">Delete</button>
                                                 </div>
                                             </div>
                                         </td>
@@ -69,6 +67,7 @@
         </div>
     </div>
 </template>
+
 
 <script>
 import Dasboard from '../../Layout/Dasboard.vue';
@@ -84,10 +83,10 @@ export default {
 import { Link, router } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3';
 
-const props = defineProps(['lokets']);
+const props = defineProps(['categories']);
 
 function editLoket(id) {
-    router.get(`/loket/${id}/edit`);
+    router.get(`/category/${id}/edit`);
 }
 
 function confirmDelete(id) {
@@ -97,9 +96,9 @@ function confirmDelete(id) {
 }
 
 function deleteLoket(id) {
-    router.delete(`/loket/${id}`, {
+    router.delete(`/category/${id}`, {
         onSuccess: () => {
-            router.visit('/loket');
+            router.visit('/category');
         },
         onError: (error) => {
             console.error('Delete failed:', error);

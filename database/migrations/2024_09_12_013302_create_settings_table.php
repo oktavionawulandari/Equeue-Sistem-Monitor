@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('phone');
             $table->string('running_text');
             $table->string('video');
-            $table->longText('list_loket');
             $table->string('primary');
             $table->string('secondary');
             $table->string('accent');

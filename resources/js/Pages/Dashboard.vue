@@ -93,6 +93,16 @@
     </section>
 </template>
 
+<script>
+import Dasboard from '../Layout/Dasboard.vue';
+
+export default {
+  layout: (h, page) => h(Dasboard, [page]),
+
+  layout: Dasboard,
+}
+</script>
+
 <script setup>
     import 'admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css'
 </script>

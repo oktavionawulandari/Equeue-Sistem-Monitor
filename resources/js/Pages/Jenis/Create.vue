@@ -3,47 +3,30 @@
         <div class="container-fluid">
             <div class="row mb-4">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Tambah Loket</h1>
+                    <h1 class="m-0">Tambah Antrian</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><router-link to="/dashboard">Home</router-link></li>
-                        <li class="breadcrumb-item active">Tambah Loket</li>
+                        <li class="breadcrumb-item active">Tambah Antrian</li>
                     </ol>
                 </div>
             </div>
 
             <div v-if="Object.keys(errors).length > 0" class="alert alert-danger alert-dismissible show fade" role="alert">
-                <strong>Error!</strong>
-                <ul>
-                    <li v-if="errors.no">{{ errors.no }}</li>
+                <strong>Error!</strong> 
                     <li v-if="errors.name">{{ errors.name }}</li>
-                    <li v-if="errors.category_id">{{ errors.category_id }}</li>
-                </ul>
+                    <li v-if="errors.nama_loket">{{ errors.catatan }}</li>
                 <button class="close" data-dismiss="alert"><span>&times;</span></button>
             </div>
-
+            
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
                             <form @submit.prevent="submitForm">
                                 <div class="form-group">
-                                    <label for="no">No Loket</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        v-model="form.no"
-                                        :class="{'is-invalid': errors.no}"
-                                        id="no"
-                                        name="no"
-                                    >
-                                    <div v-if="errors.no" class="invalid-feedback">
-                                        {{ errors.no }}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Nama Loket</label>
+                                    <label>Nama Layanan</label>
                                     <input
                                         type="text"
                                         class="form-control"
@@ -57,21 +40,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="category_id">Jenis Antrian</label>
-                                    <select
+                                    <label>Catatan</label>
+                                    <textarea
                                         class="form-control"
-                                        v-model="form.category_id"
-                                        :class="{'is-invalid': errors.category_id}"
-                                        id="category_id"
-                                        name="category_id"
-                                    >
-                                        <option value="">Pilih Category</option>
-                                        <option v-for="category in categories" :key="category.id" :value="category.id">
-                                            {{ category.name }}
-                                        </option>
-                                    </select>
-                                    <div v-if="errors.category_id" class="invalid-feedback">
-                                        {{ errors.category_id }}
+                                        v-model="form.catatan"
+                                        :class="{'is-invalid': errors.catatan}"
+                                        id="catatan"
+                                        name="catatan"
+                                    ></textarea>
+                                    <div v-if="errors.catatan" class="invalid-feedback">
+                                        {{ errors.catatan }}
                                     </div>
                                 </div>
 
@@ -80,7 +58,7 @@
                                         <button class="btn btn-primary" type="submit">Simpan</button>
                                     </div>
                                     <div class="col-auto">
-                                        <Link href="/loket" class="btn btn-dark">Kembali</Link>
+                                        <Link href="/category" class="btn btn-dark">Kembali</Link>
                                     </div>
                                 </div>
                             </form>
@@ -92,38 +70,35 @@
     </div>
 </template>
 
-<script setup>
-import { ref, defineProps } from 'vue';
-import { useForm, Link, router } from '@inertiajs/vue3';
+<script>
+import Dasboard from '../../Layout/Dasboard.vue';
 
-const props = defineProps({
-  categories: Array
-});
+export default {
+  layout: (h, page) => h(Dasboard, [page]),
+
+  layout: Dasboard,
+}
+</script>
+
+<script setup>
+import { Link, router, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 const form = useForm({
-    no: '',
     name: '',
-    category_id: '',
+    catatan: '',
 });
 
 const errors = ref({});
 
 function submitForm() {
-    form.post('/loket', {
+    form.post('/category', {
         onSuccess: () => {
-            router.visit('/loket');
+            router.visit('/category');
         },
         onError: (formErrors) => {
-            errors.value = formErrors;
+            errors.value = formErrors; 
         }
     });
-}
-</script>
-
-<script>
-import Dasboard from '../../Layout/Dasboard.vue';
-
-export default {
-  layout: Dasboard,
 }
 </script>

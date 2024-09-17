@@ -3,6 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Transaction;
+use App\Models\Counter;
+
 
 return new class extends Migration
 {
@@ -11,11 +14,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('queue', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
-            $table->string('number');
-            $table->enum('status', ['1', '0']);
+            $table->string('name');
+            $table->string('catatan');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('queue');
+        Schema::dropIfExists('categories');
     }
 };

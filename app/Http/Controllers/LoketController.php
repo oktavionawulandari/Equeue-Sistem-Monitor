@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Loket;
+use App\Models\Counter;
+use App\Models\Category;
 use Illuminate\Support\Facades\Redirect;
 
 class LoketController extends Controller
@@ -14,7 +15,7 @@ class LoketController extends Controller
      */
     public function index()
     {
-        $lokets = Loket::all();
+        $lokets = Counter::with('category')->get(); 
         return Inertia::render('Loket/Index', ['lokets' => $lokets]);
     }
 
@@ -23,7 +24,8 @@ class LoketController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Loket/Create');
+        $categories = Category::all();
+        return Inertia::render('Loket/Create', ['categories' => $categories]);
     }
 
     // /**
@@ -32,11 +34,12 @@ class LoketController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'no_loket' => 'required',
-            'nama_loket' => 'required',
+            'no' => 'required',
+            'name' => 'required',
+            'category_id' => 'required|exists:categories,id'
         ]);
         
-        Loket::create($validatedData);
+        Counter::create($validatedData);
         return redirect()->back();
     }
 
@@ -53,10 +56,13 @@ class LoketController extends Controller
     //  */
     public function edit(string $id)
     {
-        $loket = Loket::findOrFail($id);
+        $categories = Category::all();
+
+        $loket = Counter::findOrFail($id);
         return Inertia::render('Loket/Edit', [
             'id' => $id,
-            'loket' => $loket
+            'loket' => $loket,
+            'categories' => $categories
         ]);
     }
 
@@ -66,11 +72,13 @@ class LoketController extends Controller
     public function update(Request $request, string $id)
     {
         $validatedData = $request->validate([
-            'no_loket' => 'required|string|max:255',
-            'nama_loket' => 'required|string|max:255',
+            'no' => 'required',
+            'name' => 'required',
+            'category_id' => 'required'
+
         ]);
 
-        $loket = Loket::findOrFail($id);
+        $loket = Counter::findOrFail($id);
         $loket->update($validatedData);
         return redirect()->back();
     }

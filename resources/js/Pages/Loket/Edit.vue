@@ -13,11 +13,14 @@
                 </div>
             </div>
 
-            <div v-if="Object.keys(errors).length > 0" class="alert alert-danger alert-dismissible show fade" role="alert">
-                <strong>Error!</strong> 
-                    <li v-if="errors.no_loket">{{ errors.no_loket }}</li>
-                    <li v-if="errors.nama_loket">{{ errors.nama_loket }}</li>
-                <button class="close" data-dismiss="alert"><span>&times;</span></button>
+            <div v-if="Object.keys(errors).length" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong>
+                <ul>
+                    <li v-if="errors.no">{{ errors.no }}</li>
+                    <li v-if="errors.name">{{ errors.name }}</li>
+                    <li v-if="errors.category_id">{{ errors.category_id }}</li>
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
             <div class="row">
@@ -26,37 +29,55 @@
                         <div class="card-body">
                             <form @submit.prevent="submitForm">
                                 <div class="form-group">
-                                    <label>No Loket</label>
+                                    <label for="no">No Loket</label>
                                     <input
                                         type="text"
                                         class="form-control"
-                                        v-model="form.no_loket"
-                                        :class="{'is-invalid': errors.no_loket}"
-                                        id="no_loket"
-                                        name="no_loket"
+                                        v-model="form.no"
+                                        :class="{'is-invalid': errors.no}"
+                                        id="no"
+                                        name="no"
                                     >
-                                    <div v-if="errors.no_loket" class="invalid-feedback">
-                                        {{ errors.no_loket }}
+                                    <div v-if="errors.no" class="invalid-feedback">
+                                        {{ errors.no }}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Nama Loket</label>
+                                    <label for="name">Nama Loket</label>
                                     <input
                                         type="text"
                                         class="form-control"
-                                        v-model="form.nama_loket"
-                                        :class="{'is-invalid': errors.nama_loket}"
-                                        id="nama_loket"
-                                        name="nama_loket"
+                                        v-model="form.name"
+                                        :class="{'is-invalid': errors.name}"
+                                        id="name"
+                                        name="name"
                                     >
-                                    <div v-if="errors.nama_loket" class="invalid-feedback">
-                                        {{ errors.nama_loket }}
+                                    <div v-if="errors.name" class="invalid-feedback">
+                                        {{ errors.name }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="category_id">Jenis Antrian</label>
+                                    <select
+                                        class="form-control"
+                                        v-model="form.category_id"
+                                        :class="{'is-invalid': errors.category_id}"
+                                        id="category_id"
+                                        name="category_id"
+                                    >
+                                        <option value="">Pilih Category</option>
+                                        <option v-for="category in categories" :key="category.id" :value="category.id">
+                                            {{ category.name }}
+                                        </option>
+                                    </select>
+                                    <div v-if="errors.category_id" class="invalid-feedback">
+                                        {{ errors.category_id }}
                                     </div>
                                 </div>
 
                                 <div class="row mt-5">
                                     <div class="col-auto">
-                                        <button class="btn btn-primary" type="submit">Update</button>
+                                        <button class="btn btn-primary" type="submit">Simpan</button>
                                     </div>
                                     <div class="col-auto">
                                         <Link href="/loket" class="btn btn-dark">Kembali</Link>
@@ -72,31 +93,46 @@
 </template>
 
 <script setup>
+import { ref, watch } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
-import { ref, onMounted } from 'vue';
+import { useForm } from '@inertiajs/vue3';
 
-const props = defineProps(['id', 'loket']); 
+const props = defineProps({
+    id: Number,
+    loket: Object,
+    categories: Array
+});
 
-const form = ref({
-    no_loket: '',
-    nama_loket: '',
+const form = useForm({
+    no: props.loket.no || '',
+    name: props.loket.name || '',
+    category_id: props.loket.category_id || '',
 });
 
 const errors = ref({});
 
-onMounted(() => {
-    form.value.no_loket = props.loket.no_loket;
-    form.value.nama_loket = props.loket.nama_loket;
-});
+watch(() => props.loket, (newLoket) => {
+    form.no = newLoket.no;
+    form.name = newLoket.name;
+    form.category_id = newLoket.category_id;
+}, { immediate: true });
 
 function submitForm() {
-    router.put(`/loket/${props.id}`, form.value, {
+    form.put(`/loket/${props.id}`, {
         onSuccess: () => {
-            router.visit('/loket');
+            router.replace('/loket');
         },
         onError: (formErrors) => {
             errors.value = formErrors;
         }
     });
+}
+</script>
+
+<script>
+import Dasboard from '../../Layout/Dasboard.vue';
+
+export default {
+  layout: Dasboard,
 }
 </script>
