@@ -22,16 +22,15 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" role="button">
+                    <Link class="nav-link" :href="route('logout')" method="post" as="button">
                         <i class="fas fa-sign-out-alt"></i>
-                    </a>
+                    </Link>
                 </li>
-                <!-- {{-- <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true"
-                        href="#" role="button">
-                        <i class="fas fa-th-large"></i>
-                    </a>
-                </li> --}} -->
             </ul>
         </nav>
 </template>
+
+<script setup>
+import { Link } from '@inertiajs/vue3';
+
+</script>

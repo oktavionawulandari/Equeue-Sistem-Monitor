@@ -1,4 +1,7 @@
 <script setup>
+import '../../css/dashboard.css'
+
+
 import Nav from './Partials/Nav.vue';
 import Sidebar from './Partials/Sidebar.vue';
 import Footer from './Partials/Footer.vue';
@@ -6,9 +9,6 @@ import Footer from './Partials/Footer.vue';
 
 <template>
     <div class="wrapper">
-        <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-        </div>
 
         <Nav />
         <Sidebar />
