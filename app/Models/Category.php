@@ -13,6 +13,12 @@ class Category extends Model
 
     public function counters()
     {
-        return $this->hasMany(Counter::class, 'category_id', 'id');
+        return $this->hasMany(Counter::class);
     }
+
+    public function queue()
+    {
+        return $this->hasMany(Queue::class);
+    }
+
 }

@@ -17,9 +17,8 @@ class GeneralController extends Controller
 
     public function home()
     {
-        $lokets = Counter::with('category')->get(); 
+        $lokets = Category::with('counters')->get(); 
         return Inertia::render('Home', ['lokets' => $lokets]);
-
     }
 
     public function loket()

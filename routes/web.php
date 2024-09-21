@@ -6,6 +6,9 @@ use App\Http\Controllers\LoketController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AntrianController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\QueueController;
+use App\Http\Controllers\MonitorController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,26 +24,43 @@ use Inertia\Inertia;
 |
 */
 
+
 Route::get('/', function () {
-    // return Inertia::render('Auth/login', [
-    //     'canLogin' => Route::has('login'),
-    //     'canRegister' => Route::has('register'),
-    //     'laravelVersion' => Application::VERSION,
-    //     'phpVersion' => PHP_VERSION,
-    // ]);
+    return Inertia::render('Welcome');
 
-    if(!auth()->check()) {
-        return redirect('/login');
-    } else {
-        return redirect('/dashboard');
-    } 
+    // if(!auth()->check()) {
+    //     return redirect('/login');
+    // } else {
+    //     return redirect('/dashboard');
+    // } 
 
-    if(!auth()->check()) {
-        return redirect('/login');
-    } else {
-        return redirect('/home');
-    } 
+    // if(!auth()->check()) {
+    //     return redirect('/login');
+    // } else {
+    //     return redirect('/home');
+    // } 
 });
+
+// Route::get('/', function () {
+//     // return Inertia::render('Auth/login', [
+//     //     'canLogin' => Route::has('login'),
+//     //     'canRegister' => Route::has('register'),
+//     //     'laravelVersion' => Application::VERSION,
+//     //     'phpVersion' => PHP_VERSION,
+//     // ]);
+
+//     if(!auth()->check()) {
+//         return redirect('/login');
+//     } else {
+//         return redirect('/dashboard');
+//     } 
+
+//     if(!auth()->check()) {
+//         return redirect('/login');
+//     } else {
+//         return redirect('/home');
+//     } 
+// });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -83,8 +103,19 @@ Route::middleware('role:admin')->group(function () {
 
 Route::middleware(['role:operator'])->group(function () {
     Route::get('/home', [GeneralController::class, 'home'])->name('home');
+    Route::get('/antrian-loket/{id}', [HomeController::class, 'show'])->name('loket.show');
+    Route::get('/antrian-loket', [HomeController::class, 'index'])->name('antrian-loket');
+
 });
 
 
 Route::get('/antrian', [AntrianController::class, 'index'])->name('antrian');
+Route::post('/antrian', [AntrianController::class, 'store'])->name('antrian.store');
 
+
+Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor');
+
+
+
+Route::get('/queues', [QueueController::class, 'index'])->name('queue.index');
+Route::post('/queues', [QueueController::class, 'store'])->name('queue.store');

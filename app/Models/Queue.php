@@ -10,4 +10,18 @@ class Queue extends Model
     use HasFactory;
     protected $primaryKey = 'id';
     protected $guarded = [''];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function counter() {
+        return $this->belongsTo(Counter::class);
+    }
 }

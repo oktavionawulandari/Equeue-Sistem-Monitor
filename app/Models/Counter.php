@@ -15,4 +15,9 @@ class Counter extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+
+    // public function queue()
+    // {
+    //     return $this->belongsTo(Queue::class);
+    // }
 }

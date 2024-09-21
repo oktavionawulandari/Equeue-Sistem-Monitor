@@ -5,34 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
-use App\Models\Counter;
-use App\Models\Transaction;
-use App\Models\Queue;
+use App\Models\Category;
 
-
-class HomeController extends Controller
+class MonitorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $queues = Queue::all();
-
-        return Inertia::render('Operator/Index', [
-            'queues' => $queues,
-        ]);
-    }
-
-    public function tea(Request $request)
-    {
-        $counterId = $request->query('counterId');
-    
-        $queues = Queue::where('counter_id', $counterId)->get();
-    
-        return Inertia::render('Operator/AntrianLoket', [
-            'queues' => $queues,
-            'counterId' => $counterId,
+        $categories = Category::all();
+        return Inertia::render('Monitor/Index', [
+            'categories' => $categories
         ]);
     }
 
@@ -41,7 +25,7 @@ class HomeController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -51,17 +35,13 @@ class HomeController extends Controller
     {
         //
     }
-    
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(string $id)
     {
-        // $lokets = Counter::findOrFail($id);
-        // return Inertia::render('Operator/Index', [
-        //     'lokets' => $lokets
-        // ]);
+        //
     }
 
     /**

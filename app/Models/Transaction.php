@@ -11,4 +11,9 @@ class Transaction extends Model
     protected $primaryKey = 'id';
     protected $guarded = [''];
     
+    public function queue()
+    {
+        return $this->belongsTo(Queue::class);
+    }
+    
 }
