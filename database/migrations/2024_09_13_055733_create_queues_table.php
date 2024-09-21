@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('queues', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Category::class)->onDelete('cascade');
-            // $table->foreignIdFor(Counter::class)->onDelete('cascade');
+            $table->foreignIdFor(Counter::class)->onDelete('cascade')->nullable();
             $table->string('no');
             $table->enum('status', ['1', '2']);
             $table->date('date');

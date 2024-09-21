@@ -20,16 +20,16 @@
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <div v-for="loket in lokets" :key="loket.id" class="col-lg-3 col-6">
-          <div :class="`small-box ${getBgClass(loket)}`">
+        <div v-for="cat in category" :key="cat.id" class="col-lg-3 col-6">
+          <div :class="`small-box ${getBgClass(cat)}`">
             <div class="inner">
-              <h3>{{ loket.name }}</h3>
+              <h3>{{ cat.name }}</h3>
               <p>Panggilan Antrian</p>
             </div>
             <div class="icon">
               <i class="ion ion-mic-a"></i>
             </div>
-            <a href="#" @click.prevent="openModal(loket)" class="small-box-footer">Tampilkan <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="#" @click.prevent="openModal(cat.id, cat.counters)" class="small-box-footer">Tampilkan <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
       </div>
@@ -48,10 +48,8 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <select id="counterSelect" v-model="selectedCounterId" class="form-control">
-              <option v-for="counter in selectedCounter.counters" :key="counter.id" :value="counter.id">
-                {{ counter.name }}
-              </option>
+            <select v-model="selectedCounter" class="form-control" id="counterSelect">
+              <option v-for="counter in counters" :key="counter.id" :value="counter.id">{{ counter.name }}</option>
             </select>
           </div>
         </div>
@@ -64,43 +62,42 @@
   </div>
   <!-- End Modal -->
 </template>
+
 <script setup>
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 
-const props = defineProps(['lokets']);
+const props = defineProps(['category']);
+
 const showModal = ref(false);
-const selectedCounterId = ref(null);
+const counters = ref([]);
 const selectedCounter = ref(null);
-const selectedLoketId = ref(null); // Menyimpan ID loket yang dipilih
+const selectedCategoryId = ref(null); 
 
-const getBgClass = (loket) => {
-  const colorClasses = ['bg-info', 'bg-warning', 'bg-success', 'bg-danger'];
-  return colorClasses[loket.id % colorClasses.length];
-};
-
-const openModal = (loket) => {
-  selectedCounter.value = loket; 
-  selectedCounterId.value = null; 
-  selectedLoketId.value = loket.id;
+const openModal = (categoryId, countersData) => {
+  selectedCategoryId.value = categoryId;
+  counters.value = countersData;
   showModal.value = true;
 };
 
 const closeModal = () => {
   showModal.value = false;
-  selectedCounterId.value = null;
+  selectedCounter.value = null; 
+  selectedCategoryId.value = null; 
 };
 
 const tampilkan = () => {
-  if (selectedCounterId.value) {
-    localStorage.setItem("_loket", selectedCounterId.value); 
-    router.visit(`/antrian-loket?loketId=${selectedLoketId.value}`);
-    closeModal(); 
-  } else {
-    alert('Silahkan pilih jenis loket antrian');
+  if (selectedCounter.value) {
+    router.visit(`/queue/${selectedCategoryId.value}/${selectedCounter.value}`);
   }
 };
+
+const getBgClass = (cat) => {
+  const colorClasses = ['bg-info', 'bg-warning', 'bg-success', 'bg-danger'];
+  return colorClasses[cat.id % colorClasses.length];
+};
 </script>
+
 
 <script>
 import Home from '../Layout/Home.vue';

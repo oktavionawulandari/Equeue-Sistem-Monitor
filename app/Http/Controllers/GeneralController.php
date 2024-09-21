@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Counter;
+use App\Models\Queue;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -17,15 +18,23 @@ class GeneralController extends Controller
 
     public function home()
     {
-        $lokets = Category::with('counters')->get(); 
-        return Inertia::render('Home', ['lokets' => $lokets]);
+        $category = Category::with('counters')->get(); 
+        return Inertia::render('Home', [
+            'category' => $category, 
+        ]);
     }
 
-    public function loket()
+    public function show($category_id, $counter_id)
     {
-        $loket = Counter::all();
-        return Inertia::render('Home', 
-        ['loket' => $loket]);
+        $queues = Queue::where('category_id', $category_id)->get();
+        
+        return Inertia::render('Operator/Index', [
+            'queues' => $queues,
+            'category_id' => $category_id,
+            'counter_id' => $counter_id,
+        ]);
     }
+
+
 }
 

@@ -103,8 +103,12 @@ Route::middleware('role:admin')->group(function () {
 
 Route::middleware(['role:operator'])->group(function () {
     Route::get('/home', [GeneralController::class, 'home'])->name('home');
-    Route::get('/antrian-loket/{id}', [HomeController::class, 'show'])->name('loket.show');
-    Route::get('/antrian-loket', [HomeController::class, 'index'])->name('antrian-loket');
+    Route::get('/antrian-loket', [GeneralController::class, 'antrianLoket'])->name('antrian.loket');
+    Route::get('/queue/{category_id}/{counter_id}', [GeneralController::class, 'show'])->name('queue.show');
+    // Route::post('/queue/call/{queueId}/{counterId}', [HomeController::class, 'index'])->name('queue.call');
+    // Route::post('/queue/call/{queue}', [HomeController::class, 'callQueue'])->name('queue.call');
+    Route::post('/queues/{queue}/call', [HomeController::class, 'callQueue'])->name('queues.call');
+
 
 });
 

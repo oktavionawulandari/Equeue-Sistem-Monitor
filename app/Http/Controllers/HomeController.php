@@ -15,26 +15,18 @@ class HomeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function callQueue(Request $request, $id)
     {
-        $queues = Queue::all();
-
-        return Inertia::render('Operator/Index', [
-            'queues' => $queues,
-        ]);
+        $queue = Queue::find($id);
+        broadcast(new QueueCalled($queue, $request->counter_id));
+    
+        $queue->status = 2;
+        $queue->save();
+    
+        return response()->json(['message' => 'Queue called successfully']);
     }
 
-    public function tea(Request $request)
-    {
-        $counterId = $request->query('counterId');
-    
-        $queues = Queue::where('counter_id', $counterId)->get();
-    
-        return Inertia::render('Operator/AntrianLoket', [
-            'queues' => $queues,
-            'counterId' => $counterId,
-        ]);
-    }
+
 
     /**
      * Show the form for creating a new resource.
