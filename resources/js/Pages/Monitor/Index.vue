@@ -47,6 +47,7 @@
 import { onMounted, ref, onBeforeUnmount } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import '../../../css/dashboard.css';
+import { useForm } from '@inertiajs/inertia-vue3';
 
 const props = defineProps(['categories', 'counterId']);
 
@@ -58,6 +59,16 @@ const getBgClass = (category) => {
 };
 
 onMounted(() => {
+  if (!window.responsiveVoice) {
+        const script = document.createElement('script');
+        script.src = "https://code.responsivevoice.org/responsivevoice.js?key=65BmgOll";
+        script.onload = () => {
+            console.log("ResponsiveVoice script loaded successfully.");
+        };
+        document.head.appendChild(script);
+    } else {
+        console.log("ResponsiveVoice already loaded.");
+    }
   const updateQueueNumber = () => {
     const storedQueueNumber = localStorage.getItem('currentQueueNumber');
     if (storedQueueNumber && storedQueueNumber !== currentQueueNumber.value) {
@@ -73,9 +84,33 @@ onMounted(() => {
   });
 });
 
+const callQueue = async (queue) => {
+    if (window.responsiveVoice) {
+        const message = `Nomor antrian ${queue.no_antrian}, silahkan menuju loket ${queue.loket}.`;
+        responsiveVoice.speak(message, "Indonesian Female");
+
+        // await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // const form = useForm();
+        // await form.post(`/queues/${queue.id}/call`, {
+        //   status: 3,
+        //   category_id: queue.loket_id,
+        //   // counter_id: props.counter_id     
+        // });
+
+        localStorage.setItem('currentQueueNumber', queue.no_antrian);
+    } else {
+        console.error("ResponsiveVoice is not loaded.");
+    }
+};
+
 setInterval(() => {
-  fetch("")
-}, 5000)
+  fetch("/monitor/trigger-notification/1").then(response => response.json()).then(res => {
+    if(res?.data?.status) {
+      callQueue(res.data)
+    }
+  })
+}, 5000);
 </script>
 
 <style scoped>

@@ -18,7 +18,7 @@ class HomeController extends Controller
      */
     public function callQueue(Request $request, Queue $queue)
     {
-        $queue->update(['status' => 2]);
+        $queue->update(['status' => $request->status]);
     
         return redirect()->back()->with('success', 'Transaction created successfully.');
     }

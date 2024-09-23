@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Category;
+use App\Models\Queue;
 
 class MonitorController extends Controller
 {
@@ -72,9 +73,15 @@ class MonitorController extends Controller
 
     public function getTriggerNotification($category)
     {
-        $lastQueue = Queue::where("category_id", $category)->latest()[0];
+        $lastQueue = Queue::where("category_id", $category)->latest("created_at")->first();
 
-        return $lastQueue->status == 2;
+        return response()->json(["data" => [
+            "status" => $lastQueue->status == 2,
+            "id" => $lastQueue->id,
+            "no_antrian" => $lastQueue->no,
+            "loket" => $lastQueue->category->name,
+            "loket_id" => $category
+        ]], 200);
     }
 
     public function successTriggerNotification($category)

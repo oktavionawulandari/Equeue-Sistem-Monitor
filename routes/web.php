@@ -124,7 +124,7 @@ Route::get('/antrian', [AntrianController::class, 'index'])->name('antrian');
 Route::post('/antrian', [AntrianController::class, 'store'])->name('antrian.store');
 
 Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor');
-Route::get('/monitor/trigger-notification', [MonitorController::class, 'getTriggerNotification']);
+Route::get('/monitor/trigger-notification/{category}', [MonitorController::class, 'getTriggerNotification']);
 Route::patch('/monitor/trigger-notification', [MonitorController::class, 'successTriggerNotification']);
 
 
