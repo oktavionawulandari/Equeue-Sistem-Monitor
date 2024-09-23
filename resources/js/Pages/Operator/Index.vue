@@ -7,7 +7,9 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><router-link to="/dashboard">Home</router-link></li>
+            <li class="breadcrumb-item">
+              <router-link to="/dashboard">Home</router-link>
+            </li>
             <li class="breadcrumb-item active">Daftar Loket</li>
           </ol>
         </div>
@@ -32,12 +34,12 @@
                     <td>
                       <button
                         type="button"
-                        class="btn btn-success rounded-circle"
+                        class="btn btn-success call-button"
                         @click="callQueue(queue)"
-                        style="width: 30px; height: 30px; padding: 0;"
                         aria-label="Panggil antrian"
+                        aria-describedby="call-queue-description"
                       >
-                        <i class="ion ion-mic-a" style="font-size: 17px;"></i>
+                        <i class="ion ion-mic-a call-icon"></i>
                       </button>
                     </td>
                   </tr>
@@ -57,44 +59,51 @@ import { useForm } from '@inertiajs/inertia-vue3';
 
 const props = defineProps(['queues', 'category_id', 'counter_id']);
 
-
 const callQueue = async (queue) => {
-  try {
-    if (!window.responsiveVoice) {
-      console.error("ResponsiveVoice tidak tersedia");
-      return;
+    if (window.responsiveVoice) {
+        const message = `Nomor antrian ${queue.no}, silahkan menuju loket ${props.counter_id}.`;
+        responsiveVoice.speak(message, "Indonesian Female");
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        const form = useForm();
+        await form.post(`/queues/${queue.id}/call`, {
+          status: 2,
+          category_id: props.category_id,
+          counter_id: props.counter_id     
+        });
+
+        localStorage.setItem('currentQueueNumber', queue.no);
+    } else {
+        console.error("ResponsiveVoice is not loaded.");
     }
-
-    const message = `Nomor antrian ${queue.no}, silahkan menuju loket ${props.counter_id}.`;
-
-    responsiveVoice.speak(message, "Indonesian Female");
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const form = useForm();
-    await form.post(`/queues/${queue.id}/call`, {
-      status: 2
-    });
-
-    console.log(`Queue ${queue.no} updated to status 2`);
-  } catch (error) {
-    console.error("Error:", error);
-  }
 };
 
 onMounted(() => {
-  if (!window.responsiveVoice) {
-    const script = document.createElement('script');
-    script.src = "https://code.responsivevoice.org/responsivevoice.js?key=65BmgOll";
-    script.onload = () => {
-      console.log("Skrip ResponsiveVoice dimuat");
-    };
-    document.head.appendChild(script);
-  } else {
-    console.log("ResponsiveVoice sudah dimuat");
-  }
+    if (!window.responsiveVoice) {
+        const script = document.createElement('script');
+        script.src = "https://code.responsivevoice.org/responsivevoice.js?key=65BmgOll";
+        script.onload = () => {
+            console.log("ResponsiveVoice script loaded successfully.");
+        };
+        document.head.appendChild(script);
+    } else {
+        console.log("ResponsiveVoice already loaded.");
+    }
 });
 </script>
+
+<style scoped>
+.call-button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+}
+
+.call-icon {
+  font-size: 17px;
+}
+</style>
 
 <script>
 import Home from '../../Layout/Home.vue';

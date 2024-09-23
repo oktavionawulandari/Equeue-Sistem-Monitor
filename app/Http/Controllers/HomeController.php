@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Models\Counter;
 use App\Models\Transaction;
 use App\Models\Queue;
+use Illuminate\Support\Facades\Auth;
 
 
 class HomeController extends Controller
@@ -15,15 +16,11 @@ class HomeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function callQueue(Request $request, $id)
+    public function callQueue(Request $request, Queue $queue)
     {
-        $queue = Queue::find($id);
-        broadcast(new QueueCalled($queue, $request->counter_id));
+        $queue->update(['status' => 2]);
     
-        $queue->status = 2;
-        $queue->save();
-    
-        return response()->json(['message' => 'Queue called successfully']);
+        return redirect()->back()->with('success', 'Transaction created successfully.');
     }
 
 

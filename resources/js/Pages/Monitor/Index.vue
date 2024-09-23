@@ -14,8 +14,7 @@
 
     <div class="d-flex justify-content-between mt-3 vh-100">
       <div class="rounded d-flex justify-content-center" style="width:65%;">
-        <iframe class="rounded" width="100%" height="450" allow="autoplay" src="https://www.youtube.com/embed/-?rel=0&modestbranding=1&autohide=1&mute=0&showinfo=0&controls=1&loop=1&autoplay=1&playlist=-">
-        </iframe>
+        <iframe class="rounded" width="100%" height="450" allow="autoplay" src="https://www.youtube.com/embed/-?rel=0&modestbranding=1&autohide=1&mute=0&showinfo=0&controls=1&loop=1&autoplay=1&playlist=-"></iframe>
       </div>
 
       <div class="h-100 overflow-hidden" style="font-size:0.8em; width:35%;">
@@ -24,7 +23,9 @@
             <div class="card text-center text-white" :class="getBgClass(category)" v-for="category in categories" :key="category.id" style="margin:0.5rem; width:calc(50% - 1rem);">
               <h5 class="card-header fw-bold">{{ category.name }}</h5>
               <div class="card-body">
-                <h1 id="antrian-selanjutnya" class="text-center fw-bold my-3" style="font-size: 80px;">-</h1>
+                <h1 id="antrian-selanjutnya" class="text-center fw-bold my-3" style="font-size: 80px;">
+                  {{ currentQueueNumber }}
+                </h1>
               </div>
             </div>
           </div>
@@ -32,7 +33,6 @@
       </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer py-4 border-top mt-auto">
       <div class="container text-center">
         <p class="mb-0">
@@ -44,15 +44,38 @@
 </template>
 
 <script setup>
-  import '../../../css/dashboard.css';
-  import { Link } from '@inertiajs/vue3';
+import { onMounted, ref, onBeforeUnmount } from 'vue';
+import { Link } from '@inertiajs/vue3';
+import '../../../css/dashboard.css';
 
-  const props = defineProps(['categories']);
+const props = defineProps(['categories', 'counterId']);
 
-  const getBgClass = (category) => {
-    const colorClasses = ['bg-info', 'bg-warning', 'bg-success', 'bg-danger'];
-    return colorClasses[category.id % colorClasses.length];
+const currentQueueNumber = ref('-');
+
+const getBgClass = (category) => {
+  const colorClasses = ['bg-info', 'bg-warning', 'bg-success', 'bg-danger'];
+  return colorClasses[category.id % colorClasses.length];
+};
+
+onMounted(() => {
+  const updateQueueNumber = () => {
+    const storedQueueNumber = localStorage.getItem('currentQueueNumber');
+    if (storedQueueNumber && storedQueueNumber !== currentQueueNumber.value) {
+      currentQueueNumber.value = storedQueueNumber;
+    }
   };
+
+  updateQueueNumber();
+  const interval = setInterval(updateQueueNumber, 1000);
+
+  onBeforeUnmount(() => {
+    clearInterval(interval);
+  });
+});
+
+setInterval(() => {
+  fetch("")
+}, 5000)
 </script>
 
 <style scoped>

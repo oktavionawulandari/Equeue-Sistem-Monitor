@@ -20,6 +20,7 @@ class MonitorController extends Controller
         ]);
     }
 
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -66,5 +67,23 @@ class MonitorController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+
+    public function getTriggerNotification($category)
+    {
+        $lastQueue = Queue::where("category_id", $category)->latest()[0];
+
+        return $lastQueue->status == 2;
+    }
+
+    public function successTriggerNotification($category)
+    {
+        $lastQueue = Queue::where("category_id", $category)->latest()[0];
+
+       $lastQueue->status = 3;
+       $lastQueue->save();
+
+       return response()->json([], 200);
     }
 }

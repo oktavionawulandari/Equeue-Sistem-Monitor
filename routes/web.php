@@ -107,8 +107,15 @@ Route::middleware(['role:operator'])->group(function () {
     Route::get('/queue/{category_id}/{counter_id}', [GeneralController::class, 'show'])->name('queue.show');
     // Route::post('/queue/call/{queueId}/{counterId}', [HomeController::class, 'index'])->name('queue.call');
     // Route::post('/queue/call/{queue}', [HomeController::class, 'callQueue'])->name('queue.call');
-    Route::post('/queues/{queue}/call', [HomeController::class, 'callQueue'])->name('queues.call');
+    // Route::post('/queues/{queue}/call', [HomeController::class, 'callQueue'])->name('queues.call');
+    Route::get('/monitor', [HomeController::class, 'index'])->name('monitor');
 
+    // Route to get the latest queue
+    Route::get('/queues/get-latest', [HomeController::class, 'getLatestQueue'])->name('queues.getLatest');
+    
+    // Route to call the queue
+    Route::post('/queues/{queue}/call', [HomeController::class, 'callQueue'])->name('queues.call');
+    
 
 });
 
@@ -116,8 +123,9 @@ Route::middleware(['role:operator'])->group(function () {
 Route::get('/antrian', [AntrianController::class, 'index'])->name('antrian');
 Route::post('/antrian', [AntrianController::class, 'store'])->name('antrian.store');
 
-
 Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor');
+Route::get('/monitor/trigger-notification', [MonitorController::class, 'getTriggerNotification']);
+Route::patch('/monitor/trigger-notification', [MonitorController::class, 'successTriggerNotification']);
 
 
 

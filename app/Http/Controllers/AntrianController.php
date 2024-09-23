@@ -54,7 +54,7 @@ class AntrianController extends Controller
     private function generateQueueNumber()
     {
         $todayQueueCount = Queue::whereDate('created_at', now())->count();
-        return str_pad($todayQueueCount + 1, 5, '0', STR_PAD_LEFT);
+        return str_pad($todayQueueCount + 1, 3, '0', STR_PAD_LEFT);
     }
 
     /**
