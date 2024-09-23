@@ -60,11 +60,11 @@ import { useForm } from '@inertiajs/inertia-vue3';
 const props = defineProps(['queues', 'category_id', 'counter_id']);
 
 const callQueue = async (queue) => {
-    if (window.responsiveVoice) {
-        const message = `Nomor antrian ${queue.no}, silahkan menuju loket ${props.counter_id}.`;
-        responsiveVoice.speak(message, "Indonesian Female");
+    // if (window.responsiveVoice) {
+    //     const message = `Nomor antrian ${queue.no}, silahkan menuju loket ${props.counter_id}.`;
+    //     responsiveVoice.speak(message, "Indonesian Female");
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+    //     await new Promise((resolve) => setTimeout(resolve, 1000));
 
         const form = useForm();
         await form.post(`/queues/${queue.id}/call`, {
@@ -74,23 +74,23 @@ const callQueue = async (queue) => {
         });
 
         localStorage.setItem('currentQueueNumber', queue.no);
-    } else {
-        console.error("ResponsiveVoice is not loaded.");
-    }
+    // } else {
+    //     console.error("ResponsiveVoice is not loaded.");
+    // }
 };
 
-onMounted(() => {
-    if (!window.responsiveVoice) {
-        const script = document.createElement('script');
-        script.src = "https://code.responsivevoice.org/responsivevoice.js?key=65BmgOll";
-        script.onload = () => {
-            console.log("ResponsiveVoice script loaded successfully.");
-        };
-        document.head.appendChild(script);
-    } else {
-        console.log("ResponsiveVoice already loaded.");
-    }
-});
+// onMounted(() => {
+//     if (!window.responsiveVoice) {
+//         const script = document.createElement('script');
+//         script.src = "https://code.responsivevoice.org/responsivevoice.js?key=65BmgOll";
+//         script.onload = () => {
+//             console.log("ResponsiveVoice script loaded successfully.");
+//         };
+//         document.head.appendChild(script);
+//     } else {
+//         console.log("ResponsiveVoice already loaded.");
+//     }
+// });
 </script>
 
 <style scoped>
