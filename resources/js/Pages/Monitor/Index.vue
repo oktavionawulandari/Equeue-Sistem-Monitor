@@ -106,6 +106,7 @@ const callQueue = async (queue) => {
 
 setInterval(() => {
   fetch("/monitor/trigger-notification/1").then(response => response.json()).then(res => {
+    console.log(res)
     if(res?.data?.status) {
       callQueue(res.data)
     }
