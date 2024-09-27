@@ -61,10 +61,10 @@ const props = defineProps(['queues', 'category_id', 'counter_id']);
 
 const callQueue = async (queue) => {
     // if (window.responsiveVoice) {
-        // const message = `Nomor antrian ${queue.no}, silahkan menuju loket ${props.counter_id}.`;
-        // responsiveVoice.speak(message, "Indonesian Female");
+    //     const message = `Nomor antrian ${queue.no}, silahkan menuju loket ${props.counter_id}.`;
+    //     responsiveVoice.speak(message, "Indonesian Female");
 
-        // await new Promise((resolve) => setTimeout(resolve, 1000));
+    //     await new Promise((resolve) => setTimeout(resolve, 1000));
 
         const form = useForm();
         await form.post(`/queues/${queue.id}/call`, {
@@ -73,9 +73,9 @@ const callQueue = async (queue) => {
           counter_id: props.counter_id     
         });
 
-        // localStorage.setItem('currentQueueNumber', queue.no);
+        localStorage.setItem('currentQueueNumber', queue.no);
     // } else {
-        // console.error("ResponsiveVoice is not loaded.");
+    //     console.error("ResponsiveVoice is not loaded.");
     // }
 };
 

@@ -59,16 +59,7 @@ const getBgClass = (category) => {
 };
 
 onMounted(() => {
-  if (!window.responsiveVoice) {
-        const script = document.createElement('script');
-        script.src = "https://code.responsivevoice.org/responsivevoice.js?key=65BmgOll";
-        script.onload = () => {
-            console.log("ResponsiveVoice script loaded successfully.");
-        };
-        document.head.appendChild(script);
-    } else {
-        console.log("ResponsiveVoice already loaded.");
-    }
+  
   const updateQueueNumber = () => {
     const storedQueueNumber = localStorage.getItem('currentQueueNumber');
     if (storedQueueNumber && storedQueueNumber !== currentQueueNumber.value) {
