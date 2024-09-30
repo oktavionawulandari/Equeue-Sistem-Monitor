@@ -7,7 +7,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><router-link to="/dashboard">Home</router-link></li>
+                        <li class="breadcrumb-item"><Link href="/dashboard">Dashboard</Link></li>
                         <li class="breadcrumb-item active">Tambah Loket</li>
                     </ol>
                 </div>

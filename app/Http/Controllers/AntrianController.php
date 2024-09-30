@@ -62,6 +62,11 @@ class AntrianController extends Controller
             'categories' => Category::all(),
         ]);
     }
+
+    public function print()
+    {
+        return Inertia::render('Antrian/Index');
+    }
     
     
     
@@ -94,8 +99,5 @@ class AntrianController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        // Implementation here
-    }
+
 }

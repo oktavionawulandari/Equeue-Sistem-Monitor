@@ -7,7 +7,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><router-link to="/dashboard">Home</router-link></li>
+                        <li class="breadcrumb-item"><Link href="/dashboard">Dashboard</Link></li>
                         <li class="breadcrumb-item active">Edit Pengguna</li>
                     </ol>
                 </div>
@@ -89,7 +89,7 @@
                                         <button class="btn btn-primary" type="submit">Simpan</button>
                                     </div>
                                     <div class="col-auto">
-                                        <router-link to="/pengguna" class="btn btn-dark">Kembali</router-link>
+                                        <Link href="/pengguna" class="btn btn-dark">Kembali</Link>
                                     </div>
                                 </div>
                             </form>
@@ -114,8 +114,7 @@ export default {
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { Link, router, useForm } from '@inertiajs/vue3';
-
+import { Link, router, useForm  } from '@inertiajs/vue3';
 const props = defineProps(['id', 'users']);
 
 const form = useForm({

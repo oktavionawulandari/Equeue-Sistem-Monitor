@@ -8,7 +8,7 @@
         <span class="fs-4 text-bold">MONITOR ANTRIAN PENDAFTARAN</span>
       </a>
       <div class="d-flex align-items-center text-dark ms-auto me-5">
-        <i class="fa fa-calendar me-2"></i> <!-- Ikon kalender -->
+        <i class="fa fa-calendar me-2"></i>
         <div class="fs-5 text-bold">{{ currentTime }}</div>
       </div>
     </header>
@@ -115,7 +115,7 @@ const callQueue = async (queue) => {
 
         router.get("/monitor")
     } else {
-        console.error("ResponsiveVoice is not loaded.");
+        console.error("Response tidak berhasil");
     }
 };
 

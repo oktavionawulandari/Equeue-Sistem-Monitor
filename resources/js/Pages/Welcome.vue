@@ -7,6 +7,10 @@
                 </div>
                 <span class="fs-4 fw-bold">NAMA COMPANY</span>
             </a>
+            <div class="d-flex align-items-center text-dark ms-auto me-5">
+                <i class="fa fa-calendar me-2"></i>
+                <div class="fs-5 text-bold">{{ currentTime }}</div>
+            </div>
         </header>
 
         <div class="row gx-3 me-5 ms-5 mb-5">
@@ -68,7 +72,25 @@
 </template>
 
 <script setup>
-    import '../../css/dashboard.css'
+import '../../css/dashboard.css'
+import { onMounted, ref, onBeforeUnmount } from 'vue';
+
+const currentTime = ref('');
+
+const updateCurrentTime = () => {
+    const now = new Date();
+    const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    currentTime.value = now.toLocaleTimeString('id-ID', options); 
+};
+
+onMounted(() => {
+    updateCurrentTime();
+    const timeInterval = setInterval(updateCurrentTime, 1000); 
+
+    onBeforeUnmount(() => {
+        clearInterval(timeInterval);
+    });
+});
 </script>
 
 <style>

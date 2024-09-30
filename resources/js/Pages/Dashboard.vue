@@ -7,8 +7,9 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Dashboard</li>
+                        <li class="breadcrumb-item"><Link href="/dashboard">Dashboard</Link></li>
+                        <li class="breadcrumb-item">Dashboard</li>
+
                     </ol>
                 </div>
             </div>
@@ -105,4 +106,6 @@ export default {
 
 <script setup>
     import 'admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css'
+    import { Link } from '@inertiajs/vue3';
+
 </script>

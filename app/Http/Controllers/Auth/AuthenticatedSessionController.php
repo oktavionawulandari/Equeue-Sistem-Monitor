@@ -38,7 +38,7 @@ class AuthenticatedSessionController extends Controller
          $request->session()->regenerate();
      
          if (Auth::user()->role === 'admin') {
-             return redirect()->route('dashboard');
+             return redirect()->route('loket.index');
          }
      
          if (Auth::user()->role === 'operator') {

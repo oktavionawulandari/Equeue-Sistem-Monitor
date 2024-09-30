@@ -37,13 +37,13 @@ class HomeController extends Controller
     {
         $queues = Queue::where('category_id', $category_id)->get();
         $totalAntrian = Queue::count(); 
-        $SisaAntrian = Queue::whereIn('status', [1, 2, 3])->count();
+        $SisaAntrian = Queue::where('status', 1)->count();
         $AntrianBerikutnya = Queue::where('status', 1)->where('category_id', $category_id)->first();
     
         $AntrianSekarang = Queue::whereIn('status', [2, 3])
-                                ->where('category_id', $category_id)
-                                ->latest('created_at')
-                                ->first();
+                ->where('category_id', $category_id)
+                ->latest('created_at')
+                ->first();
     
         $counter = Counter::findOrFail($counter_id);
     

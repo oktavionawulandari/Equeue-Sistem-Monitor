@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::middleware('role:admin')->group(function () { 
-    Route::get('/dashboard', [GeneralController::class, 'index'])->name('dashboard');
+    // Route::get('/dashboard', [GeneralController::class, 'index'])->name('dashboard');
     
     /// LOKET CONTROLLER
     Route::get('/loket', [LoketController::class, 'index'])->name('loket.index');
@@ -101,8 +101,8 @@ Route::middleware('role:admin')->group(function () {
     Route::delete('/pengguna/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
     //SETTING
-    Route::resource('setting', SettingController::class);
-
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });
 
 

@@ -8,7 +8,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><Link href="/home">Home</Link></li>
             <li class="breadcrumb-item active">Home</li>
           </ol>
         </div>
@@ -65,7 +65,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { router } from '@inertiajs/vue3';
+import { router, Link } from '@inertiajs/vue3';
 
 const props = defineProps(['category']);
 

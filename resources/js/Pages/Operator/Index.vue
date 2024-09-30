@@ -7,9 +7,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item">
-              <router-link to="/dashboard">Home</router-link>
-            </li>
+            <li class="breadcrumb-item"><Link href="/home">Home</Link></li>
             <li class="breadcrumb-item active">Daftar Loket</li>
           </ol>
         </div>
@@ -118,7 +116,7 @@
 
 <script setup>
 import { onMounted, onUpdated, ref } from 'vue';
-import { useForm, router, usePage } from '@inertiajs/vue3'; 
+import { useForm, router, usePage, Link } from '@inertiajs/vue3'; 
 
 const props = defineProps(['queues', 'category_id', 'counter_id', 'sisaAntrian', 'counter_name', 'QueuenNo']);
 
@@ -127,10 +125,7 @@ const filteredQueues = ref(props.queues.filter(queue => Number(queue.status) !==
 
 const totalAntrian = ref(props.queues.length);
 
-const SisaAntrian = ref(props.queues.filter(queue => 
-    Number(queue.status) === 1 || 
-    Number(queue.status) === 2 || 
-    Number(queue.status) === 3).length);
+const SisaAntrian = ref(props.queues.filter(queue => Number(queue.status) === 1).length);
 
 const AntrianBerikutnya = ref(props.queues.find(queue => Number(queue.status) === 1 ));
 const QueuenNo = ref(null);

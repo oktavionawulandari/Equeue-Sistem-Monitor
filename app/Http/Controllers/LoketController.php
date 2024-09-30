@@ -88,7 +88,7 @@ class LoketController extends Controller
     //  */
     public function destroy(string $id)
     {
-        $loket = Loket::findOrFail($id);
+        $loket = Counter::findOrFail($id);
         $loket->delete();
         return redirect()->back();
 

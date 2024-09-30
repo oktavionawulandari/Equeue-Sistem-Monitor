@@ -7,9 +7,10 @@
         </div>
         <span class="fs-4 fw-bold">NAMA COMPANY</span>
       </a>
-      <Link href="/" class="btn btn-outline-secondary ms-2">
-        <i class="fa fa-arrow-left"></i> Back
-      </Link>
+      <div class="d-flex align-items-center text-dark ms-auto me-5">
+          <i class="fa fa-calendar me-2"></i>
+          <div class="fs-5 text-bold">{{ currentTime }}</div>
+      </div>
     </header>
 
     <main class="flex-grow-1">
@@ -17,7 +18,7 @@
         <div class="row gx-3 me-5 ms-5 mb-5">
           <div class="col-lg-4 mb-4" v-for="cat in categories" :key="cat.id">
             <div class="px-4 py-3 mb-4 bg-white rounded-2 shadow-sm">
-              <h1 class="h5 pt-2">ANTRIAN {{ cat.name }}</h1>
+              <h1 class="h5 pt-2 text-uppercase">antrian {{ cat.name }}</h1>
             </div>
 
             <div class="card border-0 shadow-sm mb-3">
@@ -52,16 +53,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref, onBeforeUnmount } from 'vue';
 import { useForm, router } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3';
-import { Link } from '@inertiajs/vue3';
 import '../../../css/dashboard.css';
 
 const { props } = usePage();
 const categories = ref(props.categories || []);
-
-console.log(categories)
+const currentTime = ref('');
 
 const form = useForm({
   status: '',
@@ -79,6 +78,22 @@ const submitForm = () => {
     }
   });
 };
+
+
+const updateCurrentTime = () => {
+    const now = new Date();
+    const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    currentTime.value = now.toLocaleTimeString('id-ID', options); 
+};
+
+onMounted(() => {
+    updateCurrentTime();
+    const timeInterval = setInterval(updateCurrentTime, 1000); 
+
+    onBeforeUnmount(() => {
+        clearInterval(timeInterval);
+    });
+});
 </script>
 
 <style scoped>

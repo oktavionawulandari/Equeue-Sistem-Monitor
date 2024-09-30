@@ -35,7 +35,7 @@ class UserController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required',
-            'username' => 'required',
+            'username' => 'required|unique:users,username',
             'role' => 'required',
             'password' => 'required'
         ]);
@@ -98,6 +98,9 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $users = User::findOrFail($id);
+        $users->delete();
+        return redirect()->back();
+
     }
 }
