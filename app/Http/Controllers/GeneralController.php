@@ -23,18 +23,5 @@ class GeneralController extends Controller
             'category' => $category, 
         ]);
     }
-
-    public function show($category_id, $counter_id)
-    {
-        $queues = Queue::where('category_id', $category_id)->get();
-        
-        return Inertia::render('Operator/Index', [
-            'queues' => $queues,
-            'category_id' => $category_id,
-            'counter_id' => $counter_id,
-        ]);
-    }
-
-
 }
 

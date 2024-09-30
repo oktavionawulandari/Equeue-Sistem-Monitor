@@ -22,4 +22,9 @@ class Category extends Model
         return $this->hasMany(Queue::class);
     }
 
+    public function antrian()
+    {
+        return $this->hasMany(Antrian::class);
+    }
+
 }

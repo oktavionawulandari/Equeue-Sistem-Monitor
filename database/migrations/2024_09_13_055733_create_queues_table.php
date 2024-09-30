@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Category::class)->onDelete('cascade');
             // $table->foreignIdFor(Counter::class)->onDelete('cascade')->nullable();
             $table->string('no');
-            $table->enum('status', ['1', '2', '3']);
+            $table->enum('status', ['1', '2', '3', '4']);
             $table->date('date');
             $table->timestamps();
         });

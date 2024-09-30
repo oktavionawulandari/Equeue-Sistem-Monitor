@@ -51,6 +51,12 @@
                             <p>Jenis Antrian</p>
                         </Link>
                     </li>
+                    <li class="nav-item">
+                        <Link href="/setting" class="nav-link">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>Setting</p>
+                        </Link>
+                    </li>
                 </ul>
             </nav>
         </div>

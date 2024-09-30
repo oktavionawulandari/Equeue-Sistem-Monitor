@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Counter;
 use App\Models\Queue;
+use App\Models\Category;
 
 return new class extends Migration
 {
@@ -17,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Queue::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Counter::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Category::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

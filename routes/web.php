@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\QueueController;
 use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -69,6 +70,7 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
 Route::middleware('role:admin')->group(function () { 
     Route::get('/dashboard', [GeneralController::class, 'index'])->name('dashboard');
     
@@ -98,24 +100,16 @@ Route::middleware('role:admin')->group(function () {
     Route::put('/pengguna/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/pengguna/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
+    //SETTING
+    Route::resource('setting', SettingController::class);
+
 });
 
 
 Route::middleware(['role:operator'])->group(function () {
     Route::get('/home', [GeneralController::class, 'home'])->name('home');
-    Route::get('/antrian-loket', [GeneralController::class, 'antrianLoket'])->name('antrian.loket');
-    Route::get('/queue/{category_id}/{counter_id}', [GeneralController::class, 'show'])->name('queue.show');
-    // Route::post('/queue/call/{queueId}/{counterId}', [HomeController::class, 'index'])->name('queue.call');
-    // Route::post('/queue/call/{queue}', [HomeController::class, 'callQueue'])->name('queue.call');
-    // Route::post('/queues/{queue}/call', [HomeController::class, 'callQueue'])->name('queues.call');
-    Route::get('/monitor', [HomeController::class, 'index'])->name('monitor');
-
-    // Route to get the latest queue
-    Route::get('/queues/get-latest', [HomeController::class, 'getLatestQueue'])->name('queues.getLatest');
-    
-    // Route to call the queue
-    Route::post('/queues/{queue}/call', [HomeController::class, 'callQueue'])->name('queues.call');
-    
+    Route::get('/queue/{category_id}/{counter_id}', [HomeController::class, 'show'])->name('queue.show');
+    Route::post('/queues/{queue}/call', [HomeController::class, 'callQueue'])->name('queue.call');
 
 });
 
@@ -124,8 +118,8 @@ Route::get('/antrian', [AntrianController::class, 'index'])->name('antrian');
 Route::post('/antrian', [AntrianController::class, 'store'])->name('antrian.store');
 
 Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor');
-Route::get('/monitor/trigger-notification/{category}', [MonitorController::class, 'getTriggerNotification']);
-Route::patch('/monitor/trigger-notification', [MonitorController::class, 'successTriggerNotification']);
+Route::get('/monitor/trigger-notification', [MonitorController::class, 'getTriggerNotification']);
+Route::patch('/monitor/trigger-notification/{queue}', [MonitorController::class, 'successTriggerNotification']);
 
 
 

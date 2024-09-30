@@ -37,11 +37,24 @@ class AntrianController extends Controller
             'date' => 'required|date'
         ]);
     
+        $category = Category::find($validatedData['category_id']);
+        
+        $categoryPrefix = strtoupper(substr($category->name, 0, 2)) . '-';
+    
+        $lastQueue = Queue::where('category_id', $validatedData['category_id'])
+                            ->whereDate('created_at', now()) 
+                            ->orderBy('id', 'desc')
+                            ->first();
+    
+        $nextQueueNumber = $lastQueue ? ((int) substr($lastQueue->no, -3) + 1) : 1;
+    
+        $queueNumber = $categoryPrefix . str_pad($nextQueueNumber, 3, '0', STR_PAD_LEFT);
+    
         $queue = Queue::create([
             'category_id' => $validatedData['category_id'],
-            'no' => $this->generateQueueNumber(),
+            'no' => $queueNumber, 
             'status' => $validatedData['status'], 
-            'date' => now(), 
+            'date' => now(),
         ]);
     
         return Inertia::render('Antrian/Index', [
@@ -50,12 +63,9 @@ class AntrianController extends Controller
         ]);
     }
     
-
-    private function generateQueueNumber()
-    {
-        $todayQueueCount = Queue::whereDate('created_at', now())->count();
-        return str_pad($todayQueueCount + 1, 3, '0', STR_PAD_LEFT);
-    }
+    
+    
+    
 
     /**
      * Display the specified resource.

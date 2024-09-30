@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Category;
 use App\Models\Queue;
+use App\Models\Antrian;
 
 class MonitorController extends Controller
 {
@@ -15,82 +16,38 @@ class MonitorController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::with(['antrian.queue'])->get();
         return Inertia::render('Monitor/Index', [
             'categories' => $categories
         ]);
     }
 
-    
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function getTriggerNotification()
     {
-        
+        $antrian = Antrian::with(['queue', 'counter'])->latest("created_at")->first();
+
+        if($antrian) {
+            return response()->json(["data" => [
+                "status" => $antrian->queue->status == 2,
+                "id" => $antrian->queue->id,
+                "no_antrian" => $antrian->queue->no,
+                "loket" => $antrian->queue->category->name,
+                'loket_id' => $antrian->queue->category->id,
+                "counter" => $antrian->counter->name
+            ]], 200);
+        } else {
+            return response()->json(["data" => ["status" => false]]);   
+        }
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function successTriggerNotification($queue)
     {
-        //
-    }
+        $queue = Queue::findOrFail($queue);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+       $queue->status = 3;
+       $queue->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
-
-    public function getTriggerNotification($category)
-    {
-        $lastQueue = Queue::where("category_id", $category)->latest("created_at")->first();
-
-        return response()->json(["data" => [
-            "status" => $lastQueue->status == 2,
-            "id" => $lastQueue->id,
-            "no_antrian" => $lastQueue->no,
-            "loket" => $lastQueue->category->name,
-            "loket_id" => $category
-        ]], 200);
-    }
-
-    public function successTriggerNotification($category)
-    {
-        $lastQueue = Queue::where("category_id", $category)->latest()[0];
-
-       $lastQueue->status = 3;
-       $lastQueue->save();
-
-       return response()->json([], 200);
+       return redirect()->back();
     }
 }

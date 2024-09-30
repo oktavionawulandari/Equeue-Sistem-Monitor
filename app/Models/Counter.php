@@ -16,13 +16,9 @@ class Counter extends Model
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
-    public function counters()
-    {
-        return $this->hasMany(Counter::class);
-    }
 
-    // public function queue()
-    // {
-    //     return $this->belongsTo(Queue::class);
-    // }
+    public function antrian()
+    {
+        return $this->hasMany(Antrian::class);
+    }
 }

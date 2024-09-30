@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <div class="row mb-4">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Tambah Antrian</h1>
+                    <h1 class="m-0 text-uppercase">Tambah Antrian</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">

@@ -21,6 +21,11 @@ class Queue extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function antrian()
+    {
+        return $this->hasMany(Antrian::class);
+    }
+
     public function counter() {
         return $this->belongsTo(Counter::class);
     }

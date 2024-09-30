@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <div class="row mb-4">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Tambah Loket</h1>
+                    <h1 class="m-0 text-uppercase">Tambah Loket</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">

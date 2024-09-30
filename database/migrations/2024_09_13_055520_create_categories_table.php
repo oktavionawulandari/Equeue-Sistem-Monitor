@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Transaction;
 use App\Models\Counter;
+use App\Models\Antrian;
 
 
 return new class extends Migration
