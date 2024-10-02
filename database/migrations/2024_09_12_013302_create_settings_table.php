@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('instansi');
-            $table->string('logo');
-            $table->string('address');
-            $table->string('phone');
-            $table->string('email');
-            $table->string('running_text');
-            $table->string('video');
-            $table->string('primary');
-            $table->string('secondary');
-            $table->string('accent');
-            $table->string('background');
-            $table->string('text');
+            $table->string('instansi')->nullable();
+            $table->string('logo')->nullable();
+            $table->text('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->text('running_text')->nullable();
+            $table->string('video')->nullable();
+            $table->string('primary')->nullable();
+            $table->string('secondary')->nullable();
+            $table->string('accent')->nullable();
+            $table->string('background')->nullable();
+            $table->string('text')->nullable();
             $table->timestamps();
         });
     }

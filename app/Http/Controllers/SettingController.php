@@ -6,46 +6,48 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class SettingController extends Controller
 {
-    public function index($id = null)
+    public function index()
     {
-        $setting = $id ? Setting::find($id) : null;
-        return inertia('Setting/Index', [
+        $setting = Setting::first();
+        return Inertia::render('Setting/Index', [
             'setting' => $setting,
         ]);
     }
 
-    public function store(Request $request, $id = null)
+    public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'instansi' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
-            'email' => 'required|email|max:255',
+        $validated = $request->validate([
+            'instansi' => 'nullable|string|max:255',
+            'logo' => 'nullable|image', 
+            'address' => 'nullable|string',
+            'phone' => 'nullable|string|max:15',
+            'email' => 'nullable|email|max:255',
             'running_text' => 'nullable|string',
             'video' => 'nullable|string',
-            'logo' => 'nullable|image|max:2048',
-            'background' => 'nullable|string',
-            'text' => 'nullable|string',
-            'primary' => 'nullable|string',
-            'accent' => 'nullable|string',
-            'secondary' => 'nullable|string',
+            'primary' => 'nullable|string|max:7',
+            'secondary' => 'nullable|string|max:7',
+            'accent' => 'nullable|string|max:7',
+            'background' => 'nullable|string|max:7',
+            'text' => 'nullable|string|max:7',
         ]);
-
-        $setting = $id ? Setting::find($id) : new Setting;
-        $setting->fill($validatedData);
-
+    
         if ($request->hasFile('logo')) {
-            if ($setting->logo) {
-                Storage::delete($setting->logo);
-            }
-            $setting->logo = $request->file('logo')->store('logos');
+            $logoFile = $request->file('logo');
+            $logoName = time() . '.' . $logoFile->getClientOriginalExtension();
+            $logoFile->move(public_path('logo'), $logoName); 
+            $validated['logo'] = $logoName; 
         }
-
-        $setting->save();
-
+    
+        Setting::updateOrCreate(
+            ['id' => 1], 
+            $validated
+        );
+    
         return redirect()->back();
     }
+    
 }

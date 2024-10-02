@@ -102,7 +102,7 @@ Route::middleware('role:admin')->group(function () {
 
     //SETTING
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
 });
 
 
@@ -116,6 +116,7 @@ Route::middleware(['role:operator'])->group(function () {
 
 Route::get('/antrian', [AntrianController::class, 'index'])->name('antrian');
 Route::post('/antrian', [AntrianController::class, 'store'])->name('antrian.store');
+Route::get('/antrian/{category_id}', [AntrianController::class, 'print'])->name('queue.print');
 
 Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor');
 Route::get('/monitor/trigger-notification', [MonitorController::class, 'getTriggerNotification']);

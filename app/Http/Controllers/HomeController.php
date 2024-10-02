@@ -35,15 +35,29 @@ class HomeController extends Controller
      */
     public function show($category_id, $counter_id)
     {
-        $queues = Queue::where('category_id', $category_id)->get();
-        $totalAntrian = Queue::count(); 
-        $SisaAntrian = Queue::where('status', 1)->count();
-        $AntrianBerikutnya = Queue::where('status', 1)->where('category_id', $category_id)->first();
+        $startOfDay = now()->startOfDay();
+        $endOfDay = now()->endOfDay();
+    
+        $queues = Queue::where('category_id', $category_id)
+            ->whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->get();
+    
+        $totalAntrian = Queue::whereBetween('created_at', [$startOfDay, $endOfDay])->count(); 
+    
+        $SisaAntrian = Queue::where('status', 1)
+            ->whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->count();
+    
+        $AntrianBerikutnya = Queue::where('status', 1)
+            ->where('category_id', $category_id)
+            ->whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->first();
     
         $AntrianSekarang = Queue::whereIn('status', [2, 3])
-                ->where('category_id', $category_id)
-                ->latest('created_at')
-                ->first();
+            ->where('category_id', $category_id)
+            ->whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->latest('created_at')
+            ->first();
     
         $counter = Counter::findOrFail($counter_id);
     
@@ -58,5 +72,6 @@ class HomeController extends Controller
             'QueuenNo' => $AntrianSekarang ? $AntrianSekarang->no : null
         ]);
     }
+    
 
 }

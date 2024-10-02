@@ -13,7 +13,6 @@ class Category extends Model
 
     public function counters()
     {
-        // A loket (category) has many counters
         return $this->hasMany(Counter::class, 'category_id', 'id');
     }
 

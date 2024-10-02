@@ -45,7 +45,7 @@
                         </Link>
                     </li>
                     <li class="nav-item">
-                        <Link href="/settings" :class="[$page.url === '/setting' ? 'nav-link active' : 'nav-link']">
+                        <Link href="/settings" :class="[$page.url === '/settings' ? 'nav-link active' : 'nav-link']">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>Setting</p>
                         </Link>

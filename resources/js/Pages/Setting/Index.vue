@@ -18,18 +18,18 @@
       <div v-if="Object.keys(form.errors).length > 0" class="alert alert-danger alert-dismissible show fade" role="alert">
         <strong>Error!</strong> 
         <ul>
-          <li v-if="errors.instansi">{{ errors.instansi }}</li>
-          <li v-if="errors.address">{{ errors.address }}</li>
-          <li v-if="errors.phone">{{ errors.phone }}</li>
-          <li v-if="errors.email">{{ errors.email }}</li>
-          <li v-if="errors.running_text">{{ errors.running_text }}</li>
-          <li v-if="errors.video">{{ errors.video }}</li>
-          <li v-if="errors.logo">{{ errors.logo }}</li>
-          <li v-if="errors.background">{{ errors.background }}</li>
-          <li v-if="errors.text_color">{{ errors.text_color }}</li>
-          <li v-if="errors.primary">{{ errors.primary }}</li>
-          <li v-if="errors.accent">{{ errors.accent }}</li>
-          <li v-if="errors.secondary">{{ errors.secondary }}</li>
+          <li v-if="form.errors.instansi">{{ form.errors.instansi }}</li>
+          <li v-if="form.errors.address">{{ form.errors.address }}</li>
+          <li v-if="form.errors.phone">{{ form.errors.phone }}</li>
+          <li v-if="form.errors.email">{{ form.errors.email }}</li>
+          <li v-if="form.errors.running_text">{{ form.errors.running_text }}</li>
+          <li v-if="form.errors.video">{{ form.errors.video }}</li>
+          <li v-if="form.errors.logo">{{ form.errors.logo }}</li>
+          <li v-if="form.errors.background">{{ form.errors.background }}</li>
+          <li v-if="form.errors.text">{{ form.errors.text }}</li>
+          <li v-if="form.errors.primary">{{ form.errors.primary }}</li>
+          <li v-if="form.errors.accent">{{ form.errors.accent }}</li>
+          <li v-if="form.errors.secondary">{{ form.errors.secondary }}</li>
         </ul>
         <button class="close" data-dismiss="alert"><span>&times;</span></button>
       </div>
@@ -38,19 +38,19 @@
         <div class="col-9">
           <div class="card">
             <div class="card-body">
-              <form @submit.prevent="submitForm">
+              <form @submit.prevent="submit">
                 <div class="form-group">
                   <label for="instansi">Nama Instansi</label>
                   <input 
                       type="text" 
                       class="form-control" 
                       v-model="form.instansi"
-                      :class="{'is-invalid': errors.instansi}"
+                      :class="{'is-invalid': form.errors.instansi}"
                       id="instansi"
                       name="instansi"
                       />
-                  <div v-if="errors.instansi" class="invalid-feedback">
-                    {{ errors.instansi }}
+                  <div v-if="form.errors.instansi" class="invalid-feedback">
+                    {{ form.errors.instansi }}
                   </div>
                 </div>
 
@@ -60,12 +60,12 @@
                       type="text" 
                       class="form-control" 
                       v-model="form.address"
-                      :class="{'is-invalid': errors.address}"
+                      :class="{'is-invalid': form.errors.address}"
                       id="address"
                       name="address"
                       />
-                  <div v-if="errors.address" class="invalid-feedback">
-                    {{ errors.address }}
+                  <div v-if="form.errors.address" class="invalid-feedback">
+                    {{ form.errors.address }}
                   </div>
                 </div>
 
@@ -77,12 +77,12 @@
                           type="text" 
                           class="form-control" 
                           v-model="form.phone"
-                          :class="{'is-invalid': errors.phone}"
+                          :class="{'is-invalid': form.errors.phone}"
                           id="phone"
                           name="phone"
                         />
-                      <div v-if="errors.phone" class="invalid-feedback">
-                        {{ errors.phone }}
+                      <div v-if="form.errors.phone" class="invalid-feedback">
+                        {{ form.errors.phone }}
                       </div>
                     </div>
                   </div>
@@ -94,11 +94,11 @@
                           type="email" 
                           class="form-control" 
                           v-model="form.email"
-                          :class="{'is-invalid': errors.email}"
+                          :class="{'is-invalid': form.errors.email}"
                           id="email"
                           name="email"
                         />
-                      <div v-if="errors.email" class="invalid-feedback">{{ errors.email }}</div>
+                      <div v-if="form.errors.email" class="invalid-feedback">{{ form.errors.email }}</div>
                     </div>
                   </div>
                 </div>
@@ -109,12 +109,12 @@
                       type="text" 
                       class="form-control" 
                       v-model="form.running_text"
-                      :class="{'is-invalid': errors.running_text}"
+                      :class="{'is-invalid': form.errors.running_text}"
                       id="running_text"
                       name="running_text"
                       />
-                  <div v-if="errors.running_text" class="invalid-feedback">
-                    {{ errors.running_text }}</div>
+                  <div v-if="form.errors.running_text" class="invalid-feedback">
+                    {{ form.errors.running_text }}</div>
                 </div>
 
                 <div class="form-group">
@@ -123,11 +123,11 @@
                       type="text"
                       class="form-control"
                       v-model="form.video"
-                      :class="{'is-invalid': errors.video}"
+                      :class="{'is-invalid': form.errors.video}"
                       id="video"
                       name="video"/>
-                  <div v-if="errors.video" class="invalid-feedback">
-                    {{ errors.video }}</div>
+                  <div v-if="form.errors.video" class="invalid-feedback">
+                    {{ form.errors.video }}</div>
                 </div>
 
                 <!-- Submit Button -->
@@ -153,11 +153,69 @@
               </div>
 
               <div class="row">
-                <div class="col-6" v-for="(colorField, index) in colorFields" :key="index">
+                <div class="col-6">
                   <div class="form-group">
-                    <label :for="colorField.name">{{ colorField.label }}</label>
-                    <input type="color" class="form-control" :id="colorField.name" v-model="form[colorField.name]" />
-                    <div v-if="form.errors[colorField.name]" class="invalid-feedback">{{ form.errors[colorField.name] }}</div>
+                    <label for="primary">Navigasi</label>
+                      <input
+                          type="color"
+                          class="form-control"
+                          v-model="form.primary"
+                          :class="{'is-invalid': form.errors.primary}"
+                          id="primary"
+                          name="primary" />
+                      <div v-if="form.errors.primary" class="invalid-feedback">{{ form.errors.primary }}</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="secondary">Footer</label>
+                      <input
+                          type="color"
+                          class="form-control"
+                          v-model="form.secondary"
+                          :class="{'is-invalid': form.errors.secondary}"
+                          id="secondary"
+                          name="secondary" />
+                      <div v-if="form.errors.secondary" class="invalid-feedback">{{ form.errors.secondary }}</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="background">Background</label>
+                      <input
+                          type="color"
+                          class="form-control"
+                          v-model="form.background"
+                          :class="{'is-invalid': form.errors.background}"
+                          id="background"
+                          name="background" />
+                      <div v-if="form.errors.background" class="invalid-feedback">{{ form.errors.background }}</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="accent">Accent</label>
+                      <input
+                          type="color"
+                          class="form-control"
+                          v-model="form.accent"
+                          :class="{'is-invalid': form.errors.accent}"
+                          id="accent"
+                          name="accent" />
+                      <div v-if="form.errors.accent" class="invalid-feedback">{{ form.errors.accent }}</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="text">Teks</label>
+                      <input
+                          type="color"
+                          class="form-control"
+                          v-model="form.text"
+                          :class="{'is-invalid': form.errors.text}"
+                          id="text"
+                          name="text" />
+                      <div v-if="form.errors.text" class="invalid-feedback">{{ form.errors.text }}</div>
                   </div>
                 </div>
               </div>
@@ -171,62 +229,70 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useForm, Link, router } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
+import { toRefs } from 'vue';
+
+const props = defineProps({
+  setting: Object,
+});
+
+const { setting } = toRefs(props);
 
 const form = useForm({
-  instansi: '',
-  address: '',
-  phone: '',
-  email: '',
-  running_text: '',
-  video: '',
-  logo: null,
-  background: '',
-  text: '',
-  primary: '',
-  accent: '',
-  secondary: '',
+  instansi: setting.value?.instansi || '',
+  logo: setting.value?.logo || '',
+  address: setting.value?.address || '',
+  phone: setting.value?.phone || '',
+  email: setting.value?.email || '',
+  running_text: setting.value?.running_text || '',
+  video: setting.value?.video || '',
+  primary: setting.value?.primary || '',
+  secondary: setting.value?.secondary || '',
+  accent: setting.value?.accent || '',
+  background: setting.value?.background || '',
+  text: setting.value?.text || ''
 });
 
 const logoPreview = ref(null);
 
-const colorFields = [
-  { name: 'background', label: 'Background' },
-  { name: 'text', label: 'Teks' },
-  { name: 'accent', label: 'Random' },
-  { name: 'primary', label: 'Navigasi' },
-  { name: 'secondary', label: 'Footer' },
-];
+const submit = () => {
+  const formData = new FormData();
 
-function previewImage(event) {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      logoPreview.value = e.target.result;
-    };
-    reader.readAsDataURL(file);
-    form.logo = file; 
+  for (const key in form) {
+    if (form[key] instanceof File) {
+      formData.append(key, form[key]);
+    } else {
+      formData.append(key, form[key]); 
+    }
   }
-}
-const errors = ref({});
 
-function submitForm() {
-    form.post('/setting', {
-        onSuccess: () => {
-            router.visit('/setting');
-        },
-        onError: (formErrors) => {
-            errors.value = formErrors;
-        }
-    });
-}
-</script>
+  form.post('/settings', {
+    data: formData,
+    onSuccess: () => form.reset(),
+    headers: { 'Content-Type': 'multipart/form-data' }
+  });
+};
+const previewImage = (event) => {
+  const file = event.target.files[0];
+  const reader = new FileReader();
 
-<script>
-import Dashboard from '../../Layout/Dasboard.vue';
+  reader.onload = (e) => {
+    logoPreview.value = e.target.result;
+  };
 
-export default {
-  layout: Dashboard,
+  reader.readAsDataURL(file);
+  form.logo = file;
 };
 </script>
+<script>
+import Dasboard from '../../Layout/Dasboard.vue';
+
+export default {
+  layout: (h, page) => h(Dasboard, [page]),
+
+  layout: Dasboard,
+}
+</script>
+
+<style>
+</style>

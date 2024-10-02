@@ -9,7 +9,8 @@
             </a>
             <div class="d-flex align-items-center text-dark ms-auto me-5">
                 <i class="fa fa-calendar me-2"></i>
-                <div class="fs-5 text-bold">{{ currentTime }}</div>
+                <div class="fs-5 text-bold">{{ currentDate }}</div>
+                <div class="fs-5 text-bold ms-3">{{ currentTime }}</div>
             </div>
         </header>
 
@@ -75,21 +76,24 @@
 import '../../css/dashboard.css'
 import { onMounted, ref, onBeforeUnmount } from 'vue';
 
+const currentDate = ref('');
 const currentTime = ref('');
 
-const updateCurrentTime = () => {
-    const now = new Date();
-    const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-    currentTime.value = now.toLocaleTimeString('id-ID', options); 
+const updateCurrentDateTime = () => {
+  const now = new Date();
+  const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+  currentDate.value = now.toLocaleDateString('id-ID', dateOptions);
+  currentTime.value = now.toLocaleTimeString('id-ID', timeOptions);
 };
 
 onMounted(() => {
-    updateCurrentTime();
-    const timeInterval = setInterval(updateCurrentTime, 1000); 
+  updateCurrentDateTime();
+  const timeInterval = setInterval(updateCurrentDateTime, 1000);
 
-    onBeforeUnmount(() => {
-        clearInterval(timeInterval);
-    });
+  onBeforeUnmount(() => {
+    clearInterval(timeInterval);
+  });
 });
 </script>
 

@@ -38,16 +38,13 @@ class AntrianController extends Controller
         ]);
     
         $category = Category::find($validatedData['category_id']);
-        
         $categoryPrefix = strtoupper(substr($category->name, 0, 2)) . '-';
-    
         $lastQueue = Queue::where('category_id', $validatedData['category_id'])
                             ->whereDate('created_at', now()) 
                             ->orderBy('id', 'desc')
                             ->first();
     
         $nextQueueNumber = $lastQueue ? ((int) substr($lastQueue->no, -3) + 1) : 1;
-    
         $queueNumber = $categoryPrefix . str_pad($nextQueueNumber, 3, '0', STR_PAD_LEFT);
     
         $queue = Queue::create([
@@ -62,10 +59,16 @@ class AntrianController extends Controller
             'categories' => Category::all(),
         ]);
     }
-
-    public function print()
+    
+    public function print($category_id)
     {
-        return Inertia::render('Antrian/Index');
+        $category = Category::with('queue')->findOrFail($category_id);
+        $latestQueue = $category->queue->last();
+        
+        return Inertia::render('Antrian/Print', [
+            'category' => $category,
+            'latestQueue' => $latestQueue
+        ]);
     }
     
     
