@@ -13,7 +13,7 @@
         <div class="fs-5 text-bold ms-3">{{ currentTime }}</div>
       </div>
     </header>
-    <div class="text-marquee bg-info text-white py-2">
+    <div class="text-marquee bg-success text-white py-2">
       <p>Selamat datang di monitor antrian pendaftaran. Silakan tunggu hingga nomor antrian Anda dipanggil.</p>
     </div>
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\QueueController;
 use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\AntrianAdmController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -82,7 +83,6 @@ Route::middleware('role:admin')->group(function () {
     Route::put('/loket/{id}', [LoketController::class, 'update'])->name('loket.update');
     Route::delete('/loket/{id}', [LoketController::class, 'destroy'])->name('loket.destroy');
 
-    
     /// CATEGORY
     Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
     Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
@@ -101,8 +101,12 @@ Route::middleware('role:admin')->group(function () {
     Route::delete('/pengguna/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
     //SETTING
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-    Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
+    Route::get('/setting', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/setting', [SettingController::class, 'store'])->name('settings.store');
+
+
+    //ANTRIAN
+    Route::get('/data/antrian', [AntrianAdmController::class, 'index'])->name('data.antrian');
 });
 
 

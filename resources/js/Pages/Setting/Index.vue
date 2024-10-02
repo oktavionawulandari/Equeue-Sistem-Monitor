@@ -266,7 +266,7 @@ const submit = () => {
     }
   }
 
-  form.post('/settings', {
+  form.post('/setting', {
     data: formData,
     onSuccess: () => form.reset(),
     headers: { 'Content-Type': 'multipart/form-data' }
@@ -284,6 +284,8 @@ const previewImage = (event) => {
   form.logo = file;
 };
 </script>
+
+
 <script>
 import Dasboard from '../../Layout/Dasboard.vue';
 

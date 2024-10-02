@@ -27,7 +27,7 @@
                         </Link>
                     </li>
                     <li class="nav-item">
-                        <Link href="/no-antrian" :class="[$page.url === '/no-antrian' ? 'nav-link active' : 'nav-link']">
+                        <Link href="/data/antrian" :class="[$page.url === '/data/antrian' ? 'nav-link active' : 'nav-link']">
                             <i class="nav-icon fas fa-ticket-alt"></i>
                             <p>No Antrian</p>
                         </Link>
@@ -45,7 +45,7 @@
                         </Link>
                     </li>
                     <li class="nav-item">
-                        <Link href="/settings" :class="[$page.url === '/settings' ? 'nav-link active' : 'nav-link']">
+                        <Link href="/setting" :class="[$page.url === '/setting' ? 'nav-link active' : 'nav-link']">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>Setting</p>
                         </Link>
