@@ -22,31 +22,36 @@ class MonitorController extends Controller
         ]);
     }
 
+    public function getDisplay()
+    {
+        $categories = Category::with(['transaction' => function ($query) {
+            $query->with(['queue'])->orderBy('created_at')->first();
+        }])->get();
+        
+        return response()->json(['data' => $categories]);
+    }
+
     public function getTriggerNotification()
     {
-        $antrian = Antrian::with(['queue', 'counter'])->latest("created_at")->first();
 
-        if($antrian) {
-            return response()->json(["data" => [
-                "status" => $antrian->queue->status == 2,
-                "id" => $antrian->queue->id,
-                "no_antrian" => $antrian->queue->no,
-                "loket" => $antrian->queue->category->name,
-                'loket_id' => $antrian->queue->category->id,
-                "counter" => $antrian->counter->name
-            ]], 200);
-        } else {
-            return response()->json(["data" => ["status" => false]]);   
-        }
+        $antrian = Antrian::with(['queue' => function ($query) {
+            $query->where('status', 2);
+        }, 'counter'])->whereHas('queue', function($query) {
+            $query->where('status', 2);
+        })->get();
+
+        return response()->json(['data' => $antrian]);
 
     }
 
-    public function successTriggerNotification($queue)
+    public function successTriggerNotification($antrian)
     {
-        $queue = Queue::findOrFail($queue);
+        $antrian = Antrian::findOrFail($antrian);
 
-       $queue->status = 3;
-       $queue->save();
+        $antrian->queue->status = 3;
+        $antrian->queue->save();
+
+        $antrian->delete();
 
        return redirect()->back();
     }

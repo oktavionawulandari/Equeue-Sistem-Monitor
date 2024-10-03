@@ -26,6 +26,14 @@ class HomeController extends Controller
             'queue_id' => $queue->id,
             'category_id' => $queue->category_id
         ]);
+
+        Transaction::create([
+            'counter_id' => $request->counter_id,
+            'queue_id' => $queue->id,
+            'category_id' => $queue->category_id,
+            'date' => now(), 
+            'user_id' => Auth::user()->id,
+        ]);
         return redirect()->back();
     }
 

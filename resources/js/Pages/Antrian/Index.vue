@@ -64,8 +64,7 @@ const { props } = usePage();
 const categories = ref(props.categories || []);
 const currentTime = ref('');
 const currentDate = ref('');
-const queueNumber = ref('');
-const categoryName = ref('');
+
 
 const form = useForm({
   status: '',
@@ -79,127 +78,12 @@ const submitForm = () => {
         router.get('/antrian');
         const categoryId = form.category_id;
         window.open(`/antrian/${categoryId}`, '_blank');
-        // const latestCat = props.categories[props.categories.length - 1];
-        // queueNumber.value = latestCat?.queue[latestCat?.queue?.length - 1].no;
-        // categoryName.value = latestCat?.name;
-        // printQueueNumber();
     },
     onError: (error) => {
       console.error('nomor antrian error: ', error);
     }
   });
 };
-
-// query untuk cetak pdf
-// const printQueueNumber = () => {
-//   document.getElementById('antrian').innerHTML = ` ${queueNumber}`;
-
-//   setTimeout(() => {
-//     const printWindow = window.open('', '_blank');
-//     printWindow.document.write(`
-//       <html>
-//         <head>
-//           <title>Print Queue Number</title>
-//           <style>
-//             body {
-//                 font-family: Arial, sans-serif;
-//                 margin: 0;
-//                 padding: 0;
-//                 background-color: #f4f4f4;
-//             }
-//             .container {
-//                 width: 300px;
-//                 margin: 50px auto;
-//                 background-color: #fff;
-//                 border: 1px solid #ccc;
-//                 padding: 20px;
-//                 text-align: center;
-//             }
-//             .header {
-//                 display: flex; 
-//                 align-items: center;
-//                 justify-content: space-between;
-//                 padding: 10px;
-//             }
-
-//             .header img {
-//                 width: 50px;
-//                 height: auto;
-//                 margin-right: 10px; 
-//             }
-
-//             .header-text {
-//                 flex-grow: 1;
-//                 text-align: left;
-//             }
-//             .header h2 {
-//                 margin: 5px 0;
-//                 font-size: 1.2em;
-//             }
-
-//             .header p {
-//                 margin: 0;
-//                 font-size: 0.6em;
-//             }
-//             .datetime {
-//                   display: flex; 
-//                   justify-content: space-between; 
-//                   align-items: center;
-//               }
-//               .date {
-//                   flex: 1;
-//                   font-size: 0.6em;
-//                   text-align: left; 
-//               }
-//               .time {
-//                   flex: 1;
-//                   font-size: 0.6em;
-//                   text-align: right; 
-//               }
-
-//             .queue-number {
-//                 font-size: 4em;
-//                 font-weight: bold;
-//                 margin-bottom: 10px;
-//             }
-
-//             .counter {
-//                 font-size: 1em;
-//                 margin-bottom: 10px;
-//             }
-                
-//             .antrian {
-//                 font-size: 0.8em;
-//                 font-weight: bold;
-//                 margin-bottom: 5px;
-//             }
-//           </style>
-//         </head>
-//         <body>
-//           <div class="container">
-//               <div class="header d-flex align-items-center">
-//                   <img src="rsjs.png" alt="Logo">
-//                   <div class="header-text ms-3"> 
-//                       <h2>BaliSolutionBiz</h2>
-//                       <p>Jl. hdbahs No 8</p>
-//                   </div>
-//               </div>
-//               <div class="datetime">
-//                   <div class="date">${currentDate.value}</div>
-//                   <div class="time">${currentTime.value}</div>
-//               </div>
-//               <hr><hr>
-//               <div class="antrian">NO ANTRIAN</div>
-//               <div class="queue-number">${queueNumber.value || 'N/A'}</div>
-//               <div class="counter">${categoryName.value}</div>
-//           </div>
-//         </body>
-//       </html>
-//     `);
-//     printWindow.document.close();
-//     printWindow.print();
-//   }, 1000);
-// };
 
 const updateCurrentDateTime = () => {
   const now = new Date();

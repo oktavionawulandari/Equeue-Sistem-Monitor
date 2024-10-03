@@ -25,12 +25,11 @@
       <div class="h-100 overflow-hidden" style="font-size:0.8em; width:35%;">
         <div class="d-flex flex-column h-100 scroll-container">
           <div class="d-flex flex-wrap">
-            <div class="card text-center text-white" :class="getBgClass(category)" v-for="category in categories" :key="category.id" style="margin:0.5rem; width:calc(50% - 1rem);">
+            <div class="card text-center text-white" :class="getBgClass(category)" v-for="category in display" :key="category.id" style="margin:0.5rem; width:calc(50% - 1rem);">
               <h5 class="card-header fw-bold">{{ category.name }}</h5>
               <div class="card-body">
-                <h1 id="antrian-selanjutnya" class="text-center fw-bold my-3" style="font-size: 60px;" :key="currentCategory">
-                  <!-- {{ currentCategory == category.id ?  (category?.antrian[category?.antrian?.length - 1]?.queue?.no || 'Antrian') : currentQueueNumber  }} -->
-                  {{ (category?.antrian[category?.antrian?.length - 1]?.queue?.no || 'Antrian') }}
+                <h1 id="antrian-selanjutnya" class="text-center fw-bold my-3" style="font-size: 60px;">
+                  {{ (category?.transaction?.length > 0 ? category?.transaction[0]?.queue?.no : 'Antrian') }}
                 </h1>
               </div>
             </div>
@@ -53,7 +52,7 @@
 import { onMounted, ref, onBeforeUnmount, computed } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
 import '../../../css/dashboard.css';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 
 const props = defineProps(['categories', 'counterId']);
 
@@ -75,22 +74,23 @@ const updateCurrentDateTime = () => {
     currentTime.value = now.toLocaleTimeString('id-ID', timeOptions);
 };
 onMounted(() => {
+  getDisplay()
   
-  const updateQueueNumber = () => {
-    const storedQueueNumber = localStorage.getItem('currentQueueNumber');
-    const storedCategory = localStorage.getItem('currentCategory');
-    if (storedQueueNumber && storedQueueNumber !== currentQueueNumber.value) {
-      currentQueueNumber.value = storedQueueNumber;
-      currentCategory.value = storedCategory;
-    }
-  };
+  // const updateQueueNumber = () => {
+  //   const storedQueueNumber = localStorage.getItem('currentQueueNumber');
+  //   const storedCategory = localStorage.getItem('currentCategory');
+  //   if (storedQueueNumber && storedQueueNumber !== currentQueueNumber.value) {
+  //     currentQueueNumber.value = storedQueueNumber;
+  //     currentCategory.value = storedCategory;
+  //   }
+  // };
 
-  updateQueueNumber();
-    const interval = setInterval(updateQueueNumber, 1000);
+  // updateQueueNumber();
+  //   const interval = setInterval(updateQueueNumber, 1000);
 
-  onBeforeUnmount(() => {
-    clearInterval(interval);
-  });
+  // onBeforeUnmount(() => {
+  //   clearInterval(interval);
+  // });
 
 
   updateCurrentDateTime();
@@ -101,34 +101,111 @@ onMounted(() => {
     });
 });
 
-const callQueue = async (queue) => {
-    if (window.responsiveVoice) {
-        const message = `Nomor antrian ${queue.no_antrian}, silahkan menuju loket ${queue.counter}.`;
-        responsiveVoice.speak(message, "Indonesian Female");
+// const callQueue = async (queue) => {
+//     if (window.responsiveVoice) {
+//         const message = `Nomor antrian ${queue.no_antrian}, silahkan menuju loket ${queue.counter}.`;
+//         responsiveVoice.speak(message, "Indonesian Female");
 
-        const form = useForm([]);
-         form.patch(`/monitor/trigger-notification/${queue.id}`, {
-          onSuccess: () => {
-          }
-         });
+//         const form = useForm([]);
+//          form.patch(`/monitor/trigger-notification/${queue.id}`, {
+//           onSuccess: () => {
+//           }
+//          });
 
-        localStorage.setItem('currentQueueNumber', queue.no_antrian);
-        localStorage.setItem('currentCategory', queue.loket_id);
+//         localStorage.setItem('currentQueueNumber', queue.no_antrian);
+//         localStorage.setItem('currentCategory', queue.loket_id);
 
-        router.get("/monitor")
-    } else {
-        console.error("Response tidak berhasil");
-    }
-};
+//         router.get("/monitor")
+//     } else {
+//         console.error("Response tidak berhasil");
+//     }
+// };
 
-setInterval(() => {
+// setInterval(() => {
+//   fetch("/monitor/trigger-notification").then(response => response.json()).then(res => {
+//     console.log(res?.data?.status);
+//     if(res?.data?.status) {
+//       callQueue(res.data)
+//     }
+//   })
+// }, 5000);
+
+
+
+
+const isPlay = ref(false);
+const queue = ref([]);
+const categories = ref([]);
+
+const checkQueueIfExists = (id) => {
+  if(queue.value?.length > 0) {
+    return queue.value?.find(data => data.id == id)
+  } else {
+    return false
+  }
+}
+
+const display = computed(() => {
+  return categories.value
+})
+
+const getNotification = () => {
   fetch("/monitor/trigger-notification").then(response => response.json()).then(res => {
-    console.log(res?.data?.status);
-    if(res?.data?.status) {
-      callQueue(res.data)
+    if(!isPlay.value) {
+      res.data.forEach((data) => {
+        if(!checkQueueIfExists(data.id)) {
+          queue.value.push(data)
+        }
+      })
+
+     if(queue.value.length > 0) {
+      callNotifications()
+     }
     }
   })
-}, 5000);
+}
+
+const callNotifications = () => {
+  if(queue.value.length > 0) {
+    queue.value.forEach((data, index) => {
+      if(!isPlay.value) {
+        isPlay.value = true;
+        getDisplay();
+
+        const message = `Nomor antrian ${data.queue.no}, silahkan menuju loket ${data.counter.name}.`;
+        responsiveVoice.speak(message, "Indonesian Female", {
+          onend: () => {
+            queue.value.splice(index, 1)
+            successTriggerNotificaion(data.id, () => {
+              isPlay.value = false;
+              if(queue.value.length > 0) {
+                callNotifications()
+              }
+            })
+          }
+        });
+      }
+    })
+  }
+}
+
+const getDisplay = () => {
+  fetch('/monitor/display').then(res => res.json()).then(data => {
+    categories.value = data.data
+  });
+}
+
+const successTriggerNotificaion = (id, onSuccess) => {
+    const form = useForm([]);
+    form.patch(`/monitor/trigger-notification/${id}`, {
+      onSuccess: onSuccess
+    });
+}
+
+setInterval(() => {
+  getNotification()
+}, 1000)
+
 </script>
 
 <style scoped>

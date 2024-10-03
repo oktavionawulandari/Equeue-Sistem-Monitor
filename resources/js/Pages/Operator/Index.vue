@@ -136,34 +136,14 @@ const callQueue = async (queue) => {
     counter_id: props.counter_id 
   });
   
-//   form.post(`/queues/${queue.id}/call`, {
-//     onSuccess: () => {
-//       router.get(usePage().url)
-
-//       localStorage.setItem('currentQueueNumber', queue.no);
-    
-//       QueuenNo.value = queue.no
-//     }
-//   });
-// };
 
 form.post(`/queues/${queue.id}/call`, {
     onSuccess: () => {
       router.get(usePage().url)
-      // QueuenNo.value = usePage().props.QueuenNo;
     }
   });
 };
 
-const successQueue = async (queue) => {
-  const form = useForm({
-    status: 4,
-    counter_id: props.counter_id 
-  });
-
-  form.post(`/queues/${queue.id}/call`);
-  // router.get(usePage().url)
-};
 
 onUpdated(() => {
   AntrianBerikutnya.value = usePage().props.queues.find(queue => Number(queue.status) === 1 )

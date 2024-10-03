@@ -26,4 +26,9 @@ class Category extends Model
         return $this->hasMany(Antrian::class);
     }
 
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
 }
