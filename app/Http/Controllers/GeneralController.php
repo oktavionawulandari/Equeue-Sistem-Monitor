@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Counter;
 use App\Models\Queue;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -13,9 +14,11 @@ class GeneralController extends Controller
 {
     public function index()
     {
-        return inertia('Dashboard');
+        $setting = Setting::first();
+        return Inertia::render('Welcome', [
+            'setting' => $setting, 
+        ]);
     }
-
     public function home()
     {
         $category = Category::with('counters')->get(); 

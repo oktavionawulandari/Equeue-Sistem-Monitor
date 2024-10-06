@@ -115,7 +115,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUpdated, ref } from 'vue';
+import {  ref, watch  } from 'vue';
 import { useForm, router, usePage, Link } from '@inertiajs/vue3'; 
 
 const props = defineProps(['queues', 'category_id', 'counter_id', 'sisaAntrian', 'counter_name', 'QueuenNo']);
@@ -131,29 +131,30 @@ const AntrianBerikutnya = ref(props.queues.find(queue => Number(queue.status) ==
 const QueuenNo = ref(null);
 
 const callQueue = async (queue) => {
+  QueuenNo.value = queue.no;
+
   const form = useForm({
     status: 2,
     counter_id: props.counter_id 
   });
-  
 
-form.post(`/queues/${queue.id}/call`, {
+  form.post(`/queues/${queue.id}/call`, {
     onSuccess: () => {
-      router.get(usePage().url)
+      filteredQueues.value = props.queues.filter(queue => Number(queue.status) !== 4);
+      SisaAntrian.value = filteredQueues.value.filter(queue => Number(queue.status) === 1).length;
+      AntrianBerikutnya.value = props.queues.find(queue => Number(queue.status) === 1);
+      console.log('Queue updated:', filteredQueues.value);
     }
   });
 };
 
+watch(() => props.queues, (newQueues) => {
+  filteredQueues.value = newQueues.filter(queue => Number(queue.status) !== 4);
+  SisaAntrian.value = filteredQueues.value.filter(queue => Number(queue.status) === 1).length;
+  AntrianBerikutnya.value = newQueues.find(queue => Number(queue.status) === 1);
+});
 
-onUpdated(() => {
-  AntrianBerikutnya.value = usePage().props.queues.find(queue => Number(queue.status) === 1 )
-  QueuenNo.value = usePage().props.QueuenNo;
-})
 
-onMounted(() => {
-  AntrianBerikutnya.value = usePage().props.queues.find(queue => Number(queue.status) === 1 )
-  QueuenNo.value = usePage().props.QueuenNo;
-})
 </script>
 
 <style scoped>

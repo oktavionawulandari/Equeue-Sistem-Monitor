@@ -22,4 +22,9 @@ class Antrian extends Model
     {
         return $this->belongsTo(Queue::class); 
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

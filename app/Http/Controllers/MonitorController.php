@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Models\Category;
 use App\Models\Queue;
 use App\Models\Antrian;
+use App\Models\Setting;
 
 class MonitorController extends Controller
 {
@@ -16,18 +17,20 @@ class MonitorController extends Controller
      */
     public function index()
     {
+        $setting = Setting::first();
         $categories = Category::with(['antrian.queue'])->get();
         return Inertia::render('Monitor/Index', [
-            'categories' => $categories
+            'categories' => $categories,
+            'setting' => $setting
         ]);
     }
 
     public function getDisplay()
     {
-        $categories = Category::with(['transaction' => function ($query) {
-            $query->with(['queue'])->orderBy('created_at')->first();
+        $categories = Category::with(['antrian' => function ($query) {
+            $query->with('queue')->orderBy('created_at', 'asc')->first();
         }])->get();
-        
+    
         return response()->json(['data' => $categories]);
     }
 
@@ -36,7 +39,7 @@ class MonitorController extends Controller
 
         $antrian = Antrian::with(['queue' => function ($query) {
             $query->where('status', 2);
-        }, 'counter'])->whereHas('queue', function($query) {
+        }, 'counter', 'category'])->whereHas('queue', function($query) {
             $query->where('status', 2);
         })->get();
 

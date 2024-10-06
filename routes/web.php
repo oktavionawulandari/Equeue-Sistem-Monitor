@@ -27,42 +27,11 @@ use Inertia\Inertia;
 */
 
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-
-    // if(!auth()->check()) {
-    //     return redirect('/login');
-    // } else {
-    //     return redirect('/dashboard');
-    // } 
-
-    // if(!auth()->check()) {
-    //     return redirect('/login');
-    // } else {
-    //     return redirect('/home');
-    // } 
-});
-
 // Route::get('/', function () {
-//     // return Inertia::render('Auth/login', [
-//     //     'canLogin' => Route::has('login'),
-//     //     'canRegister' => Route::has('register'),
-//     //     'laravelVersion' => Application::VERSION,
-//     //     'phpVersion' => PHP_VERSION,
-//     // ]);
-
-//     if(!auth()->check()) {
-//         return redirect('/login');
-//     } else {
-//         return redirect('/dashboard');
-//     } 
-
-//     if(!auth()->check()) {
-//         return redirect('/login');
-//     } else {
-//         return redirect('/home');
-//     } 
+//     return Inertia::render('Welcome');
 // });
+Route::get('/', [GeneralController::class, 'index'])->name('index');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -117,17 +86,17 @@ Route::middleware(['role:operator'])->group(function () {
 
 });
 
-
+// NOMOR ANTRIAN
 Route::get('/antrian', [AntrianController::class, 'index'])->name('antrian');
 Route::post('/antrian', [AntrianController::class, 'store'])->name('antrian.store');
 Route::get('/antrian/{category_id}', [AntrianController::class, 'print'])->name('queue.print');
 
+//LAYAR MONITOR
 Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor');
 Route::get('/monitor/display', [MonitorController::class, 'getDisplay']);
 Route::get('/monitor/trigger-notification', [MonitorController::class, 'getTriggerNotification']);
 Route::patch('/monitor/trigger-notification/{queue}', [MonitorController::class, 'successTriggerNotification']);
 
 
-
-Route::get('/queues', [QueueController::class, 'index'])->name('queue.index');
-Route::post('/queues', [QueueController::class, 'store'])->name('queue.store');
+// Route::get('/queues', [QueueController::class, 'index'])->name('queue.index');
+// Route::post('/queues', [QueueController::class, 'store'])->name('queue.store');

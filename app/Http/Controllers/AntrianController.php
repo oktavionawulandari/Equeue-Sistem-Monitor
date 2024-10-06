@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Queue;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -15,6 +16,7 @@ class AntrianController extends Controller
      */
     public function index()
     {
+        $setting = Setting::first();
         $categories = Category::with(['queue' => function ($query) {
             $query->where("status", 1);
         }])->get(); 
@@ -22,7 +24,8 @@ class AntrianController extends Controller
 
         return Inertia::render('Antrian/Index', [
             'categories' => $categories,
-            'queue' => $queue
+            'queue' => $queue,
+            'setting' => $setting
         ]);
     }
 

@@ -10,6 +10,8 @@ use Inertia\Inertia;
 
 class SettingController extends Controller
 {
+
+
     public function index()
     {
         $setting = Setting::first();
@@ -27,7 +29,7 @@ class SettingController extends Controller
             'phone' => 'nullable|string|max:15',
             'email' => 'nullable|email|max:255',
             'running_text' => 'nullable|string',
-            'video' => 'nullable|string',
+            'video' => 'nullable|file',
             'primary' => 'nullable|string|max:7',
             'secondary' => 'nullable|string|max:7',
             'accent' => 'nullable|string|max:7',
@@ -38,8 +40,15 @@ class SettingController extends Controller
         if ($request->hasFile('logo')) {
             $logoFile = $request->file('logo');
             $logoName = time() . '.' . $logoFile->getClientOriginalExtension();
-            $logoFile->move(public_path('logo'), $logoName); 
+            $logoFile->storeAs('public/logo', $logoName); 
             $validated['logo'] = $logoName; 
+        }
+        
+        if ($request->hasFile('video')) {
+            $videoFile = $request->file('video');
+            $videoName = time() . '.' . $videoFile->getClientOriginalExtension();
+            $videoFile->storeAs('public/videos', $videoName);
+            $validated['video'] = $videoName; 
         }
     
         Setting::updateOrCreate(
@@ -49,5 +58,6 @@ class SettingController extends Controller
     
         return redirect()->back();
     }
+    
     
 }
