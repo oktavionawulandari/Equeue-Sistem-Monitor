@@ -12,18 +12,22 @@ use Inertia\Inertia;
 
 class GeneralController extends Controller
 {
+
     public function index()
     {
         $setting = Setting::first();
         return Inertia::render('Welcome', [
-            'setting' => $setting, 
+            'setting' => $setting,
         ]);
     }
+
     public function home()
     {
-        $category = Category::with('counters')->get(); 
+        $setting = Setting::first();
+        $category = Category::with('counters')->get();
         return Inertia::render('Home', [
-            'category' => $category, 
+            'category' => $category,
+            'setting' => $setting
         ]);
     }
 }

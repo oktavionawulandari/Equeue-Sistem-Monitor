@@ -19,8 +19,9 @@ return new class extends Migration
             $table->foreignIdFor(Category::class)->onDelete('cascade');
             // $table->foreignIdFor(Counter::class)->onDelete('cascade')->nullable();
             $table->string('no');
-            $table->enum('status', ['1', '2', '3', '4']);
+            $table->enum('status', ['1', '2', '3', '4', '5']);
             $table->date('date');
+            $table->foreignId('operator_id')->default(0);
             $table->timestamps();
         });
     }

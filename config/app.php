@@ -82,7 +82,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'id',
 
     /*
     |--------------------------------------------------------------------------
@@ -95,7 +95,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'id',
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +108,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'id_ID',
 
     /*
     |--------------------------------------------------------------------------
@@ -194,6 +194,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Ladumor\LaravelPwa\PWAServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
 
     ],
 
@@ -210,6 +213,10 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'LaravelPwa' => \Ladumor\LaravelPwa\LaravelPwa::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
+
     ])->toArray(),
 
 ];

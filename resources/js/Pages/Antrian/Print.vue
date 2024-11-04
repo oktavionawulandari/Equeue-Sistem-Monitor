@@ -1,58 +1,79 @@
 <template>
+    <AppMeta title="Cetak No Antrian">
+        <link
+            rel="icon"
+            :href="`/storage/logo/${setting?.logo}`"
+            type="image/x-icon"
+        />
+    </AppMeta>
     <html>
         <head>
-          <title>Print Queue Number</title>
+            <title>Cetak No Antrian</title>
         </head>
         <body>
-          <div class="container">
-              <div class="header d-flex align-items-center">
-                  <img src="rsjs.png" alt="Logo">
-                  <div class="header-text ms-3"> 
-                      <h2>BaliSolutionBiz</h2>
-                      <p>Jl. hdbahs No 8</p>
-                  </div>
-              </div>
-              <div class="datetime">
-                  <div class="date">{{ currentDate }}</div>
-                  <div class="time">{{ currentTime }}</div>
-              </div>
-              <hr><hr>
-              <div class="antrian">NO ANTRIAN</div>
-              <div class="queue-number">{{ latestQueue.no }} </div>
-              <div class="counter">{{ category.name }}</div>
-          </div>
+            <div class="container">
+                <div class="header d-flex align-items-center">
+                    <div class="header-text">
+                        <h2>{{ setting?.instansi }}</h2>
+                    </div>
+                </div>
+                <div class="datetime">
+                    <div class="date">{{ currentDate }}</div>
+                    <div class="time">{{ currentTime }}</div>
+                </div>
+                <p>=================================</p>
+                <div class="antrian">NO ANTRIAN</div>
+                <div class="queue-number">{{ latestQueue.no }}</div>
+                <div class="counter">{{ category.name }}</div>
+                <div class="instructions">
+                    Silahkan menunggu nomor antrian dipanggil. Nomor ini hanya
+                    berlaku pada hari ini.
+                </div>
+            </div>
         </body>
-      </html>
+    </html>
 </template>
 
-
 <script setup>
-import { ref, onMounted } from 'vue';
-import { usePage } from '@inertiajs/vue3';
+import { ref, onMounted } from "vue";
+import { usePage } from "@inertiajs/vue3";
+import AppMeta from "@/Components/AppMeta.vue";
+
+const settings = defineProps(["setting"]);
 
 const { props } = usePage();
 const category = ref(props.category);
 const latestQueue = ref(props.latestQueue);
 
-const companyName = ref('NAMA COMPANY');
-const currentTime = ref('');
-const currentDate = ref('');
+const currentTime = ref("");
+const currentDate = ref("");
 
 const updateCurrentDateTime = () => {
-  const now = new Date();
-  const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-  currentDate.value = now.toLocaleDateString('id-ID', dateOptions);
-  currentTime.value = now.toLocaleTimeString('id-ID', timeOptions);
+    const now = new Date();
+    const dateOptions = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    };
+    const timeOptions = {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+    };
+    currentDate.value = now.toLocaleDateString("id-ID", dateOptions);
+    currentTime.value = now.toLocaleTimeString("id-ID", timeOptions);
 };
 
 onMounted(() => {
-  updateCurrentDateTime();
-  window.print();
+    updateCurrentDateTime();
+    setTimeout(() => {
+        window.print();
+        window.close();
+    }, 1000);
 });
 </script>
-
-
 
 <style scoped>
 body {
@@ -62,69 +83,77 @@ body {
     background-color: #f4f4f4;
 }
 .container {
-    width: 300px;
-    margin: 50px auto;
+    width: 350px;
+    /* margin: 50px auto; */
     background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 20px;
+    padding: 18px;
     text-align: center;
 }
 .header {
-    display: flex; 
+    display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
+    /* padding: 10px; */
 }
 
 .header img {
     width: 50px;
     height: auto;
-    margin-right: 10px; 
+    /* margin-right: 10px; */
 }
 
 .header-text {
     flex-grow: 1;
     text-align: left;
 }
+
 .header h2 {
-    margin: 5px 0;
     font-size: 1.2em;
+    font-weight: bold;
 }
 
 .header p {
-    margin: 0;
-    font-size: 0.6em;
+    font-size: 0.7em;
 }
+
 .datetime {
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center;
-  }
-  .date {
-      flex: 1;
-      font-size: 0.6em;
-      text-align: left; 
-  }
-  .time {
-      flex: 1;
-      font-size: 0.6em;
-      text-align: right; 
-  }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.date {
+    flex: 1;
+    font-size: 0.7em;
+    text-align: left;
+}
+
+.time {
+    flex: 1;
+    font-size: 0.7em;
+    text-align: right;
+}
 
 .queue-number {
-    font-size: 4em;
+    font-size: 4rem;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
 .counter {
-    font-size: 1em;
+    font-size: 1rem;
     margin-bottom: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
 }
-    
+
 .antrian {
-    font-size: 0.8em;
+    font-size: 1rem;
     font-weight: bold;
     margin-bottom: 5px;
+}
+
+.instructions {
+    font-size: 0.7rem;
 }
 </style>

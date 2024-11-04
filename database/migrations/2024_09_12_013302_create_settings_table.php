@@ -20,11 +20,12 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->text('running_text')->nullable();
             $table->string('video')->nullable();
-            $table->string('primary')->nullable();
-            $table->string('secondary')->nullable();
-            $table->string('accent')->nullable();
+            $table->string('navigasi')->nullable();
+            $table->string('footer')->nullable();
             $table->string('background')->nullable();
             $table->string('text')->nullable();
+            $table->decimal('volume')->nullable();
+            $table->enum('status', ['online', 'offline']);
             $table->timestamps();
         });
     }

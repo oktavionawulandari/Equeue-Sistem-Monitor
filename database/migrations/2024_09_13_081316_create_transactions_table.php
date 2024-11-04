@@ -17,11 +17,11 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->date('date'); 
+            $table->date('date');
             $table->foreignIdFor(Queue::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Category::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Counter::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Counter::class)->nullable()->constrained()->onDelete('cascade');
+            $table->foreignIdFor(User::class)->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

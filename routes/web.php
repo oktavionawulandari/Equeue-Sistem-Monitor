@@ -9,8 +9,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\QueueController;
 use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AntrianAdmController;
+use App\Http\Controllers\LaporanController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,55 +29,21 @@ use Inertia\Inertia;
 */
 
 
-// Route::get('/', function () {
-//     return Inertia::render('Welcome');
-// });
+
 Route::get('/', [GeneralController::class, 'index'])->name('index');
-
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__.'/auth.php';
 
-Route::middleware('role:admin')->group(function () { 
-    // Route::get('/dashboard', [GeneralController::class, 'index'])->name('dashboard');
-    
-    /// LOKET CONTROLLER
-    Route::get('/loket', [LoketController::class, 'index'])->name('loket.index');
-    Route::get('/loket/create', [LoketController::class, 'create'])->name('loket.create');
-    Route::post('/loket', [LoketController::class, 'store'])->name('loket.store');
-    Route::get('/loket/{id}/edit', [LoketController::class, 'edit'])->name('loket.edit');
-    Route::put('/loket/{id}', [LoketController::class, 'update'])->name('loket.update');
-    Route::delete('/loket/{id}', [LoketController::class, 'destroy'])->name('loket.destroy');
-
-    /// CATEGORY
-    Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
-    Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
-    Route::post('/category', [CategoryController::class, 'store'])->name('category.store');
-    Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('category.edit');
-    Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
-    Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
-
-
-    // DAFTAR PENGGUNA
-    Route::get('/pengguna', [UserController::class, 'index'])->name('user.index');
-    Route::get('/pengguna/create', [UserController::class, 'create'])->name('user.create');
-    Route::post('/pengguna', [UserController::class, 'store'])->name('user.store');
-    Route::get('/pengguna/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
-    Route::put('/pengguna/{id}', [UserController::class, 'update'])->name('user.update');
-    Route::delete('/pengguna/{id}', [UserController::class, 'destroy'])->name('user.destroy');
-
-    //SETTING
+Route::middleware('role:admin')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::resource('loket', LoketController::class);
+    Route::resource('category', CategoryController::class);
+    Route::resource('pengguna', UserController::class);
     Route::get('/setting', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/setting', [SettingController::class, 'store'])->name('settings.store');
-
-
-    //ANTRIAN
     Route::get('/data/antrian', [AntrianAdmController::class, 'index'])->name('data.antrian');
+    Route::get('/laporan/pengunjung', [LaporanController::class, 'LaporanPengunjung'])->name('laporan.pengunjung');
+    Route::get('/laporan/layanan', [LaporanController::class, 'LaporanLayanan'])->name('laporan.layanan');
 });
 
 
@@ -83,7 +51,7 @@ Route::middleware(['role:operator'])->group(function () {
     Route::get('/home', [GeneralController::class, 'home'])->name('home');
     Route::get('/queue/{category_id}/{counter_id}', [HomeController::class, 'show'])->name('queue.show');
     Route::post('/queues/{queue}/call', [HomeController::class, 'callQueue'])->name('queue.call');
-
+    Route::patch('/queues/refresh', [HomeController::class, 'refresh'])->name('queues.refresh');
 });
 
 // NOMOR ANTRIAN
@@ -96,7 +64,3 @@ Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor');
 Route::get('/monitor/display', [MonitorController::class, 'getDisplay']);
 Route::get('/monitor/trigger-notification', [MonitorController::class, 'getTriggerNotification']);
 Route::patch('/monitor/trigger-notification/{queue}', [MonitorController::class, 'successTriggerNotification']);
-
-
-// Route::get('/queues', [QueueController::class, 'index'])->name('queue.index');
-// Route::post('/queues', [QueueController::class, 'store'])->name('queue.store');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Category;
+use App\Models\Setting;
 
 class CategoryController extends Controller
 {
@@ -14,9 +15,11 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
+        $setting = Setting::first();
 
         return Inertia::render('Jenis/Index', [
-            'categories' => $categories
+            'categories' => $categories,
+            'setting' => $setting
         ]);
     }
 
@@ -25,7 +28,11 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Jenis/Create');
+        $setting = Setting::first();
+
+        return Inertia::render('Jenis/Create', [
+            'setting' => $setting
+        ]);
     }
 
     /**
@@ -33,21 +40,20 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $messages = [
+            'name.required' => 'Nama kategori wajib diisi.',
+            'kode.required' => 'kode kategori wajib diisi.',
+            'catatan.nullable' => 'Catatan bersifat opsional.',
+        ];
+
         $validatedData = $request->validate([
             'name' => 'required',
+            'kode' => 'required',
             'catatan' => 'nullable',
-        ]);
-        
-        Category::create($validatedData);
-        return redirect()->back();
-    }
+        ], $messages);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        Category::create($validatedData);
+        return redirect()->route('category.index');
     }
 
     /**
@@ -56,9 +62,11 @@ class CategoryController extends Controller
     public function edit(string $id)
     {
         $categories = Category::findOrFail($id);
+        $setting = Setting::first();
         return Inertia::render('Jenis/Edit', [
             'id' => $id,
-            'categories' => $categories
+            'categories' => $categories,
+            'setting' => $setting
         ]);
     }
 
@@ -67,14 +75,21 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $messages = [
+            'name.required' => 'Nama kategori wajib diisi.',
+            'kode.required' => 'Kode kategori wajib diisi.',
+            'catatan.nullable' => 'Catatan bersifat opsional.',
+        ];
+
         $validatedData = $request->validate([
             'name' => 'required',
+            'kode' => 'required',
             'catatan' => 'nullable',
-        ]);
+        ], $messages);
 
         $categories = Category::findOrFail($id);
         $categories->update($validatedData);
-        return redirect()->back();
+        return redirect()->route('category.index');
     }
 
     /**
@@ -84,7 +99,7 @@ class CategoryController extends Controller
     {
         $categories = Category::findOrFail($id);
         $categories->delete();
-        return redirect()->back();
+        return redirect()->route('category.index');
 
     }
 }

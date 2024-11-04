@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Setting;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -19,9 +20,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
+        $setting = Setting::first();
         return Inertia::render('Auth/Login', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
+            'setting' => $setting
         ]);
     }
 
@@ -32,19 +35,19 @@ class AuthenticatedSessionController extends Controller
      public function store(LoginRequest $request): RedirectResponse
      {
          $request->authenticate();
-     
+
          $request->session()->regenerate();
-     
+
          if (Auth::user()->role === 'admin') {
-             return redirect()->route('loket.index');
+             return redirect()->route('dashboard');
          }
-     
+
          if (Auth::user()->role === 'operator') {
              return redirect()->route('home');
          }
-     
+
          Auth::guard('web')->logout();
-         return redirect()->route('login')->with('status', 'You are not authorized to access this page.');
+         return redirect()->route('login')->with('status', 'Anda tidak diizinkan untuk mengakses halaman ini.');
      }
     /**
      * Destroy an authenticated session.

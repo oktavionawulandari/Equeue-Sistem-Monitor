@@ -6,12 +6,6 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
                             class="fas fa-bars"></i></a>
                 </li>
-                <!-- <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
-                </li> -->
             </ul>
 
             <ul class="navbar-nav ml-auto">
@@ -22,7 +16,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <Link class="nav-link" :href="route('logout')" method="post" as="button">
+                    <Link class="nav-link" :href="route('logout')" method="post" as="button"  title="logout">
                         <i class="fas fa-sign-out-alt"></i>
                     </Link>
                 </li>

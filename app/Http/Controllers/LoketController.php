@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Counter;
 use App\Models\Category;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Redirect;
 
 class LoketController extends Controller
@@ -15,8 +16,13 @@ class LoketController extends Controller
      */
     public function index()
     {
-        $lokets = Counter::with('category')->get(); 
-        return Inertia::render('Loket/Index', ['lokets' => $lokets]);
+        $lokets = Counter::with('category')->get();
+        $setting = Setting::first();
+
+        return Inertia::render('Loket/Index', [
+            'lokets' => $lokets,
+            'setting' => $setting
+        ]);
     }
 
     /**
@@ -25,7 +31,12 @@ class LoketController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return Inertia::render('Loket/Create', ['categories' => $categories]);
+        $setting = Setting::first();
+
+        return Inertia::render('Loket/Create', [
+            'categories' => $categories,
+            'setting' => $setting
+         ]);
     }
 
     // /**
@@ -33,23 +44,27 @@ class LoketController extends Controller
     //  */
     public function store(Request $request)
     {
+        $messages = [
+            'no.required' => 'Nomor wajib diisi.',
+            'name.required' => 'Nama wajib diisi.',
+            'category_id.required' => 'Kategori wajib dipilih.',
+            'category_id.exists' => 'Kategori yang dipilih tidak valid.',
+        ];
+    
         $validatedData = $request->validate([
             'no' => 'required',
             'name' => 'required',
-            'category_id' => 'required|exists:categories,id'
-        ]);
-        
+            'category_id' => 'required|exists:categories,id',
+        ], $messages);
+
         Counter::create($validatedData);
-        return redirect()->back();
+        return redirect()->route('loket.index');
     }
 
     // /**
     //  * Display the specified resource.
     //  */
-    public function show(string $id)
-    {
 
-    }
 
     // /**
     //  * Show the form for editing the specified resource.
@@ -59,10 +74,12 @@ class LoketController extends Controller
         $categories = Category::all();
 
         $loket = Counter::findOrFail($id);
+        $setting = Setting::first();
         return Inertia::render('Loket/Edit', [
             'id' => $id,
             'loket' => $loket,
-            'categories' => $categories
+            'categories' => $categories,
+            'setting' => $setting
         ]);
     }
 
@@ -71,16 +88,22 @@ class LoketController extends Controller
     //  */
     public function update(Request $request, string $id)
     {
+        $messages = [
+            'no.required' => 'Nomor wajib diisi.',
+            'name.required' => 'Nama wajib diisi.',
+            'category_id.required' => 'Kategori wajib dipilih.',
+            'category_id.exists' => 'Kategori yang dipilih tidak valid.',
+        ];
+    
         $validatedData = $request->validate([
             'no' => 'required',
             'name' => 'required',
-            'category_id' => 'required'
-
-        ]);
+            'category_id' => 'required|exists:categories,id',
+        ], $messages);
 
         $loket = Counter::findOrFail($id);
         $loket->update($validatedData);
-        return redirect()->back();
+        return redirect()->route('loket.index');
     }
 
     // /**
@@ -90,7 +113,7 @@ class LoketController extends Controller
     {
         $loket = Counter::findOrFail($id);
         $loket->delete();
-        return redirect()->back();
+        return redirect()->route('loket.index');
 
     }
 }

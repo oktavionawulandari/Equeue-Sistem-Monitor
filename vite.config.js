@@ -1,63 +1,63 @@
-// import { defineConfig } from 'vite';
-// import laravel from 'laravel-vite-plugin';
-// import vue from '@vitejs/plugin-vue';
-
-// export default defineConfig({
-//     server: {
-//         host: true,
-//         hmr: {
-//             host: '192.168.1.1',
-//             overlay: false,
-//             clientPort: 5173
-//         }
-//     },
-//     resolve: name => {
-//         const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
-//         return pages[`./Pages/${name}.vue`]
-//     },
-//     plugins: [
-//         laravel({
-//             input: ['resources/css/app.css', 'resources/js/app.js'],
-//             refresh: true,
-//         }),
-//         vue({
-//             template: {
-//                 transformAssetUrls: {
-//                     // The Vue plugin will re-write asset URLs, when referenced
-//                     // in Single File Components, to point to the Laravel web
-//                     // server. Setting this to `null` allows the Laravel plugin
-//                     // to instead re-write asset URLs to point to the Vite
-//                     // server instead.
-//                     base: null,
-
-//                     // The Vue plugin will parse absolute URLs and treat them
-//                     // as absolute paths to files on disk. Setting this to
-//                     // `false` will leave absolute URLs un-touched so they can
-//                     // reference assets in the public directory as expected.
-//                     includeAbsolute: false,
-//                 },
-//             },
-//         })
-//     ],
-// });
-
-import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
-import vue from '@vitejs/plugin-vue';
+import { defineConfig } from "vite";
+import laravel from "laravel-vite-plugin";
+import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
+    server: {
+        host: true,
+        hmr: {
+            host: "192.168.1.21",
+            overlay: false,
+            clientPort: 5173,
+        },
+    },
+    resolve: (name) => {
+        const pages = import.meta.glob("./Pages/**/*.vue", { eager: true });
+        return pages[`./Pages/${name}.vue`];
+    },
     plugins: [
         laravel({
-            input: 'resources/js/app.js',
+            input: ["resources/css/app.css", "resources/js/app.js"],
             refresh: true,
         }),
         vue({
             template: {
                 transformAssetUrls: {
+                    // The Vue plugin will re-write asset URLs, when referenced
+                    // in Single File Components, to point to the Laravel web
+                    // server. Setting this to `null` allows the Laravel plugin
+                    // to instead re-write asset URLs to point to the Vite
+                    // server instead.
                     base: null,
+
+                    // The Vue plugin will parse absolute URLs and treat them
+                    // as absolute paths to files on disk. Setting this to
+                    // `false` will leave absolute URLs un-touched so they can
+                    // reference assets in the public directory as expected.
                     includeAbsolute: false,
                 },
             },
         }),
     ],
 });
+
+// import { defineConfig } from "vite";
+// import laravel from "laravel-vite-plugin";
+// import vue from "@vitejs/plugin-vue";
+
+// export default defineConfig({
+//     plugins: [
+//         laravel({
+//             input: "resources/js/app.js",
+//             refresh: true,
+//         }),
+//         vue({
+//             template: {
+//                 transformAssetUrls: {
+//                     base: null,
+//                     includeAbsolute: false,
+//                 },
+//             },
+//         }),
+//     ],
+// });

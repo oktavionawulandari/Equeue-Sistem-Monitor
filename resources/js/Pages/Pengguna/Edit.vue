@@ -1,26 +1,22 @@
 <template>
+    <AppMeta title="Edit User" />
+
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-4">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-uppercase">Edit Pengguna</h1>
+                    <h1 class="m-0 text-uppercase">Edit User</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><Link href="/dashboard">Dashboard</Link></li>
-                        <li class="breadcrumb-item active">Edit Pengguna</li>
+                        <li class="breadcrumb-item">
+                            <Link :href="route('dashboard')">Dashboard</Link>
+                        </li>
+                        <li class="breadcrumb-item active">Edit User</li>
                     </ol>
                 </div>
             </div>
 
-            <div v-if="Object.keys(errors).length > 0" class="alert alert-danger alert-dismissible show fade" role="alert">
-                <strong>Error!</strong> 
-                    <li v-if="errors.name">{{ errors.name }}</li>
-                    <li v-if="errors.username">{{ errors.username }}</li>
-                    <li v-if="errors.role">{{ errors.role }}</li>
-                <button class="close" data-dismiss="alert"><span>&times;</span></button>
-            </div>
-            
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -32,11 +28,14 @@
                                         type="text"
                                         class="form-control"
                                         v-model="form.name"
-                                        :class="{'is-invalid': errors.name}"
+                                        :class="{ 'is-invalid': errors.name }"
                                         id="name"
                                         name="name"
+                                    />
+                                    <div
+                                        v-if="errors.name"
+                                        class="invalid-feedback"
                                     >
-                                    <div v-if="errors.name" class="invalid-feedback">
                                         {{ errors.name }}
                                     </div>
                                 </div>
@@ -46,11 +45,16 @@
                                         type="text"
                                         class="form-control"
                                         v-model="form.username"
-                                        :class="{'is-invalid': errors.username}"
+                                        :class="{
+                                            'is-invalid': errors.username,
+                                        }"
                                         id="username"
                                         name="username"
+                                    />
+                                    <div
+                                        v-if="errors.username"
+                                        class="invalid-feedback"
                                     >
-                                    <div v-if="errors.username" class="invalid-feedback">
                                         {{ errors.username }}
                                     </div>
                                 </div>
@@ -60,11 +64,16 @@
                                         type="text"
                                         class="form-control"
                                         v-model="form.password"
-                                        :class="{'is-invalid': errors.password}"
+                                        :class="{
+                                            'is-invalid': errors.password,
+                                        }"
                                         id="password"
                                         name="password"
+                                    />
+                                    <div
+                                        v-if="errors.password"
+                                        class="invalid-feedback"
                                     >
-                                    <div v-if="errors.password" class="invalid-feedback">
                                         {{ errors.password }}
                                     </div>
                                 </div>
@@ -74,22 +83,34 @@
                                         type="text"
                                         class="form-control"
                                         v-model="form.role"
-                                        :class="{'is-invalid': errors.role}"
+                                        :class="{ 'is-invalid': errors.role }"
                                         id="role"
                                         name="role"
                                         readonly
+                                    />
+                                    <div
+                                        v-if="errors.role"
+                                        class="invalid-feedback"
                                     >
-                                    <div v-if="errors.role" class="invalid-feedback">
                                         {{ errors.role }}
                                     </div>
                                 </div>
 
                                 <div class="row mt-5">
                                     <div class="col-auto">
-                                        <button class="btn btn-primary" type="submit">Simpan</button>
+                                        <button
+                                            class="btn btn-primary"
+                                            type="submit"
+                                        >
+                                            Simpan
+                                        </button>
                                     </div>
                                     <div class="col-auto">
-                                        <Link href="/pengguna" class="btn btn-dark">Kembali</Link>
+                                        <Link
+                                            href="/pengguna"
+                                            class="btn btn-dark"
+                                            >Kembali</Link
+                                        >
                                     </div>
                                 </div>
                             </form>
@@ -101,27 +122,29 @@
     </div>
 </template>
 
-
 <script>
-import Dasboard from '../../Layout/Dasboard.vue';
+import Dasboard from "../../Layout/Dasboard.vue";
+import AppMeta from "@/Components/AppMeta.vue";
 
 export default {
-  layout: (h, page) => h(Dasboard, [page]),
+    layout: (h, page) => h(Dasboard, [page]),
 
-  layout: Dasboard,
-}
+    layout: Dasboard,
+};
 </script>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { Link, router, useForm  } from '@inertiajs/vue3';
-const props = defineProps(['id', 'users']);
+import { ref, onMounted } from "vue";
+import { Link, router, useForm } from "@inertiajs/vue3";
+import { toast } from "vue3-toastify";
+
+const props = defineProps(["id", "users"]);
 
 const form = useForm({
-    name: '',
-    username: '',
-    role: 'operator',
-    password: '',
+    name: "",
+    username: "",
+    role: "operator",
+    password: "",
 });
 
 const errors = ref({});
@@ -136,11 +159,12 @@ onMounted(() => {
 function submitForm() {
     form.put(`/pengguna/${props.id}`, {
         onSuccess: () => {
-            router.replace('/pengguna');
+            toast.success("Data Pengguna Berhasil Diperbarui!");
+            router.replace("/pengguna");
         },
         onError: (formErrors) => {
             errors.value = formErrors;
-        }
+        },
     });
 }
 </script>

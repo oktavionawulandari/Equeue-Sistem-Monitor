@@ -17,11 +17,18 @@ class MonitorController extends Controller
      */
     public function index()
     {
+        $startOfDay = now()->startOfDay();
+        $endOfDay = now()->endOfDay();
+
         $setting = Setting::first();
         $categories = Category::with(['antrian.queue'])->get();
+        $AntrianAkhir = Queue::where('status', 4)->with('category')
+        ->orderby('updated_at', 'desc')->get();
         return Inertia::render('Monitor/Index', [
             'categories' => $categories,
-            'setting' => $setting
+            'setting' => $setting,
+            'csrf_token' => csrf_token(),
+            'AntrianAkhir' => $AntrianAkhir
         ]);
     }
 
@@ -30,8 +37,11 @@ class MonitorController extends Controller
         $categories = Category::with(['antrian' => function ($query) {
             $query->with('queue')->orderBy('created_at', 'asc')->first();
         }])->get();
-    
-        return response()->json(['data' => $categories]);
+        $AntrianAkhir = Queue::where('status', 4)->with('category')
+        ->orderby('updated_at', 'desc')->get();
+
+
+        return response()->json(['data' => $categories, 'antrianAkhir' => $AntrianAkhir]);
     }
 
     public function getTriggerNotification()
@@ -54,7 +64,7 @@ class MonitorController extends Controller
         $antrian->queue->status = 3;
         $antrian->queue->save();
 
-        $antrian->delete();
+        // $antrian->delete();
 
        return redirect()->back();
     }

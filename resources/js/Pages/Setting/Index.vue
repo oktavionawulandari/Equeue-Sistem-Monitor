@@ -1,319 +1,484 @@
 <template>
-  <div class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-4">
-        <div class="col-sm-6">
-          <h1 class="m-0">Setting</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item">
-              <Link href="/dashboard">Home</Link>
-            </li>
-            <li class="breadcrumb-item active">Setting</li>
-          </ol>
-        </div>
-      </div>
+    <AppMeta title="Setting" />
 
-      <div v-if="Object.keys(form.errors).length > 0" class="alert alert-danger alert-dismissible show fade" role="alert">
-        <strong>Error!</strong> 
-        <ul>
-          <li v-for="(error, key) in form.errors" :key="key">{{ error }}</li>
-        </ul>
-        <button class="close" data-dismiss="alert"><span>&times;</span></button>
-      </div>
-
-      <div class="row">
-        <div class="col-9">
-          <div class="card">
-            <div class="card-body">
-              <form @submit.prevent="submit">
-                <!-- Input untuk Instansi -->
-                <div class="form-group">
-                  <label for="instansi">Nama Instansi</label>
-                  <input 
-                    type="text" 
-                    class="form-control" 
-                    v-model="form.instansi"
-                    :class="{'is-invalid': form.errors.instansi}"
-                    id="instansi"
-                    name="instansi"
-                  />
-                  <div v-if="form.errors.instansi" class="invalid-feedback">
-                    {{ form.errors.instansi }}
-                  </div>
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-4">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-uppercase">Setting</h1>
                 </div>
-
-                <!-- Input untuk Alamat -->
-                <div class="form-group">
-                  <label for="address">Alamat Instansi</label>
-                  <input 
-                    type="text" 
-                    class="form-control" 
-                    v-model="form.address"
-                    :class="{'is-invalid': form.errors.address}"
-                    id="address"
-                    name="address"
-                  />
-                  <div v-if="form.errors.address" class="invalid-feedback">
-                    {{ form.errors.address }}
-                  </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item">
+                            <Link :href="route('dashboard')">Dashboard</Link>
+                        </li>
+                        <li class="breadcrumb-item active">Setting</li>
+                    </ol>
                 </div>
-
-                <!-- Input untuk Telepon dan Email -->
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="phone">Telepon</label>
-                      <input 
-                        type="text" 
-                        class="form-control" 
-                        v-model="form.phone"
-                        :class="{'is-invalid': form.errors.phone}"
-                        id="phone"
-                        name="phone"
-                      />
-                      <div v-if="form.errors.phone" class="invalid-feedback">
-                        {{ form.errors.phone }}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="email">Email</label>
-                      <input 
-                        type="email" 
-                        class="form-control" 
-                        v-model="form.email"
-                        :class="{'is-invalid': form.errors.email}"
-                        id="email"
-                        name="email"
-                      />
-                      <div v-if="form.errors.email" class="invalid-feedback">{{ form.errors.email }}</div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Input untuk Running Text -->
-                <div class="form-group">
-                  <label for="running_text">Running Text</label>
-                  <input 
-                    type="text" 
-                    class="form-control" 
-                    v-model="form.running_text"
-                    :class="{'is-invalid': form.errors.running_text}"
-                    id="running_text"
-                    name="running_text"
-                  />
-                  <div v-if="form.errors.running_text" class="invalid-feedback">
-                    {{ form.errors.running_text }}
-                  </div>
-                </div>
-
-                <!-- Input untuk Video Upload -->
-                <div class="form-group">
-                  <label for="logo">Video</label>
-                  <!-- Logo Upload -->
-                  <input
-                      type="file"
-                      class="form-control"
-                      accept="video/*"
-                      @change="previewVideo"
-                      :class="{'is-invalid': form.errors.video}"
-                      id="video"
-                      name="video"/>
-                    <div v-if="form.errors.video" class="invalid-feedback">
-                      {{ form.errors.video }}
-                    </div>
-                    <video v-if="videoPreview" width="320" height="240" class="mt-3" controls>
-                      <source :src="videoPreview" type="video/mp4">
-                    </video>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="row mt-5">
-                  <div class="col-auto">
-                    <button class="btn btn-primary" type="submit">Simpan</button>
-                  </div>
-                </div>
-              </form>
             </div>
-          </div>
-        </div>
 
-        <!-- Logo Upload -->
-        <div class="col-3">
-          <div class="card">
-            <div class="card-body">
-              <div class="form-group">
-                <label for="logo">Logo</label>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form @submit.prevent="submit">
+                                <!-- Input untuk Instansi -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="instansi">Nama Instansi</label>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                v-model="form.instansi"
+                                                :class="{
+                                                    'is-invalid': form.errors.instansi,
+                                                }"
+                                                id="instansi"
+                                                name="instansi"
+                                            />
+                                            <div
+                                                v-if="form.errors.instansi"
+                                                class="invalid-feedback"
+                                            >
+                                                {{ form.errors.instansi }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Input untuk Alamat -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="address">Alamat Instansi</label>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                v-model="form.address"
+                                                :class="{
+                                                    'is-invalid': form.errors.address,
+                                                }"
+                                                id="address"
+                                                name="address"
+                                            />
+                                            <div
+                                                v-if="form.errors.address"
+                                                class="invalid-feedback"
+                                            >
+                                                {{ form.errors.address }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Input untuk Telepon dan Email -->
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="phone">Telepon</label>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                v-model="form.phone"
+                                                :class="{
+                                                    'is-invalid':
+                                                        form.errors.phone,
+                                                }"
+                                                id="phone"
+                                                name="phone"
+                                            />
+                                            <div
+                                                v-if="form.errors.phone"
+                                                class="invalid-feedback"
+                                            >
+                                                {{ form.errors.phone }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input
+                                                type="email"
+                                                class="form-control"
+                                                v-model="form.email"
+                                                :class="{
+                                                    'is-invalid':
+                                                        form.errors.email,
+                                                }"
+                                                id="email"
+                                                name="email"
+                                            />
+                                            <div
+                                                v-if="form.errors.email"
+                                                class="invalid-feedback"
+                                            >
+                                                {{ form.errors.email }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="status">Setting</label>
+                                            <select
+                                                class="form-control"
+                                                v-model="form.status"
+                                                :class="{
+                                                    'is-invalid': form.errors.status,
+                                                }"
+                                                id="status"
+                                                name="status"
+                                            >
+                                                <option value="" disabled>Pilih Pengaturan</option>
+                                                <option value="online">Online</option>
+                                                <option value="offline">Offline</option>
+                                            </select>
+                                            <div
+                                                v-if="form.errors.status"
+                                                class="invalid-feedback"
+                                            >
+                                                {{ form.errors.status }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Input untuk Running Text -->
+                                <div class="form-group">
+                                    <label for="running_text"
+                                        >Running Text</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        v-model="form.running_text"
+                                        :class="{
+                                            'is-invalid':
+                                                form.errors.running_text,
+                                        }"
+                                        id="running_text"
+                                        name="running_text"
+                                    />
+                                    <div
+                                        v-if="form.errors.running_text"
+                                        class="invalid-feedback"
+                                    >
+                                        {{ form.errors.running_text }}
+                                    </div>
+                                </div>
+
+                                <!-- Input untuk Video Upload -->
+                                <div class="row">
+                                    <div class="form-group col-6">
+                                        <label for="video">Video</label>
+                                        <input
+                                            type="file"
+                                            class="form-control"
+                                            accept="video/*"
+                                            @change="previewVideo"
+                                            :class="{
+                                                'is-invalid': form.errors.video,
+                                            }"
+                                            id="video"
+                                            name="video"
+                                        />
+                                        <div
+                                            v-if="form.errors.video"
+                                            class="invalid-feedback"
+                                        >
+                                            {{ form.errors.video }}
+                                        </div>
+                                        <video
+                                            v-if="videoPreview"
+                                            width="320"
+                                            height="240"
+                                            class="mt-3"
+                                            controls
+                                            :src="videoPreview"
+                                            ref="videoElement"
+                                            @loadedmetadata="setInitialVolume"
+                                        ></video>
+                                        <input
+                                            type="range"
+                                            class="form-range mt-2"
+                                            min="0"
+                                            max="1"
+                                            step="0.1"
+                                            v-model="form.volume"
+                                            id="volume"
+                                            name="volume"
+                                            :class="{
+                                                'is-invalid':
+                                                    form.errors.volume,
+                                            }"
+                                            @input="updateVolume"
+                                        />
+                                        <span
+                                            v-if="form.errors.volume"
+                                            class="text-danger"
+                                            >{{ form.errors.volume }}</span
+                                        >
+                                    </div>
+
+                                    <div class="form-group col-6">
+                                        <label for="logo">Logo</label>
+                                        <!-- Logo Upload -->
+                                        <input
+                                            type="file"
+                                            class="form-control"
+                                            accept="image/*"
+                                            @change="previewImage"
+                                            :class="{
+                                                'is-invalid': form.errors.logo,
+                                            }"
+                                            id="logo"
+                                            name="logo"
+                                        />
+                                        <div
+                                            v-if="form.errors.logo"
+                                            class="invalid-feedback"
+                                        >
+                                            {{ form.errors.logo }}
+                                        </div>
+                                        <img
+                                            v-if="logoPreview"
+                                            :src="logoPreview"
+                                            alt="Logo"
+                                            class="img-fluid mt-3"
+                                            width="200"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6 col-md-2">
+                                        <div class="form-group">
+                                            <label for="navigasi"
+                                                >Navigasi</label
+                                            >
+                                            <input
+                                                type="color"
+                                                class="form-control"
+                                                v-model="form.navigasi"
+                                                :class="{
+                                                    'is-invalid':
+                                                        form.errors.navigasi,
+                                                }"
+                                                id="navigasi"
+                                                name="navigasi"
+                                            />
+                                            <div
+                                                v-if="form.errors.navigasi"
+                                                class="invalid-feedback"
+                                            >
+                                                {{ form.errors.navigasi }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <div class="form-group">
+                                            <label for="footer">Footer</label>
+                                            <input
+                                                type="color"
+                                                class="form-control"
+                                                v-model="form.footer"
+                                                :class="{
+                                                    'is-invalid':
+                                                        form.errors.footer,
+                                                }"
+                                                id="footer"
+                                                name="footer"
+                                            />
+                                            <div
+                                                v-if="form.errors.footer"
+                                                class="invalid-feedback"
+                                            >
+                                                {{ form.errors.footer }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <div class="form-group">
+                                            <label for="background"
+                                                >Background</label
+                                            >
+                                            <input
+                                                type="color"
+                                                class="form-control"
+                                                v-model="form.background"
+                                                :class="{
+                                                    'is-invalid':
+                                                        form.errors.background,
+                                                }"
+                                                id="background"
+                                                name="background"
+                                            />
+                                            <div
+                                                v-if="form.errors.background"
+                                                class="invalid-feedback"
+                                            >
+                                                {{ form.errors.background }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <div class="form-group">
+                                            <label for="text">Text</label>
+                                            <input
+                                                type="color"
+                                                class="form-control"
+                                                v-model="form.text"
+                                                :class="{
+                                                    'is-invalid':
+                                                        form.errors.text,
+                                                }"
+                                                id="text"
+                                                name="text"
+                                            />
+                                            <div
+                                                v-if="form.errors.text"
+                                                class="invalid-feedback"
+                                            >
+                                                {{ form.errors.text }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="row mt-5">
+                                    <div class="col-auto">
+                                        <button
+                                            class="btn btn-primary"
+                                            type="submit"
+                                        >
+                                            Simpan
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Logo Upload -->
-                  <input
-                    type="file"
-                    class="form-control"
-                    accept="image/*"
-                    @change="previewImage"
-                    :class="{'is-invalid': form.errors.logo}"
-                    id="logo"
-                    name="logo"/>
-                  <div v-if="form.errors.logo" class="invalid-feedback">
-                    {{ form.errors.logo }}
-                  </div>
-                  <img v-if="logoPreview" :src="logoPreview" alt="Logo" class="img-fluid mt-3"/>
-              </div>
-
-              <div class="row">
-                <div class="col-6">
-                  <div class="form-group">
-                    <label for="primary">Navigasi</label>
-                    <input
-                      type="color"
-                      class="form-control"
-                      v-model="form.primary"
-                      :class="{'is-invalid': form.errors.primary}"
-                      id="primary"
-                      name="primary" />
-                    <div v-if="form.errors.primary" class="invalid-feedback">{{ form.errors.primary }}</div>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="form-group">
-                    <label for="secondary">Footer</label>
-                    <input
-                      type="color"
-                      class="form-control"
-                      v-model="form.secondary"
-                      :class="{'is-invalid': form.errors.secondary}"
-                      id="secondary"
-                      name="secondary" />
-                    <div v-if="form.errors.secondary" class="invalid-feedback">{{ form.errors.secondary }}</div>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="form-group">
-                    <label for="background">Background</label>
-                    <input
-                      type="color"
-                      class="form-control"
-                      v-model="form.background"
-                      :class="{'is-invalid': form.errors.background}"
-                      id="background"
-                      name="background" />
-                    <div v-if="form.errors.background" class="invalid-feedback">{{ form.errors.background }}</div>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="form-group">
-                    <label for="text">Teks</label>
-                    <input
-                      type="color"
-                      class="form-control"
-                      v-model="form.text"
-                      :class="{'is-invalid': form.errors.text}"
-                      id="text"
-                      name="text" />
-                    <div v-if="form.errors.text" class="invalid-feedback">{{ form.errors.text }}</div>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="form-group">
-                    <label for="accent">Background Text</label>
-                    <input
-                      type="color"
-                      class="form-control"
-                      v-model="form.accent"
-                      :class="{'is-invalid': form.errors.accent}"
-                      id="accent"
-                      name="accent" />
-                    <div v-if="form.errors.accent" class="invalid-feedback">{{ form.errors.accent }}</div>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { Link, useForm } from '@inertiajs/vue3';
-import { toRefs } from 'vue';
+import { ref } from "vue";
+import { Link, useForm } from "@inertiajs/vue3";
+import { toRefs } from "vue";
+import AppMeta from "@/Components/AppMeta.vue";
+import { toast } from "vue3-toastify";
 
 const props = defineProps({
-  setting: Object,
+    setting: Object,
 });
 
 const { setting } = toRefs(props);
 
-const logoPreview = ref(setting.value?.logo ? `/storage/logo/${setting.value.logo}` : null);
-const videoPreview = ref(setting.value?.video ? `/storage/videos/${setting.value.video}` : null);
+const logoPreview = ref(
+    setting.value?.logo ? `/storage/logo/${setting.value.logo}` : null
+);
+const videoPreview = ref(
+    setting.value?.video ? `/storage/videos/${setting.value.video}` : null
+);
 
 const form = useForm({
-  instansi: setting.value?.instansi || '',
-  logo: setting.value?.logo || '',
-  address: setting.value?.address || '',
-  phone: setting.value?.phone || '',
-  email: setting.value?.email || '',
-  running_text: setting.value?.running_text || '',
-  video: null,
-  primary: setting.value?.primary || '',
-  secondary: setting.value?.secondary || '',
-  accent: setting.value?.accent || '',
-  background: setting.value?.background || '',
-  text: setting.value?.text || ''
+    instansi: setting.value?.instansi || "",
+    logo: null,
+    address: setting.value?.address || "",
+    phone: setting.value?.phone || "",
+    email: setting.value?.email || "",
+    running_text: setting.value?.running_text || "",
+    video: null,
+    navigasi: setting.value?.navigasi || "",
+    footer: setting.value?.footer || "",
+    background: setting.value?.background || "",
+    text: setting.value?.text || "",
+    volume: setting.value?.volume ?? 0.5,
+    status: setting.value?.status || "",
+
+});
+
+const showErrorAlert = ref(false);
+
+watch(form.errors, (val) => {
+    if (Object.keys(val).length > 0) {
+        showErrorAlert.value = true;
+    }
 });
 
 const submit = () => {
-  const formData = new FormData();
+    const formData = new FormData();
 
-  for (const key in form) {
-    formData.append(key, form[key] instanceof File ? form[key] : form[key]);
-  }
-
-  form.post('/setting', {
-    data: formData,
-    onSuccess: () => form.reset(),
-    headers: { 'Content-Type': 'multipart/form-data' }
-  });
+    for (const key in form) {
+        formData.append(key, form[key] instanceof File ? form[key] : form[key]);
+    }
+    form.post("/setting", {
+        data: formData,
+        onSuccess: () => {
+            toast.success("Data Setting Berhasil Diperbarui!");
+            router.get("/setting");
+        },
+    });
 };
 
 const previewImage = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      logoPreview.value = e.target.result;
-    };
-    reader.readAsDataURL(file);
-    form.logo = file; 
-  }
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            logoPreview.value = e.target.result;
+        };
+        reader.readAsDataURL(file);
+        form.logo = file;
+    }
 };
 
 const previewVideo = (event) => {
-  const file = event.target.files[0];
-  const reader = new FileReader();
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            videoPreview.value = e.target.result;
+        };
+        reader.readAsDataURL(file);
+        form.video = file;
+    }
+};
 
-  reader.onload = (e) => {
-    videoPreview.value = e.target.result;
-  };
+const videoElement = ref(null);
 
-  reader.readAsDataURL(file);
-  form.video = file;
+watch(form.volume, (newVolume) => {
+    if (videoElement.value) {
+        videoElement.value.volume = newVolume;
+    }
+});
+
+const setInitialVolume = () => {
+    if (videoElement.value) {
+        videoElement.value.volume = form.volume;
+    }
+};
+
+const updateVolume = () => {
+    if (videoElement.value) {
+        videoElement.value.volume = volume.value;
+    }
 };
 </script>
 
-
 <script>
-import Dasboard from '../../Layout/Dasboard.vue';
+import Dashboard from "../../Layout/Dasboard.vue";
+import { watch } from "vue";
 
 export default {
-  layout: (h, page) => h(Dasboard, [page]),
-}
+    layout: Dashboard,
+};
 </script>
 
-<style>
-</style>
+<style></style>

@@ -1,0 +1,17 @@
+{
+    "name": "E-Queue Sistem V.5.0",
+    "short_name": "LPT",
+    "start_url": "/index.php",
+    "background_color": "#6777ef",
+    "display": "fullscreen",
+    "theme_color": "#6777ef",
+    "form_factor": "wide",
+    "icons": [
+        {
+            "src": "logo.PNG",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

@@ -29,4 +29,10 @@ class Queue extends Model
     public function counter() {
         return $this->belongsTo(Counter::class);
     }
+
+    public function AntrianNow()
+    {
+        return $this->hasMany(AntrianNow::class);
+    }
+
 }

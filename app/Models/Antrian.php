@@ -13,6 +13,11 @@ class Antrian extends Model
     protected $primaryKey = 'id';
     protected $guarded = [''];
 
+    public function AntrianNow()
+    {
+        return $this->hasMany(AntrianNow::class);
+    }
+
     public function counter()
     {
         return $this->belongsTo(Counter::class); 
