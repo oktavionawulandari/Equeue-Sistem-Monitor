@@ -2,7 +2,7 @@
     <AppMeta title="Cetak No Antrian">
         <link
             rel="icon"
-            :href="`/storage/logo/${setting?.logo}`"
+            :href="`/storage/logo/${props.setting?.logo}`"
             type="image/x-icon"
         />
     </AppMeta>
@@ -14,7 +14,7 @@
             <div class="container">
                 <div class="header d-flex align-items-center">
                     <div class="header-text">
-                        <h2>{{ setting?.instansi }}</h2>
+                        <h2>{{ props.setting?.instansi }}</h2>
                     </div>
                 </div>
                 <div class="datetime">
@@ -23,8 +23,8 @@
                 </div>
                 <p>=================================</p>
                 <div class="antrian">NO ANTRIAN</div>
-                <div class="queue-number">{{ latestQueue.no }}</div>
-                <div class="counter">{{ category.name }}</div>
+                <div class="queue-number">{{ props.latestQueue.no }}</div>
+                <div class="counter">{{ props.category.name }}</div>
                 <div class="instructions">
                     Silahkan menunggu nomor antrian dipanggil. Nomor ini hanya
                     berlaku pada hari ini.
@@ -36,10 +36,9 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { usePage } from "@inertiajs/vue3";
+import { usePage, router } from "@inertiajs/vue3";
 import AppMeta from "@/Components/AppMeta.vue";
 
-const settings = defineProps(["setting"]);
 
 const { props } = usePage();
 const category = ref(props.category);

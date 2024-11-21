@@ -56,7 +56,7 @@
                                             v-model="filters.searchCategory"
                                             id="searchCategory"
                                         >
-                                            <option value="" selected>
+                                            <option value="" disabled>
                                                 Pilih Kategori...
                                             </option>
                                             <option
@@ -82,7 +82,7 @@
                                             v-model="filters.searchUser"
                                             id="searchUser"
                                         >
-                                            <option value="" selected>
+                                            <option value="" disabled>
                                                 Pilih Operator...
                                             </option>
                                             <option
@@ -101,7 +101,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row mt-3">
-                                    <div class="col-2 col-md-1">
+                                    <div class="col-4 col-md-1">
                                         <button
                                             type="submit"
                                             class="btn btn-success w-100"
@@ -109,7 +109,7 @@
                                             Filter
                                         </button>
                                     </div>
-                                    <div class="col-2 col-md-1">
+                                    <div class="col-4 col-md-1">
                                         <button
                                             type="button"
                                             class="btn btn-danger w-100"
@@ -118,7 +118,7 @@
                                             PDF
                                         </button>
                                     </div>
-                                    <div class="col-2 col-md-1">
+                                    <div class="col-4 col-md-1">
                                         <a
                                             :href="linkAction"
                                             target="_blank"
@@ -226,6 +226,7 @@
                                             >
                                                 <Link
                                                     class="page-link"
+                                                    :href="'#'"
                                                     @click.prevent="
                                                         changePage(
                                                             transaction.current_page -
@@ -247,6 +248,7 @@
                                             >
                                                 <Link
                                                     class="page-link"
+                                                    :href="'#'"
                                                     @click.prevent="
                                                         changePage(page)
                                                     "
@@ -262,6 +264,7 @@
                                             >
                                                 <Link
                                                     class="page-link"
+                                                    :href="'#'"
                                                     @click.prevent="
                                                         changePage(
                                                             transaction.current_page +

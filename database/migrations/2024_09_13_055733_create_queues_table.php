@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('status', ['1', '2', '3', '4', '5']);
             $table->date('date');
             $table->foreignId('operator_id')->default(0);
+            $table->string('phone', 15)->nullable();
             $table->timestamps();
         });
     }

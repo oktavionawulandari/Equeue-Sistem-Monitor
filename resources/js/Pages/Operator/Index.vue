@@ -1,14 +1,6 @@
 <template>
-    <!-- <AppMeta/> -->
-    <AppMeta title="Daftar Loket">
-        <link
-            rel="icon"
-            :href="`/storage/logo/${setting?.logo}`"
-            type="image/x-icon"
-        />
-    </AppMeta>
-
-    <Header :setting="setting" />
+    <AppMeta title="Daftar Loket" />
+    <Head :setting="props.setting" />
 
     <div class="d-flex flex-column min-vh-100">
         <div class="content-header">
@@ -61,8 +53,7 @@
                         </div>
                     </div> -->
                     <div class="col-md-3 col-sm-6 col-xs-12">
-                        <button class="button-refresh" @click="refreshData"
-                        >
+                        <button class="button-refresh" @click="refreshData">
                             <div class="info-box">
                                 <span class="info-box-icon bg-primary">
                                     <i class="ion ion-arrow-right-b"></i>
@@ -71,7 +62,6 @@
                                     <span class="info-box-text text-bold"
                                         >ANTRIAN BERIKUTNYA</span
                                     >
-                                    <!-- <span>{{ AntrianBerikutnya?.no }}</span> -->
                                     <span>Klik untuk antrian berikutnya</span>
                                 </div>
                             </div>
@@ -136,7 +126,9 @@
                                                     aria-label="Panggil antrian"
                                                     aria-describedby="call-queue-description"
                                                     title="Panggil Antrian"
-                                                    :disabled="isSubmitting == queue.id"
+                                                    :disabled="
+                                                        isSubmitting == queue.id
+                                                    "
                                                 >
                                                     <i
                                                         class="ion ion-mic-a call-icon"
@@ -149,7 +141,9 @@
                                                     aria-label="Panggil antrian"
                                                     aria-describedby="call-queue-description"
                                                     title="Berhasil"
-                                                    :disabled="isSubmitting == queue.id"
+                                                    :disabled="
+                                                        isSubmitting == queue.id
+                                                    "
                                                 >
                                                     <i
                                                         class="ion ion-checkmark call-icon"
@@ -162,7 +156,9 @@
                                                     arial-label="Batal"
                                                     aria-describedby="call-queue-description"
                                                     title="Batal"
-                                                    :disabled="isSubmitting == queue.id"
+                                                    :disabled="
+                                                        isSubmitting == queue.id
+                                                    "
                                                 >
                                                     <i
                                                         class="ion ion-close call-icon"
@@ -187,9 +183,11 @@
                                                 >
                                                     <Link
                                                         class="page-link"
-                                                        :href="
+                                                        :href="`${
                                                             queues.prev_page_url
-                                                        "
+                                                                ? queues.prev_page_url
+                                                                : ''
+                                                        }`"
                                                         method="get"
                                                         >Previous</Link
                                                     >
@@ -220,9 +218,11 @@
                                                 >
                                                     <Link
                                                         class="page-link"
-                                                        :href="
+                                                        :href="`${
                                                             queues.next_page_url
-                                                        "
+                                                                ? queues.next_page_url
+                                                                : ''
+                                                        }`"
                                                         method="get"
                                                         >Next</Link
                                                     >
@@ -239,14 +239,14 @@
         </section>
     </div>
 
-    <Foot :setting="setting" />
+    <Foot :setting="props.setting" />
 </template>
 
 <script setup>
 import "../../../css/dashboard.css";
 import AppMeta from "@/Components/AppMeta.vue";
 import { toast } from "vue3-toastify";
-import Header from "../../Layout/Operator/Header.vue";
+import Head from "../../Layout/Operator/Header.vue";
 import Foot from "../../Layout/Monitor/Footer.vue";
 
 import { computed } from "vue";
@@ -255,19 +255,18 @@ import { ref } from "vue";
 
 const isSubmitting = ref(null);
 
-const props = defineProps([
+const setting = defineProps([
     "queues",
     "category_id",
     "counter_id",
     "SisaAntrian",
     "counter_name",
     // "QueuenNo",
-    "setting",
     "totalAntrian",
-    "AntrianBerikutnya",
 ]);
+const { props } = usePage();
 
-const propsPage = usePage().props;
+// const propsPage = usePage();
 
 const callQueue = async (queue) => {
     const form = useForm({
@@ -282,8 +281,8 @@ const callQueue = async (queue) => {
             toast.success("Antrian Berhasil Dipanggil!");
         },
         onFinish: () => {
-            isSubmitting.value = null
-        }
+            isSubmitting.value = null;
+        },
     });
 };
 

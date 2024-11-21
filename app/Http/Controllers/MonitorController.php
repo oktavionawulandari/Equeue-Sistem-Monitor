@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Queue;
 use App\Models\Antrian;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Cache;
 
 class MonitorController extends Controller
 {
@@ -17,6 +18,7 @@ class MonitorController extends Controller
      */
     public function index()
     {
+        Cache::flush();
         $startOfDay = now()->startOfDay();
         $endOfDay = now()->endOfDay();
 
@@ -24,6 +26,7 @@ class MonitorController extends Controller
         $categories = Category::with(['antrian.queue'])->get();
         $AntrianAkhir = Queue::where('status', 4)->with('category')
         ->orderby('updated_at', 'desc')->get();
+        
         return Inertia::render('Monitor/Index', [
             'categories' => $categories,
             'setting' => $setting,
@@ -47,18 +50,27 @@ class MonitorController extends Controller
     public function getTriggerNotification()
     {
 
-        $antrian = Antrian::with(['queue' => function ($query) {
-            $query->where('status', 2);
-        }, 'counter', 'category'])->whereHas('queue', function($query) {
-            $query->where('status', 2);
-        })->get();
+        $antrian;
+
+        if(!Cache::has('antrian')) {
+            $getAntrian = Antrian::with(['queue' => function ($query) {
+                $query->where('status', 2);
+            }, 'counter', 'category'])->whereHas('queue', function($query) {
+                $query->where('status', 2);
+            })->get();
+
+
+            Cache::add("antrian", $getAntrian, now()->addMinutes(10));
+        }
+
+        $antrian = Cache::get("antrian");
 
         return response()->json(['data' => $antrian]);
-
     }
 
     public function successTriggerNotification($antrian)
     {
+        Cache::forget("antrian");
         $antrian = Antrian::findOrFail($antrian);
 
         $antrian->queue->status = 3;

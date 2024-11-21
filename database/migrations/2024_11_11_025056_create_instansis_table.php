@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Category;
-use App\Models\Instansi;
+use App\Models\Transaction;
 
 return new class extends Migration
 {
@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('counters', function (Blueprint $table) {
+        Schema::create('instansis', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Category::class)->onDelete('cascade');
-            $table->foreignIdFor(Instansi::class)->onDelete('cascade');
-            $table->string('no');
+            $table->string('logo');
             $table->string('name');
+            $table->enum('active', ['0', '1']);
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('counters');
+        Schema::dropIfExists('instansis');
     }
 };

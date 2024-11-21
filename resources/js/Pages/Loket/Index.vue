@@ -4,26 +4,17 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-4">
-                <div class="col-sm-6">
+                <div class="col-md-6 col-sm-12">
                     <h1 class="m-0 text-uppercase">Loket Layanan</h1>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
+                <div class="col-md-6 col-sm-12">
+                    <ol class="breadcrumb float-md-right float-sm-none">
                         <li class="breadcrumb-item">
                             <Link href="/dashboard">Dashboard</Link>
                         </li>
                         <li class="breadcrumb-item active">Loket Layanan</li>
                     </ol>
                 </div>
-            </div>
-
-            <!-- Pesan Berhasil -->
-            <div
-                v-if="flash.success"
-                class="alert alert-success alert-dismissible fade show"
-                role="alert"
-            >
-                <strong>Success!</strong> {{ flash.success }}
             </div>
 
             <div class="row">
@@ -37,37 +28,52 @@
                             </Link>
                         </div>
 
-                        <div class="card-body table-responsive">
-                            <table
-                                class="table table-striped table-bordered table-hover text-nowrap"
-                            >
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nomer Loket</th>
-                                        <th>Nama Loket</th>
-                                        <th>Jenis Antrian</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr
-                                        v-for="(loket, index) in props.lokets"
-                                        :key="loket.id"
-                                    >
-                                        <td>{{ index + 1 }}</td>
-                                        <td>{{ loket.no }}</td>
-                                        <td>{{ loket.name }}</td>
-                                        <td>
-                                            {{
-                                                loket.category
-                                                    ? loket.category.name
-                                                    : "N/A"
-                                            }}
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table
+                                    class="table table-striped table-bordered table-hover mb-0"
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nomer Loket</th>
+                                            <th>Nama Loket</th>
+                                            <th>Jenis Antrian</th>
+                                            <th>Instansi</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-if="props.lokets.data.length === 0">
+                                        <td colspan="6" class="text-center">
+                                            Data Tidak Tersedia
                                         </td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-0">
+                                    </tr>
+                                        <tr
+                                            v-for="(
+                                                loket, index
+                                            ) in props.lokets.data"
+                                            :key="loket.id"
+                                        >
+                                            <td>{{ index + 1  + (props.lokets.current_page - 1) * props.lokets.per_page }}</td>
+                                            <td>{{ loket.no }}</td>
+                                            <td>{{ loket.name }}</td>
+                                            <td>
+                                                {{
+                                                    loket.category
+                                                        ? loket.category.name
+                                                        : "N/A"
+                                                }}
+                                            </td>
+                                            <td>
+                                                {{
+                                                    loket.instansi
+                                                        ? loket.instansi.name
+                                                        : "N/A"
+                                                }}
+                                            </td>
+                                            <td>
+                                                <div class="d-flex gap-2">
                                                     <button
                                                         @click="
                                                             editLoket(loket.id)
@@ -76,8 +82,6 @@
                                                     >
                                                         Edit
                                                     </button>
-                                                </div>
-                                                <div class="col-1">
                                                     <button
                                                         @click="
                                                             confirmDelete(
@@ -89,11 +93,28 @@
                                                         Delete
                                                     </button>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <nav v-if="props.lokets.total > props.lokets.per_page">
+                                            <ul class="pagination justify-content-start">
+                                                <li class="page-item" :class="{ disabled: !props.lokets.prev_page_url }">
+                                                    <Link class="page-link" :href="'#'" @click.prevent="changePage(props.lokets.current_page - 1)">Previous</Link>
+                                                </li>
+                                                <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: props.lokets.current_page === page }">
+                                                    <Link class="page-link" :href="'#'" @click.prevent="changePage(page)">{{ page }}</Link>
+                                                </li>
+                                                <li class="page-item" :class="{ disabled: !props.lokets.next_page_url }">
+                                                    <Link class="page-link" :href="'#'" @click.prevent="changePage(props.lokets.current_page + 1)">Next</Link>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -108,7 +129,6 @@ import AppMeta from "@/Components/AppMeta.vue";
 
 export default {
     layout: (h, page) => h(Dasboard, [page]),
-
     layout: Dasboard,
 };
 </script>
@@ -117,13 +137,10 @@ export default {
 import { Link, router } from "@inertiajs/vue3";
 import { usePage } from "@inertiajs/vue3";
 import { toast } from "vue3-toastify";
+import { computed } from "vue";
 
-const props = defineProps(["lokets", "success"]);
-const page = usePage();
-const { flash } = usePage().props;
-
-console.log(props);
-console.log(page.props);
+const props = defineProps(["lokets"]);
+// const { flash } = usePage().props;
 
 function editLoket(id) {
     router.get(`/loket/${id}/edit`);
@@ -146,4 +163,15 @@ function deleteLoket(id) {
         },
     });
 }
+
+function changePage(page) {
+    if (page !== props.lokets.current_page) {
+        router.get(`/loket?page=${page}`);
+    }
+}
+
+const totalPages = computed(() => {
+    const totalPages = props.lokets.last_page;
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+});
 </script>

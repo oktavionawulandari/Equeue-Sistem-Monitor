@@ -30,4 +30,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function instansi()
+    {
+        return $this->belongsTo(Instansi::class);
+    }
 }

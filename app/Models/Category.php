@@ -31,9 +31,9 @@ class Category extends Model
         return $this->hasMany(Transaction::class);
     }
 
-    public function AntrianNow()
+    public function instansi()
     {
-        return $this->hasMany(AntrianNow::class);
+        return $this->belongsTo(Instansi::class);
     }
 
 }

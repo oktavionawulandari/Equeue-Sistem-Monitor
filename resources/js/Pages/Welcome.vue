@@ -2,7 +2,7 @@
     <AppMeta title="Home" />
 
     <div class="d-flex flex-column min-vh-100">
-        <Header :setting="setting" />
+        <Header :setting="props?.setting" />
 
         <div class="container-fluid">
             <div class="row gx-3 me-5 ms-5 mb-5">
@@ -43,7 +43,7 @@
                                 mengambil nomor antrian.
                             </p>
                             <Link
-                                :href="route('antrian')"
+                                :href="route('list.instansi')"
                                 class="btn btn-success rounded-pill px-4 py-2"
                             >
                                 Tampilkan <i class="fa fa-arrow-right ms-2"></i>
@@ -78,7 +78,7 @@
             </div>
         </div>
 
-        <Foot :setting="setting" />
+        <Foot :setting="props.setting" />
     </div>
 </template>
 
@@ -86,9 +86,10 @@
 import Foot from "../Layout/Monitor/Footer.vue";
 import Header from "../Layout/Monitor/Header.vue";
 import "../../css/dashboard.css";
-const settings = defineProps(["setting"]);
 import AppMeta from "@/Components/AppMeta.vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, usePage } from "@inertiajs/vue3";
+
+const { props } = usePage()
 </script>
 
 <style setup>

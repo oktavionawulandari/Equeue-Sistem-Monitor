@@ -1,6 +1,6 @@
 <template>
     <AppMeta title="Home" />
-    <Head :setting="setting" />
+    <Head :setting="props.setting" />
 
     <div class="d-flex flex-column min-vh-100">
         <div class="content-header">
@@ -28,7 +28,7 @@
                     >
                         <div :class="`small-box ${getBgClass(cat)}`">
                             <div class="inner">
-                                <h3>{{ cat.name }}</h3>
+                                <h5 class="text-bold">{{ cat.name }}</h5>
                                 <p>Panggilan Antrian</p>
                             </div>
                             <div class="icon">
@@ -107,7 +107,7 @@
         <!-- End Modal -->
     </div>
 
-    <Foot :setting="setting" />
+    <Foot :setting="props.setting" />
 </template>
 
 <script setup>
@@ -115,8 +115,11 @@ import "../../css/dashboard.css";
 import AppMeta from "@/Components/AppMeta.vue";
 import Head from "../Layout/Operator/Header.vue";
 import Foot from "../Layout/Monitor/Footer.vue";
+import { usePage } from "@inertiajs/vue3";
 
-const settings = defineProps(["setting", "category"]);
+const setting = defineProps(["category"]);
+const { props } = usePage();
+
 import { ref } from "vue";
 import { router } from "@inertiajs/vue3";
 

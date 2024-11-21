@@ -57,6 +57,35 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label for="category_id"
+                                        >Jenis Instansi</label
+                                    >
+                                    <select
+                                        class="form-control"
+                                        v-model="form.instansi_id"
+                                        :class="{
+                                            'is-invalid': errors.instansi_id,
+                                        }"
+                                        id="instansi_id"
+                                        name="instansi_id"
+                                    >
+                                        <option value="">Pilih Jenis Instansi</option>
+                                        <option
+                                            v-for="instansi in instansi"
+                                            :key="instansi.id"
+                                            :value="instansi.id"
+                                        >
+                                            {{ instansi.name }}
+                                        </option>
+                                    </select>
+                                    <div
+                                        v-if="errors.instansi_id"
+                                        class="invalid-feedback"
+                                    >
+                                        {{ errors.instansi_id }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label>Catatan</label>
                                     <textarea
                                         class="form-control"
@@ -116,11 +145,13 @@ export default {
 <script setup>
 import { Link, router, useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
-const props = defineProps(["setting"]);
+
+const props = defineProps(["setting", "instansi"]);
 
 const form = useForm({
     name: "",
     kode: "",
+    instansi_id: "",
     catatan: "",
 });
 

@@ -1,18 +1,18 @@
 <template>
-    <AppMeta title="Edit Kategori" />
+    <AppMeta title="Tambah Instansi" />
 
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-4">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-uppercase">Edit Kategori</h1>
+                    <h1 class="m-0 text-uppercase">Tambah Instansi</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item">
                             <Link :href="route('dashboard')">Dashboard</Link>
                         </li>
-                        <li class="breadcrumb-item active">Edit Kategori</li>
+                        <li class="breadcrumb-item active">Tambah Instansi</li>
                     </ol>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                         <div class="card-body">
                             <form @submit.prevent="submitForm">
                                 <div class="form-group">
-                                    <label>Nama Kategori</label>
+                                    <label>Nama Instansi</label>
                                     <input
                                         type="text"
                                         class="form-control"
@@ -40,70 +40,57 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Kode</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        v-model="form.kode"
-                                        :class="{ 'is-invalid': errors.kode }"
-                                        id="kode"
-                                        name="kode"
-                                    />
-                                    <div
-                                        v-if="errors.kode"
-                                        class="invalid-feedback"
-                                    >
-                                        {{ errors.kode }}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="category_id"
-                                        >Jenis Instansi</label
-                                    >
+                                    <label for="active">Status</label>
                                     <select
                                         class="form-control"
-                                        v-model="form.instansi_id"
+                                        v-model="form.active"
                                         :class="{
-                                            'is-invalid': errors.instansi_id,
+                                            'is-invalid': form.errors.active,
                                         }"
-                                        id="instansi_id"
-                                        name="instansi_id"
+                                        id="active"
+                                        name="active"
                                     >
-                                        <option value="">Pilih Jenis Instansi</option>
-                                        <option
-                                            v-for="instansi in instansi"
-                                            :key="instansi.id"
-                                            :value="instansi.id"
-                                        >
-                                            {{ instansi.name }}
+                                        <option value="" disabled>
+                                            Pilih Status
                                         </option>
+                                        <option value="0">Tidak Aktif</option>
+                                        <option value="1">Aktif</option>
                                     </select>
                                     <div
-                                        v-if="errors.instansi_id"
+                                        v-if="form.errors.active"
                                         class="invalid-feedback"
                                     >
-                                        {{ errors.instansi_id }}
+                                        {{ form.errors.active }}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Catatan</label>
-                                    <textarea
+                                    <label for="logo">Logo</label>
+                                    <!-- Logo Upload -->
+                                    <input
+                                        type="file"
                                         class="form-control"
-                                        v-model="form.catatan"
+                                        accept="image/*"
+                                        @change="previewImage"
                                         :class="{
-                                            'is-invalid': errors.catatan,
+                                            'is-invalid': form.errors.logo,
                                         }"
-                                        id="catatan"
-                                        name="catatan"
-                                    ></textarea>
+                                        id="logo"
+                                        name="logo"
+                                    />
                                     <div
-                                        v-if="errors.catatan"
+                                        v-if="form.errors.logo"
                                         class="invalid-feedback"
                                     >
-                                        {{ errors.catatan }}
+                                        {{ form.errors.logo }}
                                     </div>
+                                    <img
+                                        v-if="logoPreview"
+                                        :src="logoPreview"
+                                        alt="Logo"
+                                        class="img-fluid mt-3"
+                                        width="200"
+                                    />
                                 </div>
-
                                 <div class="row mt-5">
                                     <div class="col-auto">
                                         <button
@@ -115,7 +102,7 @@
                                     </div>
                                     <div class="col-auto">
                                         <Link
-                                            href="/category"
+                                            href="/instansi"
                                             class="btn btn-dark"
                                             >Kembali</Link
                                         >
@@ -136,39 +123,40 @@ import AppMeta from "@/Components/AppMeta.vue";
 import { toast } from "vue3-toastify";
 
 export default {
-    layout: (h, page) => h(Dasboard, [page]),
-
     layout: Dasboard,
 };
 </script>
 
 <script setup>
-import { Link, router } from "@inertiajs/vue3";
-import { ref, onMounted } from "vue";
+import { Link, router, useForm } from "@inertiajs/vue3";
+import { ref } from "vue";
+const props = defineProps(["setting"]);
 
-const props = defineProps(["id", "categories", "setting", 'instansi']);
-
-const form = ref({
+const form = useForm({
     name: "",
-    kode: "",
-    catatan: "",
-    instansi_id: "",
+    logo: "",
+    active: "",
 });
 
 const errors = ref({});
+const logoPreview = ref(null);
 
-onMounted(() => {
-    form.value.name = props.categories.name;
-    form.value.kode = props.categories.kode;
-    form.value.catatan = props.categories.catatan;
-    form.value.instansi_id = props.categories.instansi_id;
-});
-
+function previewImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            logoPreview.value = e.target.result;
+        };
+        reader.readAsDataURL(file);
+        form.logo = file;
+    }
+}
 function submitForm() {
-    router.put(`/category/${props.id}`, form.value, {
+    form.post("/instansi", {
         onSuccess: () => {
-            toast.success("Data Kategori Berhasil Diperbarui!");
-            router.visit("/category");
+            toast.success("Data Instansi Berhasil Ditambahkan!");
+            router.visit("/instansi");
         },
         onError: (formErrors) => {
             errors.value = formErrors;

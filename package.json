@@ -22,6 +22,7 @@
         "@inertiajs/vue3": "^1.0.2",
         "@vitejs/plugin-vue": "^4.1.0",
         "admin-lte": "^3.2.0",
+        "vue3-carousel": "^0.5.1",
         "vue3-toastify": "^0.2.3"
     }
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Counter extends Model
+class Instansi extends Model
 {
     use HasFactory;
     protected $primaryKey = 'id';
@@ -13,26 +13,17 @@ class Counter extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->hasMany(Category::class);
     }
 
-    public function instansi()
+    public function counter()
     {
-        return $this->belongsTo(Instansi::class);
-    }
-
-    public function AntrianNow()
-    {
-        return $this->hasMany(AntrianNow::class);
-    }
-
-    public function antrian()
-    {
-        return $this->hasMany(Antrian::class);
+        return $this->hasMany(Counter::class);
     }
 
     public function transaction()
     {
         return $this->hasMany(Transaction::class);
     }
+
 }

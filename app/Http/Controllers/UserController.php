@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(10);
         $setting = Setting::first();
 
          return Inertia::render('Pengguna/Index', [

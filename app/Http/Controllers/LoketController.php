@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Counter;
 use App\Models\Category;
+use App\Models\Instansi;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Redirect;
 
@@ -16,7 +17,11 @@ class LoketController extends Controller
      */
     public function index()
     {
-        $lokets = Counter::with('category')->get();
+        $lokets = Counter::whereHas('instansi', function($query) {
+            $query->where('active', '1');
+        })
+        ->with('category', 'instansi')
+        ->paginate(10);
         $setting = Setting::first();
 
         return Inertia::render('Loket/Index', [
@@ -31,11 +36,13 @@ class LoketController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $instansi = Instansi::where('active', '1')->get();
         $setting = Setting::first();
 
         return Inertia::render('Loket/Create', [
             'categories' => $categories,
-            'setting' => $setting
+            'setting' => $setting,
+            'instansi' => $instansi
          ]);
     }
 
@@ -49,12 +56,14 @@ class LoketController extends Controller
             'name.required' => 'Nama wajib diisi.',
             'category_id.required' => 'Kategori wajib dipilih.',
             'category_id.exists' => 'Kategori yang dipilih tidak valid.',
+            'instansi_id.required' => 'Kategori wajib dipilih.',
         ];
-    
+
         $validatedData = $request->validate([
             'no' => 'required',
             'name' => 'required',
             'category_id' => 'required|exists:categories,id',
+            'instansi_id' => 'required',
         ], $messages);
 
         Counter::create($validatedData);
@@ -72,14 +81,15 @@ class LoketController extends Controller
     public function edit(string $id)
     {
         $categories = Category::all();
-
+        $instansi = Instansi::where('active', '1')->get();
         $loket = Counter::findOrFail($id);
         $setting = Setting::first();
         return Inertia::render('Loket/Edit', [
             'id' => $id,
             'loket' => $loket,
             'categories' => $categories,
-            'setting' => $setting
+            'setting' => $setting,
+            'instansi' => $instansi
         ]);
     }
 
@@ -94,7 +104,7 @@ class LoketController extends Controller
             'category_id.required' => 'Kategori wajib dipilih.',
             'category_id.exists' => 'Kategori yang dipilih tidak valid.',
         ];
-    
+
         $validatedData = $request->validate([
             'no' => 'required',
             'name' => 'required',

@@ -33,6 +33,7 @@ class AntrianAdmController extends Controller
         if ($searchCategory) {
             $transaction->whereIn('category_id', (array)$searchCategory);
         }
+        
 
         $perPage = 10;
         $transaction = $transaction->paginate($perPage);

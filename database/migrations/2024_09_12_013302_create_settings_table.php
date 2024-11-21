@@ -19,13 +19,15 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->text('running_text')->nullable();
-            $table->string('video')->nullable();
+            // $table->string('video')->nullable();
             $table->string('navigasi')->nullable();
             $table->string('footer')->nullable();
             $table->string('background')->nullable();
             $table->string('text')->nullable();
-            $table->decimal('volume')->nullable();
+            // $table->decimal('volume')->nullable();
+            $table->text('images')->nullable();
             $table->enum('status', ['online', 'offline']);
+            $table->enum('set_phone', ['0', '1']);
             $table->timestamps();
         });
     }

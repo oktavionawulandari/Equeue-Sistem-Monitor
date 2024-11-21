@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\Transaction;
 use App\Models\Counter;
 use App\Models\Antrian;
+use App\Models\Instansi;
 
 
 return new class extends Migration
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('kode');
             $table->string('catatan')->nullable();
+            $table->foreignIdFor(Instansi::class)->onDelete('cascade');
             $table->timestamps();
         });
     }

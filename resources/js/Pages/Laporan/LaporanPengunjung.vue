@@ -57,7 +57,7 @@
                                             v-model="filters.searchCategory"
                                             id="searchCategory"
                                         >
-                                            <option value="" selected>
+                                            <option value="" disabled>
                                                 Pilih Kategori...
                                             </option>
                                             <option
@@ -76,7 +76,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row mt-3">
-                                    <div class="col-2 col-md-1">
+                                    <div class="col-4 col-md-1">
                                         <button
                                             type="submit"
                                             class="btn btn-success w-100"
@@ -84,7 +84,7 @@
                                             Filter
                                         </button>
                                     </div>
-                                    <div class="col-2 col-md-1">
+                                    <div class="col-4 col-md-1">
                                         <button
                                             type="button"
                                             class="btn btn-danger w-100"
@@ -93,7 +93,7 @@
                                             PDF
                                         </button>
                                     </div>
-                                    <div class="col-2 col-md-1">
+                                    <div class="col-4 col-md-1">
                                         <a
                                             :href="linkAction"
                                             target="_blank"
@@ -189,63 +189,45 @@
                             <div class="row mt-2">
                                 <div class="col-12">
                                     <nav v-if="isFilterApplied">
-                                        <ul
-                                            class="pagination justify-content-start"
+                                        <ul class="pagination justify-content-start">
+                                        <li
+                                            class="page-item"
+                                            :class="{ disabled: !transaction.prev_page_url }"
                                         >
-                                            <li
-                                                class="page-item"
-                                                :class="{
-                                                    disabled:
-                                                        !transaction.prev_page_url,
-                                                }"
+                                            <Link
+                                            class="page-link"
+                                            :href="'#'"
+                                            @click.prevent="changePage(transaction.current_page - 1)"
                                             >
-                                                <Link
-                                                    class="page-link"
-                                                    @click.prevent="
-                                                        changePage(
-                                                            transaction.current_page -
-                                                                1
-                                                        )
-                                                    "
-                                                    >Previous</Link
-                                                >
-                                            </li>
-                                            <li
-                                                class="page-item"
-                                                v-for="page in transaction.last_page"
-                                                :key="page"
-                                                :class="{
-                                                    active:
-                                                        transaction.current_page ===
-                                                        page,
-                                                }"
+                                            Previous
+                                            </Link>
+                                        </li>
+                                        <li
+                                            class="page-item"
+                                            v-for="page in transaction.last_page"
+                                            :key="page"
+                                            :class="{ active: transaction.current_page === page }"
+                                        >
+                                            <Link
+                                            class="page-link"
+                                            :href="'#'"
+                                            @click.prevent="changePage(page)"
                                             >
-                                                <Link
-                                                    class="page-link"
-                                                    @click.prevent="
-                                                        changePage(page)
-                                                    "
-                                                    >{{ page }}</Link
-                                                >
-                                            </li>
-                                            <li
-                                                class="page-item"
-                                                :class="{
-                                                    disabled:
-                                                        !transaction.next_page_url,
-                                                }"
+                                            {{ page }}
+                                            </Link>
+                                        </li>
+                                        <li
+                                            class="page-item"
+                                            :class="{ disabled: !transaction.next_page_url }"
+                                        >
+                                            <Link
+                                            class="page-link"
+                                            :href="'#'"
+                                            @click.prevent="changePage(transaction.current_page + 1)"
                                             >
-                                                <Link
-                                                    class="page-link"
-                                                    @click.prevent="
-                                                        changePage(
-                                                            transaction.current_page +
-                                                                1
-                                                        )
-                                                    "
-                                                    >Next</Link
-                                                >
-                                            </li>
+                                            Next
+                                            </Link>
+                                        </li>
                                         </ul>
                                     </nav>
                                 </div>

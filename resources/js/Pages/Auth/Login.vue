@@ -8,7 +8,7 @@ import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import AppMeta from '@/Components/AppMeta.vue';
 
-defineProps({
+const props = defineProps({
     canResetPassword: {
         type: Boolean,
     },
@@ -32,7 +32,7 @@ const submit = () => {
 
 <template>
         <AppMeta>
-        <link rel="icon" :href="`/storage/logo/${setting?.logo}`" type="image/x-icon"/>
+        <link rel="icon" :href="`/storage/logo/${props.setting?.logo}`" type="image/x-icon"/>
     </AppMeta>
 
     <GuestLayout>

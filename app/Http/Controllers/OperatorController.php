@@ -12,14 +12,13 @@ use App\Models\Setting;
 use App\Models\Antrian;
 use App\Models\AntrianNow;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
-class HomeController extends Controller
+class OperatorController extends Controller
 {
-    /**
- * Display a listing of the resource.
- */
     public function callQueue(Request $request, Queue $queue)
     {
+        Cache::forget("antrian");
         $queue->update(['status' => $request->status]);
 
         $data = Antrian::create([
@@ -96,6 +95,8 @@ class HomeController extends Controller
 
     public function refresh(Request $request, Queue $queue)
     {
+        Cache::forget("antrian");
+
         $startOfDay = now()->startOfDay();
         $endOfDay = now()->endOfDay();
 

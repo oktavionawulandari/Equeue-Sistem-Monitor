@@ -30,7 +30,7 @@ class SettingController extends Controller
             'email.email' => 'Format email tidak valid.',
             'email.max' => 'Email tidak boleh lebih dari 255 karakter.',
             'running_text.string' => 'Running text harus berupa teks.',
-            'video.file' => 'Video harus berupa file.',
+            // 'video.file' => 'Video harus berupa file.',
             'navigasi.string' => 'Navigasi harus berupa teks.',
             'navigasi.max' => 'Navigasi tidak boleh lebih dari 7 karakter.',
             'footer.string' => 'Footer harus berupa teks.',
@@ -39,8 +39,9 @@ class SettingController extends Controller
             'background.max' => 'Background tidak boleh lebih dari 7 karakter.',
             'text.string' => 'Teks harus berupa teks.',
             'text.max' => 'Teks tidak boleh lebih dari 7 karakter.',
-            'status.required' => 'Status harus diisi.',
-
+            'status.required' => 'Pengaturan audio harus diisi.',
+            'images.*.image' => 'List harus berupa gambar.',
+            'set_phone' => 'Pengaturan nomor telepon harus diisi.',
         ];
 
         $validated = $request->validate([
@@ -50,13 +51,16 @@ class SettingController extends Controller
             'phone' => 'nullable|string',
             'email' => 'nullable|email|max:255',
             'running_text' => 'nullable|string',
-            'video' => 'nullable|file',
+            // 'video' => 'nullable|file',
             'navigasi' => 'nullable|string|max:7',
             'footer' => 'nullable|string|max:7',
             'background' => 'nullable|string|max:7',
             'text' => 'nullable|string|max:7',
-            'volume' => 'required',
-            'status' => 'required'
+            // 'volume' => 'required',
+            'status' => 'required',
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|image',
+            'set_phone' => 'required'
         ], $messages);
 
 
@@ -71,13 +75,25 @@ class SettingController extends Controller
             $validated['logo'] = $setting->logo ?? null;
         }
 
-        if ($request->hasFile('video')) {
-            $videoFile = $request->file('video');
-            $videoName = time() . '.' . $videoFile->getClientOriginalExtension();
-            $videoFile->storeAs('public/videos', $videoName);
-            $validated['video'] = $videoName;
+        // if ($request->hasFile('video')) {
+        //     $videoFile = $request->file('video');
+        //     $videoName = time() . '.' . $videoFile->getClientOriginalExtension();
+        //     $videoFile->storeAs('public/videos', $videoName);
+        //     $validated['video'] = $videoName;
+        // } else {
+        //     $validated['video'] = $setting->video ?? null;
+        // }
+
+        if ($request->hasFile('images')) {
+            $imageNames = [];
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->storeAs('public/images', $imageName);
+                $imageNames[] = $imageName;
+            }
+            $validated['images'] = json_encode($imageNames);
         } else {
-            $validated['video'] = $setting->video ?? null;
+            $validated['images'] = $setting->images ?? null;
         }
 
         Setting::updateOrCreate(

@@ -21,8 +21,8 @@
                     <div class="card">
                         <div class="card-body">
                             <form @submit.prevent="applyFilter">
-                                <div class="form-row align-items-end">
-                                    <div class="col-6">
+                                <div class="form-row">
+                                    <div class="col-md-4 mb-3">
                                         <label for="search">No Antrian</label>
                                         <input
                                             v-model="filters.search"
@@ -32,7 +32,7 @@
                                             placeholder="Cari No Antrian..."
                                         />
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-md-4 mb-3">
                                         <label for="date">Tanggal</label>
                                         <input
                                             v-model="filters.date"
@@ -41,40 +41,34 @@
                                             class="form-control"
                                         />
                                     </div>
-                                    <div class="col-6 mt-3">
+                                    <div class="col-md-4 mb-3">
                                         <label for="searchCategory"
                                             >Kategori</label
                                         >
-                                        <div>
-                                            <div
+                                        <select
+                                            class="form-control"
+                                            v-model="filters.selectedLokets"
+                                            id="searchCategory"
+                                            @change="filterLoket"
+                                        >
+                                            <option value="" disabled>
+                                                Pilih Kategori...
+                                            </option>
+                                            <option
                                                 v-for="category in categories"
                                                 :key="category.id"
-                                                class="form-check form-check-inline"
+                                                :value="category.id"
                                             >
-                                                <input
-                                                    class="form-check-input"
-                                                    type="checkbox"
-                                                    :id="category.id"
-                                                    :value="category.id"
-                                                    v-model="
-                                                        filters.selectedLokets
-                                                    "
-                                                    @change="filterLoket"
-                                                />
-                                                <label
-                                                    class="form-check-label"
-                                                    :for="category.id"
-                                                    >{{ category.name }}</label
-                                                >
-                                            </div>
-                                        </div>
+                                                {{ category.name }}
+                                            </option>
+                                        </select>
                                     </div>
-                                    <div
-                                        class="col-6 d-flex justify-content-end mt-3"
-                                    >
+                                </div>
+                                <div class="form-row mt-3">
+                                    <div class="col-4 col-md-1">
                                         <button
                                             type="submit"
-                                            class="btn btn-success"
+                                            class="btn btn-success w-100"
                                         >
                                             Filter
                                         </button>
@@ -84,6 +78,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body table-responsive">
@@ -151,12 +146,7 @@
                                         <td>{{ t.user?.name ?? "-" }}</td>
                                         <td>{{ t.date }}</td>
                                     </tr>
-                                    <tr
-                                        v-if="
-                                            isFilterApplied &&
-                                            transaction.data.length === 0
-                                        "
-                                    >
+                                    <tr v-if="transaction.data.length === 0">
                                         <td colspan="7" class="text-center">
                                             Data tidak tersedia.
                                         </td>
@@ -178,6 +168,7 @@
                                             >
                                                 <Link
                                                     class="page-link"
+                                                    :href="'#'"
                                                     @click.prevent="
                                                         changePage(
                                                             transaction.current_page -
@@ -199,6 +190,7 @@
                                             >
                                                 <Link
                                                     class="page-link"
+                                                    :href="'#'"
                                                     @click.prevent="
                                                         changePage(page)
                                                     "
@@ -214,6 +206,7 @@
                                             >
                                                 <Link
                                                     class="page-link"
+                                                    :href="'#'"
                                                     @click.prevent="
                                                         changePage(
                                                             transaction.current_page +
@@ -245,7 +238,7 @@ const props = defineProps(["transaction", "categories"]);
 const filters = ref({
     search: "",
     date: new Date().toISOString().split("T")[0],
-    selectedLokets: [],
+    selectedLokets: "",
 });
 
 const applyFilter = () => {
