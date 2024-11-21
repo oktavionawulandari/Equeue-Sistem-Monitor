@@ -37,10 +37,15 @@ class MonitorController extends Controller
 
     public function getDisplay()
     {
-        $categories = Category::with(['antrian' => function ($query) {
-            $query->with('queue')->orderBy('created_at', 'asc')->first();
+        $today = \Carbon\Carbon::today(); 
+
+        $categories = Category::with(['antrian' => function ($query) use ($today) {
+            $query->with('queue')
+                  ->whereDate('created_at', $today) 
+                  ->orderBy('created_at', 'asc')
+                  ->first();
         }])->get();
-        $AntrianAkhir = Queue::where('status', 4)->with('category')
+        $AntrianAkhir = Queue::where('status', 4)->with('category')->whereDate('updated_at', $today) 
         ->orderby('updated_at', 'desc')->get();
 
 

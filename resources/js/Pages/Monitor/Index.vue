@@ -223,14 +223,14 @@ const getNotification = () => {
 const callNotifications = () => {
     if (queue.value.length > 0) {
         queue.value.forEach((data, index) => {
-            console.log("queue :", queue.value);
-            console.log("stack pending :", stackPendingSuccessTrigger.value);
-            console.log(
-                "is in stack :",
-                stackPendingSuccessTrigger.value.includes(data.queue_id)
-            );
-            if (stackPendingSuccessTrigger.value.includes(data.queue_id))
-                return;
+            // console.log("queue :", queue.value);
+            // console.log("stack pending :", stackPendingSuccessTrigger.value);
+            // console.log(
+            //     "is in stack :",
+            //     stackPendingSuccessTrigger.value.includes(data.queue_id)
+            // );
+            // if (stackPendingSuccessTrigger.value.includes(data.queue_id))
+            //     return;
 
             if (!isPlay.value) {
                 isPlay.value = true;
@@ -292,6 +292,7 @@ const callNotifications = () => {
                             if (queue.value.length > 0) {
                                 callNotifications();
                             }
+                            console.log("on success")
                         });
                     };
                     synth.speak(speak);
@@ -331,9 +332,10 @@ const successTriggerNotification = (id, onSuccess) => {
             _token: page.props.csrf_token,
         }),
     })
-        // .then((res) => res.json())
         .then(() => onSuccess())
-        .catch((err) => console.log("Error 404:", err));
+        .catch((err) => {
+            console.log('error 419 catch')
+        });
 };
 
 const fetchAntrianTerakhir = () => {
