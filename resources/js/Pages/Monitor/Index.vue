@@ -101,8 +101,8 @@
                                         {{
                                             getNilaiTerakhir.find(
                                                 (antrian) =>
-                                                    antrian.category_id ===
-                                                    category.id
+                                                    antrian?.category_id ===
+                                                    category?.id
                                             )?.no || "-"
                                         }}
                                     </h1>
@@ -167,12 +167,12 @@ const stackPendingSuccessTrigger = ref([]);
 const antrianAkhir = ref(null);
 
 const getNilaiTerakhir = computed(() => {
-    return antrianAkhir.value;
+    return antrianAkhir?.value;
 });
 
 const getBgClass = (category) => {
     const colorClasses = ["bg-success", "bg-light", "bg-dark"];
-    return colorClasses[category.id % colorClasses.length];
+    return colorClasses[category?.id % colorClasses?.length];
 };
 
 const updateCurrentDateTime = () => {
@@ -207,13 +207,13 @@ const getNotification = () => {
         .then((response) => response.json())
         .then((res) => {
             if (!isPlay.value) {
-                res.data.forEach((data) => {
-                    if (!checkQueueIfExists(data.queue_id)) {
+                res?.data?.forEach((data) => {
+                    if (!checkQueueIfExists(data?.queue_id)) {
                         console.log("push");
-                        queue.value.push(data);
+                        queue?.value?.push(data);
                     }
                 });
-                if (queue.value.length > 0) {
+                if (queue?.value?.length > 0) {
                     callNotifications();
                 }
             }
@@ -221,8 +221,8 @@ const getNotification = () => {
 };
 
 const callNotifications = () => {
-    if (queue.value.length > 0) {
-        queue.value.forEach((data, index) => {
+    if (queue?.value?.length > 0) {
+        queue?.value?.forEach((data, index) => {
             // console.log("queue :", queue.value);
             // console.log("stack pending :", stackPendingSuccessTrigger.value);
             // console.log(
@@ -234,11 +234,11 @@ const callNotifications = () => {
 
             if (!isPlay.value) {
                 isPlay.value = true;
-                getDisplay(data.category.id);
-                currentQueueNumber.value = data.queue.no;
-                currentCounterNumber.value = data.counter.name;
+                getDisplay(data?.category?.id);
+                currentQueueNumber.value = data?.queue?.no;
+                currentCounterNumber.value = data?.counter?.name;
 
-                const message = `Nomor antrian ${data.queue.no}, silahkan menuju ${data.counter.name}.`;
+                const message = `Nomor antrian ${data?.queue?.no}, silahkan menuju ${data?.counter?.name}.`;
 
                 // const vid = document.getElementById("myVideo");
                 // const volume = props.setting?.volume;
@@ -247,7 +247,7 @@ const callNotifications = () => {
                 //     vid.volume = volume;
                 // }
 
-                if (props.setting.status === "online") {
+                if (props?.setting?.status === "online") {
                     responsiveVoice.speak(message, "Indonesian Female", {
                         onend: () => {
                             isPlay.value = false;
@@ -257,39 +257,39 @@ const callNotifications = () => {
                             // );
 
                             stackPendingSuccessTrigger.value.push(
-                                data.queue_id
+                                data?.queue_id
                             );
 
-                            successTriggerNotification(data.id, () => {
+                            successTriggerNotification(data?.id, () => {
                                 stackPendingSuccessTrigger.value =
-                                    stackPendingSuccessTrigger.value.filter(
-                                        (v) => v != data.queue_id
+                                    stackPendingSuccessTrigger.value?.filter(
+                                        (v) => v != data?.queue_id
                                     );
-                                if (queue.value.length > 0) {
+                                if (queue?.value?.length > 0) {
                                     callNotifications();
                                 }
                             });
                         },
                     });
-                } else if (props.setting.status === "offline") {
+                } else if (props?.setting?.status === "offline") {
                     const synth = window.speechSynthesis;
                     const speak = new SpeechSynthesisUtterance(message);
                     speak.lang = "id-ID";
 
-                    stackPendingSuccessTrigger.value.push(data.queue_id);
+                    stackPendingSuccessTrigger?.value?.push(data?.queue_id);
                     speak.onend = () => {
-                        queue.value.splice(index, 1);
+                        queue?.value?.splice(index, 1);
                         isPlay.value = false;
                         // queue.value = queue.value.filter(
                         //     (val) => val.queue_id != data.queue_id
                         // );
 
-                        successTriggerNotification(data.id, () => {
+                        successTriggerNotification(data?.id, () => {
                             stackPendingSuccessTrigger.value =
-                                stackPendingSuccessTrigger.value.filter(
-                                    (v) => v != data.queue_id
+                                stackPendingSuccessTrigger?.value?.filter(
+                                    (v) => v != data?.queue_id
                                 );
-                            if (queue.value.length > 0) {
+                            if (queue?.value?.length > 0) {
                                 callNotifications();
                             }
                             console.log("on success")
@@ -306,15 +306,15 @@ const getDisplay = (idCat = null) => {
     fetch("/monitor/display")
         .then((res) => res.json())
         .then((data) => {
-            antrianAkhir.value = data.antrianAkhir;
+            antrianAkhir.value = data?.antrianAkhir;
             if (!idCat) {
-                categories.value = data.data;
+                categories.value = data?.data;
             } else {
-                const updatedCategory = data.data.find(
-                    (val) => val.id == idCat
+                const updatedCategory = data?.data?.find(
+                    (val) => val?.id == idCat
                 );
-                categories.value = categories.value.map((cat) =>
-                    cat.id !== idCat ? cat : updatedCategory
+                categories.value = categories?.value.map((cat) =>
+                    cat?.id !== idCat ? cat : updatedCategory
                 );
             }
         });
@@ -342,7 +342,7 @@ const fetchAntrianTerakhir = () => {
     fetch("/monitor/display")
         .then((res) => res.json())
         .then((data) => {
-            antrianAkhir.value = data.antrianAkhir;
+            antrianAkhir.value = data?.antrianAkhir;
         });
 };
 

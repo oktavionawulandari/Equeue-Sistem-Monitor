@@ -68,3 +68,8 @@ Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor');
 Route::get('/monitor/display', [MonitorController::class, 'getDisplay']);
 Route::get('/monitor/trigger-notification', [MonitorController::class, 'getTriggerNotification']);
 Route::patch('/monitor/trigger-notification/{queue}', [MonitorController::class, 'successTriggerNotification']);
+
+Route::get('/storage-link', function() {
+    \Illuminate\Support\Facades\Artisan::call('storage:link');
+
+});

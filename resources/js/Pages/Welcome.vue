@@ -60,7 +60,7 @@
                             >
                                 <i class="fas fa-sign-in-alt"></i>
                             </div>
-                            <h3>Login Petugas</h3>
+                            <h3 class="text-bold">Login Petugas</h3>
                             <p class="mb-5">
                                 Halaman Login Petugas digunakan petugas loket
                                 untuk mengakses sistem dan melayani antrian
