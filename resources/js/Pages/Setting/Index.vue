@@ -479,10 +479,10 @@ const { setting } = toRefs(props);
 // });
 
 const logoPreview = ref(
-    setting.value?.logo ? `/storage/logo/${setting.value.logo}` : null
+    setting.value?.logo ? `/storage/${setting.value.logo}` : null
 );
 const videoPreview = ref(
-    setting.value?.video ? `/storage/videos/${setting.value.video}` : null
+    setting.value?.video ? `/storage/${setting.value.video}` : null
 );
 
 const form = useForm({
@@ -543,7 +543,7 @@ const imagesPreview = ref([]);
 const previewImages = (e) => {
     const files = e.target.files;
     const previewUrls = [];
-    form.images = []; // Clear any previous images
+    form.images = [];
 
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
@@ -553,7 +553,7 @@ const previewImages = (e) => {
             imagesPreview.value = previewUrls;
         };
         reader.readAsDataURL(file);
-        form.images.push(file); // Store the actual file for submission
+        form.images.push(file);
     }
 };
 

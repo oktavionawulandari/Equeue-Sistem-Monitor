@@ -31,7 +31,7 @@ const submit = () => {
 
 <template>
     <AppMeta>
-        <link rel="icon" :href="`/storage/logo/${props.setting?.logo}`" type="image/x-icon" />
+        <link rel="icon" :href="`/storage/${props.setting?.logo}`" type="image/x-icon" />
     </AppMeta>
 
     <GuestLayout>

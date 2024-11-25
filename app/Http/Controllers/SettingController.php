@@ -66,30 +66,17 @@ class SettingController extends Controller
 
         $setting = Setting::find(1);
 
+
         if ($request->hasFile('logo')) {
-            $logoFile = $request->file('logo');
-            $logoName = time() . '.' . $logoFile->getClientOriginalExtension();
-            $logoFile->storeAs('public/logo', $logoName);
-            $validated['logo'] = $logoName;
+            $validated['logo'] = Storage::disk('public')->put('logo', $request->file('logo'));
         } else {
             $validated['logo'] = $setting->logo ?? null;
         }
 
-        // if ($request->hasFile('video')) {
-        //     $videoFile = $request->file('video');
-        //     $videoName = time() . '.' . $videoFile->getClientOriginalExtension();
-        //     $videoFile->storeAs('public/videos', $videoName);
-        //     $validated['video'] = $videoName;
-        // } else {
-        //     $validated['video'] = $setting->video ?? null;
-        // }
-
         if ($request->hasFile('images')) {
             $imageNames = [];
             foreach ($request->file('images') as $image) {
-                $imageName = time() . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('public/images', $imageName);
-                $imageNames[] = $imageName;
+                $imageNames[] = Storage::disk('public')->put('images', $image);
             }
             $validated['images'] = json_encode($imageNames);
         } else {

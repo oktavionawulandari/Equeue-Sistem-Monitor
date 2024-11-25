@@ -55,10 +55,6 @@ class InstansiController extends Controller
         ], $messages);
 
         if ($request->hasFile('logo')) {
-            // $logoFile = $request->file('logo');
-            // $logoName = time() . '.' . $logoFile->getClientOriginalExtension();
-            // $logoFile->storeAs('instansi', $logoName);
-            // $validatedData['logo'] = $logoName;
             $validatedData['logo'] = Storage::disk('public')->put('instansi', $request->file('logo'));
         } else {
             $validatedData['logo'] = null;
@@ -114,10 +110,6 @@ class InstansiController extends Controller
             if ($instansi->logo && Storage::exists( $instansi->logo)) {
                 Storage::delete($instansi->logo);
             }
-            // $logoFile = $request->file('logo');
-            // $logoName = time() . '.' . $logoFile->getClientOriginalExtension();
-            // $logoFile->storeAs('instansi', $logoName);
-            // $validatedData['logo'] = $logoName;
             $validatedData['logo'] = Storage::disk('public')->put('instansi', $request->file('logo'));
         } else {
             $validatedData['logo'] = $instansi->logo;

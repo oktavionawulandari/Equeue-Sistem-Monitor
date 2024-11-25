@@ -1,6 +1,6 @@
 <template>
     <AppMeta>
-        <link rel="icon" :href="`/storage/logo/${props.setting?.logo}`" type="image/x-icon"/>
+        <link rel="icon" :href="`/storage/${props.setting?.logo}`" type="image/x-icon"/>
     </AppMeta>
 
 
@@ -13,7 +13,7 @@
         >
             <div class="bi me-2 ms-5" width="40" height="32"  :style="{ marginLeft: '20px' }">
                 <img
-                    :src="`/storage/logo/${props.setting?.logo}`"
+                    :src="`/storage/${props.setting?.logo}`"
                     alt="logo"
                     width="50"
                     height="50"

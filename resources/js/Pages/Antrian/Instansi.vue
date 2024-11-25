@@ -12,7 +12,7 @@
                 <div class="d-flex justify-content-between w-100">
                     <div class="logo-container">
                         <img
-                            :src="`/storage/logo/${props.setting?.logo}`"
+                            :src="`/storage/${props.setting?.logo}`"
                             class="logo"
                         />
                     </div>
@@ -34,7 +34,7 @@
 
                     <div class="logo-container">
                         <img
-                            :src="`/storage/logo/${props.setting?.logo}`"
+                            :src="`/storage/${props.setting?.logo}`"
                             class="logo"
                         />
                     </div>
@@ -54,7 +54,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="logo-image">
                                     <img
-                                        :src="`/storage/instansi/${ins.logo}`"
+                                        :src="`/storage/${ins.logo}`"
                                         width="125px" style="object-fit: contain;"  height="100%"  :style="{marginRight: '20px' }"
                                     />
                                 </div>

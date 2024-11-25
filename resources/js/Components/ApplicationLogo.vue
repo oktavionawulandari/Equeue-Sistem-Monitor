@@ -1,5 +1,5 @@
 <template>
-    <img :src="`/storage/logo/${page.props.setting?.logo}`" alt="logo" >
+    <img :src="`/storage/${page.props.setting?.logo}`" alt="logo" >
 
 </template>
 

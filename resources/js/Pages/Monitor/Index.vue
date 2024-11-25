@@ -39,7 +39,7 @@
                             :key="index"
                         >
                             <img
-                            :src="'/storage/images/' + image"
+                            :src="'/storage/' + image"
                             alt="Image"
                             class="carousel-item-img"
                             />

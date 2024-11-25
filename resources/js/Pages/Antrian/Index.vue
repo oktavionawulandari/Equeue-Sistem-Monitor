@@ -13,14 +13,14 @@
             class="nav-link me-3"
             :href="route('list.instansi')"
             title="Kembali"
-            :style="{ color: props.setting?.text, marginLeft: '20px' }" 
+            :style="{ color: props.setting?.text, marginLeft: '20px' }"
           >
             <i class="fas fa-sign-out-alt"></i>
           </Link>
 
           <div class="d-flex align-items-center">
             <img
-              :src="`/storage/logo/${props.setting?.logo}`" 
+              :src="`/storage/${props.setting?.logo}`"
               alt="logo"
               width="40"
               height="40"
@@ -56,7 +56,7 @@
         </div>
       </header>
 
-      
+
 
       <div class="container-fluid">
         <form @submit.prevent="submitForm">

@@ -2,7 +2,7 @@
     <AppMeta>
         <link
             rel="icon"
-            :href="`/storage/logo/${setting?.logo}`"
+            :href="`/storage/${setting?.logo}`"
             type="image/x-icon"
         />
     </AppMeta>
@@ -10,7 +10,7 @@
     <aside class="main-sidebar sidebar-dark-success elevation-4">
         <a class="brand-link d-flex align-items-center">
             <img
-                :src="`/storage/logo/${setting?.logo}`"
+                :src="`/storage/${setting?.logo}`"
                 alt="logo"
                 width="50"
                 class="me-2"
