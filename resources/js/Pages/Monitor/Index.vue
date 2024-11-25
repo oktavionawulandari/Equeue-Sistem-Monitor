@@ -130,7 +130,7 @@
 
 <script setup>
 import { onMounted, ref, onBeforeUnmount, computed, defineComponent } from "vue";
-import { router, usePage } from "@inertiajs/vue3";
+import { router, useForm, usePage } from "@inertiajs/vue3";
 import Header from "../../Layout/Monitor/Header.vue";
 import AppMeta from "@/Components/AppMeta.vue";
 import "../../../css/dashboard.css";
@@ -268,6 +268,7 @@ const callNotifications = () => {
                                 if (queue?.value?.length > 0) {
                                     callNotifications();
                                 }
+                                console.log("on success")
                             }, () => {
                                 console.log("error catch 419")
                             });
@@ -325,19 +326,15 @@ const getDisplay = (idCat = null) => {
 };
 
 const successTriggerNotification = (id, onSuccess, onError) => {
-    fetch(`/monitor/trigger-notification/${id}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
+    const form = useForm({})
+
+    form.patch(`/monitor/trigger-notification/${id}`, {
+        onSuccess: () => {
+            console.log("success triger")
+            onSuccess()
         },
-        body: JSON.stringify({
-            _method: "PATCH",
-            _token: page.props.csrf_token,
-        }),
+        onError: onError
     })
-        .then(() => onSuccess())
-        .catch((e) => onError(e));
 };
 
 const fetchAntrianTerakhir = () => {
