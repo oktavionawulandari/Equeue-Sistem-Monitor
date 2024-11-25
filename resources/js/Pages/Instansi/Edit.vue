@@ -148,7 +148,7 @@ onMounted(() => {
     form.name = props.instansi.name;
     form.active = props.instansi.active;
     logoPreview.value = props.instansi.logo
-        ? `/storage/instansi/${props.instansi.logo}`
+        ? `/storage/${props.instansi.logo}`
         : null;
 });
 
