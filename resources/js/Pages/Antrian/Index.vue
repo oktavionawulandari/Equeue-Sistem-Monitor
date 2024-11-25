@@ -70,11 +70,11 @@
                 <div
                   class="card-body d-flex justify-content-center align-items-center"
                 >
-                  <h5
-                    class="card-title text-bold text-uppercase text-danger"
+                  <h1
+                    class="card-title text-bold text-uppercase text-danger" style="font-size: 40px;"
                   >
                     {{ cat.name }}
-                  </h5>
+                  </h1>
                 </div>
               </div>
 
@@ -89,12 +89,12 @@
                   <div
                     class="border border-success rounded-5 py-2 mb-4"
                   >
-                    <h6
+                    <h1
                       id="antrian"
-                      class="display-1 text-danger fw-bold text-center lh-1 pb-2"
+                      class="display-1 text-danger text-bold text-center lh-1 pb-2"
                     >
                       {{ getLatestQueueNumber(cat) }}
-                    </h6>
+                    </h1>
                   </div>
                   <button
                     v-if="
