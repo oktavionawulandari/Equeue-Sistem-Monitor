@@ -268,6 +268,8 @@ const callNotifications = () => {
                                 if (queue?.value?.length > 0) {
                                     callNotifications();
                                 }
+                            }, () => {
+                                console.log("error catch 419")
                             });
                         },
                     });
@@ -293,7 +295,9 @@ const callNotifications = () => {
                                 callNotifications();
                             }
                             console.log("on success")
-                        });
+                        }, () => {
+                                console.log("error catch 419")
+                            });
                     };
                     synth.speak(speak);
                 }
@@ -320,7 +324,7 @@ const getDisplay = (idCat = null) => {
         });
 };
 
-const successTriggerNotification = (id, onSuccess) => {
+const successTriggerNotification = (id, onSuccess, onError) => {
     fetch(`/monitor/trigger-notification/${id}`, {
         method: "POST",
         headers: {
@@ -333,9 +337,7 @@ const successTriggerNotification = (id, onSuccess) => {
         }),
     })
         .then(() => onSuccess())
-        .catch((err) => {
-            console.log('error 419 catch')
-        });
+        .catch((e) => onError(e));
 };
 
 const fetchAntrianTerakhir = () => {
