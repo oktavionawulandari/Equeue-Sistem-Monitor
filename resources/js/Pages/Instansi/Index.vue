@@ -57,7 +57,7 @@
                                         <td>{{ index + 1  + (props.instansi.current_page - 1) * props.instansi.per_page }}</td>
                                         <td>
                                             <img
-                                                :src="`/storage/instansi/${i.logo}`"
+                                                :src="`/storage/${i.logo}`"
                                                 alt="Logo"
                                                 width="70"
                                                 height="70"

@@ -360,6 +360,6 @@ const pages = computed(() => {
 }
 
 .info-box-content {
-    text-align: left; /* pastikan text berada di kiri */
+    text-align: left; 
 }
 </style>
