@@ -107,7 +107,7 @@
                                             <td>
                                                 <button
                                                     type="button"
-                                                    class="call-button mr-2"
+                                                    class="btn call-button mr-2"
                                                     :class="{
                                                         'btn-primary':
                                                             Number(
