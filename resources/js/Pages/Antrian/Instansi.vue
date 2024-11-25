@@ -55,12 +55,12 @@
                                 <div class="logo-image">
                                     <img
                                         :src="`/storage/instansi/${ins.logo}`"
-                                        width="125px" style="object-fit: contain;"  height="100%"
+                                        width="125px" style="object-fit: contain;"  height="100%"  :style="{marginRight: '20px' }"
                                     />
                                 </div>
                                 <h5
                                     class="ms-3 text-danger"
-                                    style="font-size: 20px; font-weight: bold"
+                                    style="font-size: 26px; font-weight: bold"
                                 >
                                     {{ ins.name }}
                                 </h5>
@@ -126,6 +126,7 @@ const instansi = props.instansi || [];
     justify-content: center;
     padding: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    margin-right: 15px;
 }
 
 .logo {

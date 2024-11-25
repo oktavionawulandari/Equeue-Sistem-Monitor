@@ -6,7 +6,7 @@ export default defineConfig({
     server: {
         host: true,
         hmr: {
-            host: "192.168.1.13",
+            host: "192.168.1.11",
             overlay: false,
             clientPort: 5173,
         },

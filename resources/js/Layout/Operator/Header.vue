@@ -11,7 +11,7 @@
             :href="route('home')"
             class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
         >
-            <div class="bi me-2 ms-5" width="40" height="32">
+            <div class="bi me-2 ms-5" width="40" height="32"  :style="{ marginLeft: '20px' }">
                 <img
                     :src="`/storage/logo/${props.setting?.logo}`"
                     alt="logo"
@@ -20,18 +20,19 @@
                 />
             </div>
             <span
-                class="fs-4 text-bold ms-2 "
-                style="font-size: 22px" :style="{ color: setting?.text }"
+                class="fs-4 text-bold ms-2"
+                :style="{ color: props.setting?.text }"
+                style="font-size: 22px"
                 >{{ props.setting?.instansi ?? "" }}</span
             >
         </Link>
-        <div class="d-flex align-items-center ms-auto me-5" :style="{ color: setting?.text }">
+        <div class="d-flex align-items-center ms-auto me-5" >
             <Link
                 class="nav-link"
                 :href="route('logout')"
                 method="post"
-                as="button"
                 title="logout"
+                :style="{ color: setting?.text }"
             >
                 <i class="fas fa-sign-out-alt"></i>
             </Link>

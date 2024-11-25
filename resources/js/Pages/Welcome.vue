@@ -14,7 +14,7 @@
                             >
                                 <i class="fa fa-desktop" aria-hidden="true"></i>
                             </div>
-                            <h3>Monitor Antrian</h3>
+                            <h3 class="text-bold">Monitor Antrian</h3>
                             <p class="mb-5">
                                 Halaman Monitor Antrian digunakan menampilkan
                                 antrian pada monitor.
@@ -37,7 +37,7 @@
                             >
                                 <i class="fa fa-users"></i>
                             </div>
-                            <h3>Nomor Antrian</h3>
+                            <h3 class="text-bold">Nomor Antrian</h3>
                             <p class="mb-5">
                                 Halaman Nomor Antrian digunakan pengunjung untuk
                                 mengambil nomor antrian.

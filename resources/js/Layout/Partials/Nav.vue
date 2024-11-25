@@ -16,7 +16,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <Link class="nav-link" :href="route('logout')" method="post" as="button"  title="logout">
+                    <Link class="nav-link" :href="route('logout')" method="post" title="logout">
                         <i class="fas fa-sign-out-alt"></i>
                     </Link>
                 </li>

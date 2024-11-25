@@ -13,14 +13,14 @@
             class="nav-link me-3"
             :href="route('list.instansi')"
             title="Kembali"
-            :style="{ color: props.setting?.text }"
+            :style="{ color: props.setting?.text, marginLeft: '20px' }" 
           >
             <i class="fas fa-sign-out-alt"></i>
           </Link>
 
           <div class="d-flex align-items-center">
             <img
-              :src="`/storage/logo/${props.setting?.logo}`"
+              :src="`/storage/logo/${props.setting?.logo}`" 
               alt="logo"
               width="40"
               height="40"
@@ -36,25 +36,27 @@
           </div>
         </div>
 
-        <div class="d-flex align-items-center text-dark me-3">
+        <div class="d-flex align-items-center text-dark ms-auto ms-5" :style="{marginRight: '20px' }">
           <i
             class="fa fa-calendar me-2"
             :style="{ color: props.setting?.text }"
           ></i>
           <div
             class="fs-5 text-bold"
-            :style="{ color: props.setting?.text }"
+            :style="{ color: props.setting?.text, marginLeft: '5px' }"
           >
             {{ currentDate }}
           </div>
           <div
             class="fs-5 text-bold ms-3"
-            :style="{ color: props.setting?.text }"
+            :style="{ color: props.setting?.text, marginLeft: '5px' }"
           >
             {{ currentTime }}
           </div>
         </div>
       </header>
+
+      
 
       <div class="container-fluid">
         <form @submit.prevent="submitForm">

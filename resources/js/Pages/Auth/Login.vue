@@ -2,7 +2,6 @@
 import Checkbox from '@/Components/Checkbox.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
@@ -31,55 +30,54 @@ const submit = () => {
 </script>
 
 <template>
-        <AppMeta>
-        <link rel="icon" :href="`/storage/logo/${props.setting?.logo}`" type="image/x-icon"/>
+    <AppMeta>
+        <link rel="icon" :href="`/storage/logo/${props.setting?.logo}`" type="image/x-icon" />
     </AppMeta>
 
     <GuestLayout>
         <Head title="Log in" />
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+        <div v-if="status" class="alert alert-success mb-4">
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="username" value="username" />
-
-                <TextInput
+        <form @submit.prevent="submit" >
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input
                     id="username"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="form-control"
                     v-model="form.username"
                     required
                     autofocus
                     autocomplete="username"
                 />
-
-                <InputError class="mt-2" :message="form.errors.username" />
+                <div class="text-danger mt-1 small" v-if="form.errors.username">{{ form.errors.username }}</div>
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input
                     id="password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="form-control"
                     v-model="form.password"
                     required
                     autocomplete="current-password"
                 />
-
-                <InputError class="mt-2" :message="form.errors.password" />
+                <div class="text-danger mt-1 small" v-if="form.errors.password">{{ form.errors.password }}</div>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-
-
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <div class="d-flex justify-content-end">
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    :class="{ 'disabled': form.processing }"
+                    :disabled="form.processing"
+                >
                     Log in
-                </PrimaryButton>
+                </button>
             </div>
         </form>
     </GuestLayout>
