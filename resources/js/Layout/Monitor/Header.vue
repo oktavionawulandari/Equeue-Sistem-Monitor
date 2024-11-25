@@ -52,11 +52,9 @@ import { Link, usePage } from "@inertiajs/vue3";
 // Define props
 const props = defineProps(["setting"])
 
-// Define state for current date and time
 const currentDate = ref("");
 const currentTime = ref("");
 
-// Function to update current date and time
 const updateCurrentDateTime = () => {
     const now = new Date();
     const dateOptions = {
@@ -75,7 +73,6 @@ const updateCurrentDateTime = () => {
     currentTime.value = now.toLocaleTimeString("id-ID", timeOptions);
 };
 
-// On mounted, update date and time
 onMounted(() => {
     updateCurrentDateTime();
     setInterval(updateCurrentDateTime, 1000);

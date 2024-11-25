@@ -71,7 +71,7 @@
                   class="card-body d-flex justify-content-center align-items-center"
                 >
                   <h1
-                    class="card-title text-bold text-uppercase text-danger" style="font-size: 40px;"
+                    class="card-title text-bold text-uppercase text-danger" style="font-size: 30px;"
                   >
                     {{ cat.name }}
                   </h1>
