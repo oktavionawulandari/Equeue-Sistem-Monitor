@@ -7,7 +7,7 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <script src="{{ asset('assets/vendor/js/responsivevoice.js') }}" type="text/javascript"></script>
-
+        {{-- <script src="https://code.responsivevoice.org/responsivevoice.js?key=R8QHuUuS"></script> --}}
         <!-- PWA  -->
         <meta name="theme-color" content="#6777ef"/>
         <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
