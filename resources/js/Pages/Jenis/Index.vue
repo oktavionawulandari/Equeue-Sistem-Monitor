@@ -71,12 +71,12 @@
                                         </td>
                                         <td>{{ category.catatan }}</td>
                                         <td>
-                                            <div class="d-flex gap-2">
+                                            <div class="d-flex gap-2 ">
                                                 <button
                                                     @click="
                                                         editLoket(category.id)
                                                     "
-                                                    class="btn btn-warning btn-sm"
+                                                    class="btn btn-warning btn-sm mr-2"
                                                 >
                                                     Edit
                                                 </button>

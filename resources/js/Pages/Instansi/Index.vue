@@ -80,7 +80,7 @@
                                             <div class="d-flex gap-2">
                                                 <button
                                                     @click="editInstansi(i.id)"
-                                                    class="btn btn-warning btn-sm"
+                                                    class="btn btn-warning btn-sm mr-2"
                                                 >
                                                     Edit
                                                 </button>
@@ -163,7 +163,7 @@ function deleteInstansi(id) {
 
 function changePage(page) {
     if (page !== props.instansi.current_page) {
-        router.get(`/loket?page=${page}`);
+        router.get(`/instansi?page=${page}`);
     }
 }
 

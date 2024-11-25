@@ -78,7 +78,7 @@
                                                         @click="
                                                             editLoket(loket.id)
                                                         "
-                                                        class="btn btn-warning btn-sm"
+                                                        class="btn btn-warning btn-sm mr-2"
                                                     >
                                                         Edit
                                                     </button>
