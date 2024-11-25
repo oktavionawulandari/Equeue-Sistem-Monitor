@@ -62,7 +62,7 @@
                                             <div class="d-flex gap-2">
                                                 <button
                                                     @click="editLoket(user.id)"
-                                                    class="btn btn-warning btn-sm"
+                                                    class="btn btn-warning btn-sm mr-2"
                                                 >
                                                     Edit
                                                 </button>

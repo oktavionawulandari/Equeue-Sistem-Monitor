@@ -107,6 +107,7 @@
                                             <td>
                                                 <button
                                                     type="button"
+                                                    class="call-button mr-2"
                                                     :class="{
                                                         'btn-primary':
                                                             Number(
@@ -118,9 +119,7 @@
                                                             ) === 3 ||
                                                             Number(
                                                                 queue.status
-                                                            ) === 2,
-                                                        'call-button': true,
-                                                        'me-2': true,
+                                                            ) === 2,                                                       
                                                     }"
                                                     @click="callQueue(queue)"
                                                     aria-label="Panggil antrian"
@@ -136,7 +135,7 @@
                                                 </button>
                                                 <button
                                                     type="button"
-                                                    class="btn btn-success call-button"
+                                                    class="btn btn-success call-button mr-2"
                                                     @click="successQueue(queue)"
                                                     aria-label="Panggil antrian"
                                                     aria-describedby="call-queue-description"
@@ -151,7 +150,7 @@
                                                 </button>
                                                 <button
                                                     type="button"
-                                                    class="btn btn-danger call-button ms-2"
+                                                    class="btn btn-danger call-button mr-2"
                                                     @click="batalQueue(queue)"
                                                     arial-label="Batal"
                                                     aria-describedby="call-queue-description"
