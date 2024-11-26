@@ -39,29 +39,36 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12" v-for="(category, i) in categories">
+                    <div class="col-12" v-for="(category, i) in categoriesMap">
                         <div class="card card-body">
-                            <div class="row">
-                                <div class="col-6">
+                            <!-- <div class="row">
+                                <div class="col-12">
                                     <div class="d-flex" style="gap: 10px">
-                                        <span class="font-weight-bold mr-2">{{
-                                            category.name
-                                        }}</span>
+                                        <span class="font-weight-bold mr-2"
+                                            >{{ category.name }}
+                                            {{
+                                                category?.antrian?.updated_at
+                                            }}</span
+                                        >
                                         <span>|</span>
                                         <span>
-                                            {{
-                                                getNilaiTerakhir.find(
-                                                    (antrian) =>
-                                                        antrian?.category_id ===
-                                                        category?.id
-                                                )?.no || "-"
-                                            }}
+                                            {{ category?.antrian?.no || "-" }}
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    {{ category?.antrian?.queue?.status }}
-                                </div>
+                            </div> -->
+                            <div class="d-flex justify-content-between">
+                                <span
+                                    class="font-weight-bold"
+                                    style="font-size: 1.4em"
+                                    >{{ category?.antrian?.no || "-" }}</span
+                                >
+                                <span
+                                    class="font-weight-bold"
+                                    style="font-size: 1.4em"
+                                >
+                                    {{ category?.name }}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -283,6 +290,35 @@ const getNilaiTerakhir = computed(() => {
     return antrianAkhir?.value;
 });
 
+const categoriesMap = computed(() => {
+    const categoriesWithAntrian = categories.value?.map((category) => {
+        return {
+            ...category,
+            antrian: getNilaiTerakhir.value.find(
+                (antrian) => antrian.category_id === category.id
+            ),
+        };
+    });
+    const categoriesWithAntrianStatus4 = categoriesWithAntrian
+        .filter((category) => category.antrian?.status == 4)
+        .sort((a, b) =>
+            a.antrian?.updated_at < b.antrian?.updated_at ? 1 : -1
+        );
+
+    const categoriesWithAntrianNotStatus4 = categoriesWithAntrian
+        .filter((category) => category.antrian?.status != 4)
+        .sort((a, b) =>
+            a.antrian?.updated_at < b.antrian?.updated_at ? 1 : -1
+        );
+
+    const categoriesMerge = [
+        ...categoriesWithAntrianStatus4,
+        ...categoriesWithAntrianNotStatus4,
+    ];
+
+    return categoriesMerge.slice(0, 5);
+});
+
 const getBgClass = (category) => {
     const colorClasses = ["bg-success", "bg-light", "bg-dark"];
     return colorClasses[category?.id % colorClasses?.length];
@@ -347,8 +383,10 @@ const callNotifications = () => {
                 const playTingtung = (onend) => {
                     if (props?.setting?.called == "0") {
                         const audio = new Audio("assets/audio/tingtung.mp3");
-                        audio.play()
-                        audio.onended = onend
+                        audio.play().catch((err) => {
+                            console.log("error sound :", err);
+                        });
+                        audio.onended = onend;
                     }
                 };
 
