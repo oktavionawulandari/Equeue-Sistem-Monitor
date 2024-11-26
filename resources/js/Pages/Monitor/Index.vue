@@ -257,15 +257,6 @@ const getNotification = () => {
 const callNotifications = () => {
     if (queue?.value?.length > 0) {
         queue?.value?.forEach((data, index) => {
-            // console.log("queue :", queue.value);
-            // console.log("stack pending :", stackPendingSuccessTrigger.value);
-            // console.log(
-            //     "is in stack :",
-            //     stackPendingSuccessTrigger.value.includes(data.queue_id)
-            // );
-            // if (stackPendingSuccessTrigger.value.includes(data.queue_id))
-            //     return;
-
             if (!isPlay.value) {
                 isPlay.value = true;
                 getDisplay(data?.category?.id);
@@ -274,39 +265,42 @@ const callNotifications = () => {
 
                 const message = `Nomor antrian ${data?.queue?.no}, silahkan menuju ${data?.counter?.name}.`;
 
-                // const vid = document.getElementById("myVideo");
-                // const volume = props.setting?.volume;
-
-                // if (vid && typeof volume === "number" && !isNaN(volume)) {
-                //     vid.volume = volume;
-                // }
+                const playTingtung = (onend) => {
+                    if (props?.setting?.called == "0") {
+                        const audio = new Audio("storage/audio/tingtung.mp3");
+                        audio.play()
+                        audio.onended = onend
+                    }
+                };
 
                 if (props?.setting?.status === "online") {
-                    responsiveVoice.speak(message, "Indonesian Female", {
-                        onend: () => {
-                            isPlay.value = false;
-                            queue.value.splice(index, 1);
-                            // queue.value = queue.value.filter(
-                            //     (val) => val.queue_id != data.queue_id
-                            // );
+                    playTingtung(() => {
+                        responsiveVoice.speak(message, "Indonesian Female", {
+                            onend: () => {
+                                isPlay.value = false;
+                                queue.value.splice(index, 1);
+                                // queue.value = queue.value.filter(
+                                //     (val) => val.queue_id != data.queue_id
+                                // );
 
-                            stackPendingSuccessTrigger.value.push(
-                                data?.queue_id
-                            );
+                                stackPendingSuccessTrigger.value.push(
+                                    data?.queue_id
+                                );
 
-                            successTriggerNotification(data?.id, () => {
-                                stackPendingSuccessTrigger.value =
-                                    stackPendingSuccessTrigger.value?.filter(
-                                        (v) => v != data?.queue_id
-                                    );
-                                if (queue?.value?.length > 0) {
-                                    callNotifications();
-                                }
-                                console.log("on success")
-                            }, () => {
-                                console.log("error catch 419")
-                            });
-                        },
+                                successTriggerNotification(data?.id, () => {
+                                    stackPendingSuccessTrigger.value =
+                                        stackPendingSuccessTrigger.value?.filter(
+                                            (v) => v != data?.queue_id
+                                        );
+                                    if (queue?.value?.length > 0) {
+                                        callNotifications();
+                                    }
+                                    console.log("on success");
+                                }, () => {
+                                    console.log("error catch 419");
+                                });
+                            },
+                        });
                     });
                 } else if (props?.setting?.status === "offline") {
                     const synth = window.speechSynthesis;
@@ -321,6 +315,7 @@ const callNotifications = () => {
                         //     (val) => val.queue_id != data.queue_id
                         // );
 
+
                         successTriggerNotification(data?.id, () => {
                             stackPendingSuccessTrigger.value =
                                 stackPendingSuccessTrigger?.value?.filter(
@@ -329,17 +324,22 @@ const callNotifications = () => {
                             if (queue?.value?.length > 0) {
                                 callNotifications();
                             }
-                            console.log("on success")
+                            console.log("on success");
                         }, () => {
-                                console.log("error catch 419")
-                            });
+                            console.log("error catch 419");
+                        });
                     };
-                    synth.speak(speak);
+
+                    playTingtung(() => {
+
+                        synth.speak(speak);
+                    });
                 }
             }
         });
     }
 };
+
 
 const getDisplay = (idCat = null) => {
     fetch("/monitor/display")
