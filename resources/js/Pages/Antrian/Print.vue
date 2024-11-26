@@ -29,7 +29,7 @@
                     <div class="queue-number">{{ props.latestQueue.no }}</div>
                     <div class="counters">
                         <div v-for="(counter, index) in props.category.counters" :key="counter.id" class="counter">
-                            {{ counter.name }}<span v-if="index < props.category.counters.length - 1">,</span>
+                            {{ counter.name }}<span v-if="index < props.category.counters.length - 1">/</span>
                         </div>
                     </div>
                     <div class="instructions">

@@ -4,7 +4,9 @@
         class="d-flex flex-column min-vh-100"
         :style="{ backgroundColor: props.setting?.background }"
     >
-        <Header :setting="props.setting" />
+    <Header :setting="props.setting" />
+
+
 
         <div class="container-fluid">
             <form @submit.prevent="submitForm">
@@ -14,6 +16,18 @@
                         v-for="cat in categories"
                         :key="cat.id"
                     >
+                        <!-- <div class="card">
+                <div
+                  class="card-body d-flex justify-content-center align-items-center"
+                >
+                  <h1
+                    class="card-title text-bold text-uppercase text-danger" style="font-size: 40px;"
+                  >
+                    {{ cat.name }}
+                  </h1>
+                </div>
+              </div> -->
+
                         <div
                             class="card"
                             :style="{
@@ -30,35 +44,43 @@
                                         class="display-1 text-danger text-bold text-center"
                                         :style="{ fontSize: cat.name.length > 20 ? '25px' : '34px' }"
                                     >
-                                    {{ cat.name }}
+                                        {{ cat.name }}
                                     </p>
                                 </div>
                                 <button
-                                    v-if="parseInt(props.setting?.set_phone) === 1"
+                                    v-if="
+                                        parseInt(props.setting?.set_phone) === 1
+                                    "
                                     type="submit"
                                     class="btn btn-success btn-block rounded-pill fs-5 px-5 py-4 mb-2"
                                     :disabled="isSubmitting"
-                                    @click="() => {
-                                        form.category_id = cat.id;
-                                        form.status = 1;
-                                        directPrint();
-                                    }"
+                                    @click="
+                                        () => {
+                                            form.category_id = cat.id;
+                                            form.status = 1;
+                                            directPrint();
+                                        }
+                                    "
                                 >
                                     <i class="fa fa-user-plus fs-4 me-4"></i>
                                     Ambil Nomor
                                 </button>
 
                                 <button
-                                    v-if="parseInt(props.setting?.set_phone) === 0"
+                                    v-if="
+                                        parseInt(props.setting?.set_phone) === 0
+                                    "
                                     type="button"
                                     class="btn btn-success btn-block rounded-pill fs-5 px-5 py-4 mb-2"
                                     :disabled="isSubmitting"
-                                    @click="() => {
-                                        form.category_id = cat.id;
-                                        form.status = 1;
-                                        confirmPrint();
-                                        showModal(cat.id);
-                                    }"
+                                    @click="
+                                        () => {
+                                            form.category_id = cat.id;
+                                            form.status = 1;
+                                            confirmPrint();
+                                            showModal(cat.id);
+                                        }
+                                    "
                                 >
                                     <i class="fa fa-user-plus fs-4 me-4"></i>
                                     Ambil Nomor
@@ -82,6 +104,7 @@
                         <h5 class="modal-title">
                             Konfirmasi Pengambilan Nomor
                         </h5>
+
                     </div>
                     <div class="modal-body">
                         <p>Masukkan Nomor HP</p>
@@ -116,6 +139,27 @@
                     </div>
                 </div>
             </div>
+            <div class="content">
+                <div v-if="isNumericKeypadVisible" class="numeric-keypad">
+                    <button
+                        v-for="i in keypadButtons"
+                        :key="i"
+                        class="keypad-button"
+                        @click="handleKeypadInput(i)"
+                    >
+                        {{ i }}
+                    </button>
+                    <button class="keypad-button" @click="clearPhoneInput">
+                        C
+                    </button>
+                    <button class="keypad-button" @click="handleKeypadInput(0)">
+                        0
+                    </button>
+                    <button class="keypad-button" @click="delPhoneInput">
+                        Del
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="d-flex justify-content-end mt-auto mb-3">
@@ -130,10 +174,10 @@
             </Link>
         </div>
 
+
         <Foot :setting="props?.setting" />
     </div>
 </template>
-
 
 <script setup>
 import { onMounted, ref, onBeforeUnmount } from "vue";
@@ -276,14 +320,6 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.border-success {
-    min-height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-}
-
 .numeric-keypad {
     display: flex;
     flex-wrap: wrap;
@@ -314,9 +350,14 @@ onBeforeUnmount(() => {
     margin: 0;
 }
 
-.text-small {
-  font-size: 26px;
+.border-success {
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
 }
+
 
 .card {
     border: none;
