@@ -344,86 +344,172 @@ const callNotifications = () => {
 
                 const message = `Nomor antrian ${data?.queue?.no}, silahkan menuju ${data?.counter?.name}.`;
 
-                const playTingtung = (onend) => {
-                    if (props?.setting?.called == "0") {
-                        const audio = new Audio("/assets/audio/tingtung.mp3");
-                        audio.play()
-                        audio.onended = onend
-                    }
-                };
+                const audio = new Audio('/assets/audio/tingtung.mp3');
+                if(props.setting?.called == '0') {
+                    audio.play();
 
-                if (props?.setting?.status === "online") {
-                    playTingtung(() => {
+                    audio.onended = () => {
+                        if (props?.setting?.status === "online") {
+                            responsiveVoice.speak(message, "Indonesian Female", {
+                                onend: () => {
+                                    isPlay.value = false;
+                                    queue.value.splice(index, 1);
+                                    stackPendingSuccessTrigger.value.push(data?.queue_id);
+
+                                    successTriggerNotification(data?.id, () => {
+                                        stackPendingSuccessTrigger.value = stackPendingSuccessTrigger.value?.filter((v) => v != data?.queue_id);
+                                        if (queue?.value?.length > 0) {
+                                            callNotifications();
+                                        }
+                                    });
+                                },
+                            });
+                        } else if (props?.setting?.status === "offline") {
+                            const synth = window.speechSynthesis;
+                            const speak = new SpeechSynthesisUtterance(message);
+                            speak.lang = "id-ID";
+
+                            stackPendingSuccessTrigger?.value?.push(data?.queue_id);
+                            speak.onend = () => {
+                                queue?.value?.splice(index, 1);
+                                isPlay.value = false;
+
+                                successTriggerNotification(data?.id, () => {
+                                    stackPendingSuccessTrigger.value = stackPendingSuccessTrigger?.value?.filter((v) => v != data?.queue_id);
+                                    if (queue?.value?.length > 0) {
+                                        callNotifications();
+                                    }
+                                });
+                            };
+                            synth.speak(speak);
+                        }
+                    };
+                } else if(props.setting?.called == '1') {
+                    if (props?.setting?.status === "online") {
                         responsiveVoice.speak(message, "Indonesian Female", {
                             onend: () => {
                                 isPlay.value = false;
                                 queue.value.splice(index, 1);
-                                // queue.value = queue.value.filter(
-                                //     (val) => val.queue_id != data.queue_id
-                                // );
+                                stackPendingSuccessTrigger.value.push(data?.queue_id);
 
-                                stackPendingSuccessTrigger.value.push(
-                                    data?.queue_id
-                                );
-
-                                successTriggerNotification(
-                                    data?.id,
-                                    () => {
-                                        stackPendingSuccessTrigger.value =
-                                            stackPendingSuccessTrigger.value?.filter(
-                                                (v) => v != data?.queue_id
-                                            );
-                                        if (queue?.value?.length > 0) {
-                                            callNotifications();
-                                        }
-                                        console.log("on success");
-                                    },
-                                    () => {
-                                        console.log("error catch 419");
+                                successTriggerNotification(data?.id, () => {
+                                    stackPendingSuccessTrigger.value = stackPendingSuccessTrigger.value?.filter((v) => v != data?.queue_id);
+                                    if (queue?.value?.length > 0) {
+                                        callNotifications();
                                     }
-                                );
+                                });
                             },
                         });
-                    });
-                } else if (props?.setting?.status === "offline") {
-                    const synth = window.speechSynthesis;
-                    const speak = new SpeechSynthesisUtterance(message);
-                    speak.lang = "id-ID";
+                    } else if (props?.setting?.status === "offline") {
+                        const synth = window.speechSynthesis;
+                        const speak = new SpeechSynthesisUtterance(message);
+                        speak.lang = "id-ID";
 
-                    stackPendingSuccessTrigger?.value?.push(data?.queue_id);
-                    speak.onend = () => {
-                        queue?.value?.splice(index, 1);
-                        isPlay.value = false;
-                        // queue.value = queue.value.filter(
-                        //     (val) => val.queue_id != data.queue_id
-                        // );
+                        stackPendingSuccessTrigger?.value?.push(data?.queue_id);
+                        speak.onend = () => {
+                            queue?.value?.splice(index, 1);
+                            isPlay.value = false;
 
-                        successTriggerNotification(
-                            data?.id,
-                            () => {
-                                stackPendingSuccessTrigger.value =
-                                    stackPendingSuccessTrigger?.value?.filter(
-                                        (v) => v != data?.queue_id
-                                    );
+                            successTriggerNotification(data?.id, () => {
+                                stackPendingSuccessTrigger.value = stackPendingSuccessTrigger?.value?.filter((v) => v != data?.queue_id);
                                 if (queue?.value?.length > 0) {
                                     callNotifications();
                                 }
-                                console.log("on success");
-                            },
-                            () => {
-                                console.log("error catch 419");
-                            }
-                        );
-                    };
-
-                    playTingtung(() => {
+                            });
+                        };
                         synth.speak(speak);
-                    });
+                    }
                 }
+
             }
         });
     }
 };
+
+
+
+// const callNotifications = () => {
+//     if (queue?.value?.length > 0) {
+//         queue?.value?.forEach((data, index) => {
+//             // console.log("queue :", queue.value);
+//             // console.log("stack pending :", stackPendingSuccessTrigger.value);
+//             // console.log(
+//             //     "is in stack :",
+//             //     stackPendingSuccessTrigger.value.includes(data.queue_id)
+//             // );
+//             // if (stackPendingSuccessTrigger.value.includes(data.queue_id))
+//             //     return;
+
+//             if (!isPlay.value) {
+//                 isPlay.value = true;
+//                 getDisplay(data?.category?.id);
+//                 currentQueueNumber.value = data?.queue?.no;
+//                 currentCounterNumber.value = data?.counter?.name;
+
+//                 const message = `Nomor antrian ${data?.queue?.no}, silahkan menuju ${data?.counter?.name}.`;
+
+//                 // const vid = document.getElementById("myVideo");
+//                 // const volume = props.setting?.volume;
+
+//                 // if (vid && typeof volume === "number" && !isNaN(volume)) {
+//                 //     vid.volume = volume;
+//                 // }
+
+//                 if (props?.setting?.status === "online") {
+//                     responsiveVoice.speak(message, "Indonesian Female", {
+//                         onend: () => {
+//                             isPlay.value = false;
+//                             queue.value.splice(index, 1);
+//                             // queue.value = queue.value.filter(
+//                             //     (val) => val.queue_id != data.queue_id
+//                             // );
+
+//                             stackPendingSuccessTrigger.value.push(
+//                                 data?.queue_id
+//                             );
+
+//                             successTriggerNotification(data?.id, () => {
+//                                 stackPendingSuccessTrigger.value =
+//                                     stackPendingSuccessTrigger.value?.filter(
+//                                         (v) => v != data?.queue_id
+//                                     );
+//                                 if (queue?.value?.length > 0) {
+//                                     callNotifications();
+//                                 }
+//                             });
+//                         },
+//                     });
+//                 } else if (props?.setting?.status === "offline") {
+//                     const synth = window.speechSynthesis;
+//                     const speak = new SpeechSynthesisUtterance(message);
+//                     speak.lang = "id-ID";
+
+//                     stackPendingSuccessTrigger?.value?.push(data?.queue_id);
+//                     speak.onend = () => {
+//                         queue?.value?.splice(index, 1);
+//                         isPlay.value = false;
+//                         // queue.value = queue.value.filter(
+//                         //     (val) => val.queue_id != data.queue_id
+//                         // );
+
+//                         successTriggerNotification(data?.id, () => {
+//                             stackPendingSuccessTrigger.value =
+//                                 stackPendingSuccessTrigger?.value?.filter(
+//                                     (v) => v != data?.queue_id
+//                                 );
+//                             if (queue?.value?.length > 0) {
+//                                 callNotifications();
+//                             }
+//                             console.log("on success")
+//                         });
+//                     };
+//                     synth.speak(speak);
+//                 }
+//             }
+//         });
+//     }
+// };
+
 
 const getDisplay = (idCat = null) => {
     fetch("/monitor/display")

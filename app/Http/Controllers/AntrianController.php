@@ -113,7 +113,7 @@ class AntrianController extends Controller
     public function print($category_id)
     {
         $setting = Setting::first();
-        $category = Category::with('queue')->findOrFail($category_id);
+        $category = Category::with('queue', 'counters')->findOrFail($category_id);
         $latestQueue = $category->queue->last();
 
         return Inertia::render('Antrian/Print', [

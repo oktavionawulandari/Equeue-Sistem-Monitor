@@ -11,25 +11,27 @@
             <title>Cetak No Antrian</title>
         </head>
         <body>
-            <div class="container">
-                <div class="header d-flex align-items-center">
-                    <div class="header-text">
-                        <h2>{{ props.setting?.instansi }}</h2>
+            <div class="receipt">
+                    <div class="header d-flex align-items-center">
+                        <div class="header-text">
+                            <h2>{{ props.setting?.instansi }}</h2>
+                        </div>
+                    </div>
+                    <div class="datetime">
+                        <div class="date">{{ currentDate }}</div>
+                        <div class="time">{{ currentTime }}</div>
+                    </div>
+                    <p>=================================</p>
+                    <div class="antrian">NO ANTRIAN</div>
+                    <div class="queue-number">{{ props.latestQueue.no }}</div>
+                    <div v-for="counter in props.category.counters" :key="counter.id" class="counter">
+                        {{ counter.name }}
+                    </div>
+                    <div class="instructions">
+                        Silahkan menunggu nomor antrian dipanggil. Nomor ini hanya
+                        berlaku pada hari ini.
                     </div>
                 </div>
-                <div class="datetime">
-                    <div class="date">{{ currentDate }}</div>
-                    <div class="time">{{ currentTime }}</div>
-                </div>
-                <p>=================================</p>
-                <div class="antrian">NO ANTRIAN</div>
-                <div class="queue-number">{{ props.latestQueue.no }}</div>
-                <div class="counter">{{ props.category.name }}</div>
-                <div class="instructions">
-                    Silahkan menunggu nomor antrian dipanggil. Nomor ini hanya
-                    berlaku pada hari ini.
-                </div>
-            </div>
         </body>
     </html>
 </template>
@@ -81,13 +83,15 @@ body {
     padding: 0;
     background-color: #f4f4f4;
 }
-.container {
+.receipt {
     width: 350px;
     /* margin: 50px auto; */
     background-color: #fff;
     padding: 18px;
     text-align: center;
+    border: 1px solid #ddd;
 }
+
 .header {
     display: flex;
     align-items: center;
