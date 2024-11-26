@@ -9,10 +9,7 @@
 
         <div>
             <!-- Jika jumlah kategori lebih dari 3 -->
-            <div
-                v-if="categories.length > 4"
-                class="container-fluid w-50 m-auto"
-            >
+            <div v-if="categories.length > 4" class="container-fluid m-auto">
                 <div class="row">
                     <div class="col-12">
                         <div
@@ -27,113 +24,47 @@
                                 </h4>
                                 <p
                                     class="card-text text-bold"
-                                    style="font-size: 40px"
+                                    style="font-size: 90px"
                                 >
                                     {{ currentQueueNumber }}
                                 </p>
-                            </div>
-                            <div class="card-footer">
-                                <p style="font-size: 30px">
+                                <p style="font-size: 50px">
                                     {{ currentCounterNumber }}
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12" v-for="(category, i) in categoriesMap">
-                        <div class="card card-body">
-                            <!-- <div class="row">
-                                <div class="col-12">
-                                    <div class="d-flex" style="gap: 10px">
-                                        <span class="font-weight-bold mr-2"
-                                            >{{ category.name }}
-                                            {{
-                                                category?.antrian?.updated_at
-                                            }}</span
-                                        >
-                                        <span>|</span>
-                                        <span>
-                                            {{ category?.antrian?.no || "-" }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div> -->
-                            <div class="d-flex justify-content-between">
-                                <span
-                                    class="font-weight-bold"
-                                    style="font-size: 1.4em"
-                                    >{{ category?.antrian?.no || "-" }}</span
-                                >
-                                <span
-                                    class="font-weight-bold"
-                                    style="font-size: 1.4em"
-                                >
-                                    {{ category?.name }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class="row g-3">
-                    <div class="col-md-4">
-                        <div
-                            class="card text-center bg-secondary text-white shadow rounded"
-                        >
+                    <div class="col-12">
+                        <div class="row">
                             <div
-                                class="card-header text-uppercase"
-                                style="font-size: 30px"
+                                class="col-4"
+                                v-for="(category, i) in props.categories"
                             >
-                                Panggilan Saat Ini
-                            </div>
-                            <div class="card-body">
-                                <p
-                                    class="card-text fw-bold"
-                                    style="font-size: 40px"
-                                >
-                                    {{ currentQueueNumber }}
-                                </p>
-                            </div>
-                            <div class="card-footer" style="font-size: 30px">
-                                {{ currentCounterNumber }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8">
-                        <div class="row g-3">
-                            <div
-                                class="col-md-6 col-6"
-                                v-for="category in display"
-                                :key="category.id"
-                            >
-                                <div
-                                    class="card text-center text-white shadow rounded"
-                                    :class="getBgClass(category)"
-                                >
-                                    <h5
-                                        class="card-header text-uppercase"
-                                        style="font-size: 25px"
-                                    >
-                                        {{ category.name }}
-                                    </h5>
-                                    <div class="card-body">
-                                        <h1
-                                            class="fw-bold"
-                                            style="font-size: 30px"
-                                        >
-                                            {{
+                                <div class="card card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <span
+                                            class="font-weight-bold"
+                                            style="font-size: 1.4em"
+                                            >{{
                                                 getNilaiTerakhir.find(
                                                     (antrian) =>
                                                         antrian?.category_id ===
                                                         category?.id
                                                 )?.no || "-"
-                                            }}
-                                        </h1>
+                                            }}</span
+                                        >
+                                        <span
+                                            class="font-weight-bold"
+                                            style="font-size: 1.4em"
+                                        >
+                                            {{ category?.name }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
 
             <!-- Jika jumlah kategori kurang dari atau sama dengan 3 -->
@@ -228,19 +159,45 @@
             </div>
         </div>
 
+        <div
+            v-if="showPopup"
+            style="
+                position: absolute;
+                top: 0;
+                right: 0;
+                left: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.3);
+                display: flex;
+                justify-content: center;
+                padding-top: 100px;
+            "
+        >
+            <button
+                class="btn font-weight-bold"
+                @click="closePopup"
+                :style="{
+                    backgroundColor: props?.setting?.navigasi,
+                    color: props?.setting?.text,
+                    height: '100px',
+                    width: '500px',
+                }"
+            >
+                Monitor sudah siap!! tolong di click
+            </button>
+        </div>
+
         <!-- Footer Section -->
         <footer
             class="footer py-2 border-top mt-auto"
             :style="{ backgroundColor: props.setting?.footer }"
         >
-            <div class="text-marquee">
+            <div class="text-marquee" v-if="!showPopup">
                 <h6 :style="{ color: props.setting?.text }">
                     {{ props.setting?.running_text }}
                 </h6>
             </div>
         </footer>
-
-        <button hidden id="btn-hidden"></button>
     </div>
 </template>
 
@@ -287,38 +244,12 @@ const currentCounterNumber = ref("-");
 const page = usePage();
 const stackPendingSuccessTrigger = ref([]);
 const antrianAkhir = ref(null);
+const showPopup = ref(true);
+
+const closePopup = () => (showPopup.value = false);
 
 const getNilaiTerakhir = computed(() => {
     return antrianAkhir?.value;
-});
-
-const categoriesMap = computed(() => {
-    const categoriesWithAntrian = categories.value?.map((category) => {
-        return {
-            ...category,
-            antrian: getNilaiTerakhir.value.find(
-                (antrian) => antrian.category_id === category.id
-            ),
-        };
-    });
-    const categoriesWithAntrianStatus4 = categoriesWithAntrian
-        .filter((category) => category.antrian?.status == 4)
-        .sort((a, b) =>
-            a.antrian?.updated_at < b.antrian?.updated_at ? 1 : -1
-        );
-
-    const categoriesWithAntrianNotStatus4 = categoriesWithAntrian
-        .filter((category) => category.antrian?.status != 4)
-        .sort((a, b) =>
-            a.antrian?.updated_at < b.antrian?.updated_at ? 1 : -1
-        );
-
-    const categoriesMerge = [
-        ...categoriesWithAntrianStatus4,
-        ...categoriesWithAntrianNotStatus4,
-    ];
-
-    return categoriesMerge.slice(0, 5);
 });
 
 const getBgClass = (category) => {
@@ -621,9 +552,6 @@ onMounted(() => {
     const timeInterval = setInterval(updateCurrentDateTime, 1000);
 
     onBeforeUnmount(() => clearInterval(timeInterval));
-
-    const btnHidden = document.getElementById("btn-hidden");
-    btnHidden.click();
 });
 
 setInterval(() => {
