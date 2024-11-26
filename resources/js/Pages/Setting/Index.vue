@@ -75,32 +75,32 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="set_phone"
+                                            <label for="called"
                                                 >Setting Pemanggilan</label
                                             >
                                             <select
                                                 class="form-control"
-                                                v-model="form.set_phone"
+                                                v-model="form.called"
                                                 :class="{
                                                     'is-invalid':
-                                                        form.errors.set_phone,
+                                                        form.errors.called,
                                                 }"
-                                                id="set_phone"
-                                                name="set_phone"
+                                                id="called"
+                                                name="called"
                                             >
                                                 <option value="" disabled>
                                                     Pilih Pengaturan
                                                 </option>
-                                                <option value="0">Aktif</option>
-                                                <option value="1">
+                                                <option value="1">Aktif</option>
+                                                <option value="0">
                                                     Tidak Aktif
                                                 </option>
                                             </select>
                                             <div
-                                                v-if="form.errors.set_phone"
+                                                v-if="form.errors.called"
                                                 class="invalid-feedback"
                                             >
-                                                {{ form.errors.set_phone }}
+                                                {{ form.errors.called }}
                                             </div>
                                         </div>
                                     </div>
@@ -531,6 +531,7 @@ const form = useForm({
     // volume: setting.value?.volume ?? 0.5,
     status: setting.value?.status || "",
     set_phone: setting.value?.set_phone || "",
+    called: setting.value?.called || "",
     images: [],
 });
 

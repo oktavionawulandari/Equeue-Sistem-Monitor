@@ -42,6 +42,8 @@ class SettingController extends Controller
             'status.required' => 'Pengaturan audio harus diisi.',
             'images.*.image' => 'List harus berupa gambar.',
             'set_phone' => 'Pengaturan nomor telepon harus diisi.',
+            'called' => 'Pengaturan pemanggilan harus diisi.',
+
         ];
 
         $validated = $request->validate([
@@ -60,7 +62,8 @@ class SettingController extends Controller
             'status' => 'required',
             'images' => 'nullable|array',
             'images.*' => 'nullable|image',
-            'set_phone' => 'required'
+            'set_phone' => 'required',
+            'called' => 'required'
         ], $messages);
 
 
