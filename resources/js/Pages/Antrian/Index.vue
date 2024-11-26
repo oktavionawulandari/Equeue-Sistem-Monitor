@@ -4,60 +4,7 @@
         class="d-flex flex-column min-vh-100"
         :style="{ backgroundColor: props.setting?.background }"
     >
-        <header
-            :style="{ backgroundColor: props.setting?.navigasi }"
-            class="d-flex flex-wrap align-items-center justify-content-between py-2 mb-4 border-bottom"
-        >
-            <div class="d-flex align-items-center text-dark ms-3">
-                <Link
-                    class="nav-link me-3"
-                    :href="route('list.instansi')"
-                    title="Kembali"
-                    :style="{ color: props.setting?.text, marginLeft: '20px' }"
-                >
-                    <i class="fas fa-sign-out-alt"></i>
-                </Link>
-
-                <div class="d-flex align-items-center">
-                    <img
-                        :src="`/storage/${props.setting?.logo}`"
-                        alt="logo"
-                        width="40"
-                        height="40"
-                    />
-                    <span
-                        class="fs-4 text-bold ms-2"
-                        :style="{
-                            color: props.setting?.text,
-                            fontSize: '22px',
-                        }"
-                        >{{ props.setting?.instansi ?? "" }}</span
-                    >
-                </div>
-            </div>
-
-            <div
-                class="d-flex align-items-center text-dark ms-auto ms-5"
-                :style="{ marginRight: '20px' }"
-            >
-                <i
-                    class="fa fa-calendar me-2"
-                    :style="{ color: props.setting?.text }"
-                ></i>
-                <div
-                    class="fs-5 text-bold"
-                    :style="{ color: props.setting?.text, marginLeft: '5px' }"
-                >
-                    {{ currentDate }}
-                </div>
-                <div
-                    class="fs-5 text-bold ms-3"
-                    :style="{ color: props.setting?.text, marginLeft: '5px' }"
-                >
-                    {{ currentTime }}
-                </div>
-            </div>
-        </header>
+        <Header :setting="props.setting" />
 
         <div class="container-fluid">
             <form @submit.prevent="submitForm">
@@ -67,18 +14,6 @@
                         v-for="cat in categories"
                         :key="cat.id"
                     >
-                        <!-- <div class="card">
-                <div
-                  class="card-body d-flex justify-content-center align-items-center"
-                >
-                  <h1
-                    class="card-title text-bold text-uppercase text-danger" style="font-size: 40px;"
-                  >
-                    {{ cat.name }}
-                  </h1>
-                </div>
-              </div> -->
-
                         <div
                             class="card"
                             :style="{
@@ -90,48 +25,40 @@
                                 <div
                                     class="border border-success rounded-5 py-2 mb-4"
                                 >
-                                <p
-                                    id="antrian"
-                                    class="display-1 text-danger text-bold text-center"
-                                    :style="{ fontSize: cat.name.length > 20 ? '25px' : '34px' }"
+                                    <p
+                                        id="antrian"
+                                        class="display-1 text-danger text-bold text-center"
+                                        :style="{ fontSize: cat.name.length > 20 ? '25px' : '34px' }"
                                     >
                                     {{ cat.name }}
-                                </p>
+                                    </p>
                                 </div>
                                 <button
-                                    v-if="
-                                        parseInt(props.setting?.set_phone) === 1
-                                    "
+                                    v-if="parseInt(props.setting?.set_phone) === 1"
                                     type="submit"
                                     class="btn btn-success btn-block rounded-pill fs-5 px-5 py-4 mb-2"
                                     :disabled="isSubmitting"
-                                    @click="
-                                        () => {
-                                            form.category_id = cat.id;
-                                            form.status = 1;
-                                            directPrint();
-                                        }
-                                    "
+                                    @click="() => {
+                                        form.category_id = cat.id;
+                                        form.status = 1;
+                                        directPrint();
+                                    }"
                                 >
                                     <i class="fa fa-user-plus fs-4 me-4"></i>
                                     Ambil Nomor
                                 </button>
 
                                 <button
-                                    v-if="
-                                        parseInt(props.setting?.set_phone) === 0
-                                    "
+                                    v-if="parseInt(props.setting?.set_phone) === 0"
                                     type="button"
                                     class="btn btn-success btn-block rounded-pill fs-5 px-5 py-4 mb-2"
                                     :disabled="isSubmitting"
-                                    @click="
-                                        () => {
-                                            form.category_id = cat.id;
-                                            form.status = 1;
-                                            confirmPrint();
-                                            showModal(cat.id);
-                                        }
-                                    "
+                                    @click="() => {
+                                        form.category_id = cat.id;
+                                        form.status = 1;
+                                        confirmPrint();
+                                        showModal(cat.id);
+                                    }"
                                 >
                                     <i class="fa fa-user-plus fs-4 me-4"></i>
                                     Ambil Nomor
@@ -189,37 +116,30 @@
                     </div>
                 </div>
             </div>
-            <div class="content">
-                <div v-if="isNumericKeypadVisible" class="numeric-keypad">
-                    <button
-                        v-for="i in keypadButtons"
-                        :key="i"
-                        class="keypad-button"
-                        @click="handleKeypadInput(i)"
-                    >
-                        {{ i }}
-                    </button>
-                    <button class="keypad-button" @click="clearPhoneInput">
-                        C
-                    </button>
-                    <button class="keypad-button" @click="handleKeypadInput(0)">
-                        0
-                    </button>
-                    <button class="keypad-button" @click="delPhoneInput">
-                        Del
-                    </button>
-                </div>
-            </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-auto mb-3">
+            <Link
+                class="nav-link btn btn-danger"
+                :href="route('list.instansi')"
+                title="Kembali"
+                :style="{ color: props.setting?.text, marginRight: '20px' }"
+            >
+                Kembali
+            </Link>
         </div>
 
         <Foot :setting="props?.setting" />
     </div>
 </template>
 
+
 <script setup>
 import { onMounted, ref, onBeforeUnmount } from "vue";
 import { useForm, router, Link, usePage } from "@inertiajs/vue3";
 import Foot from "../../Layout/Monitor/Footer.vue";
+import Header from "../../Layout/Monitor/Header.vue";
+
 import "../../../css/dashboard.css";
 import AppMeta from "@/Components/AppMeta.vue";
 
