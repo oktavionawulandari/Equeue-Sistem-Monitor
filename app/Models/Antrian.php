@@ -20,12 +20,12 @@ class Antrian extends Model
 
     public function counter()
     {
-        return $this->belongsTo(Counter::class); 
+        return $this->belongsTo(Counter::class);
     }
 
     public function queue()
     {
-        return $this->belongsTo(Queue::class); 
+        return $this->belongsTo(Queue::class);
     }
 
     public function category()

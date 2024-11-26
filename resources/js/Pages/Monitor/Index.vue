@@ -39,29 +39,36 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12" v-for="(category, i) in categories">
+                    <div class="col-12" v-for="(category, i) in categoriesMap">
                         <div class="card card-body">
-                            <div class="row">
-                                <div class="col-6">
+                            <!-- <div class="row">
+                                <div class="col-12">
                                     <div class="d-flex" style="gap: 10px">
-                                        <span class="font-weight-bold mr-2">{{
-                                            category.name
-                                        }}</span>
+                                        <span class="font-weight-bold mr-2"
+                                            >{{ category.name }}
+                                            {{
+                                                category?.antrian?.updated_at
+                                            }}</span
+                                        >
                                         <span>|</span>
                                         <span>
-                                            {{
-                                                getNilaiTerakhir.find(
-                                                    (antrian) =>
-                                                        antrian?.category_id ===
-                                                        category?.id
-                                                )?.no || "-"
-                                            }}
+                                            {{ category?.antrian?.no || "-" }}
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    {{ category?.antrian?.queue?.status }}
-                                </div>
+                            </div> -->
+                            <div class="d-flex justify-content-between">
+                                <span
+                                    class="font-weight-bold"
+                                    style="font-size: 1.4em"
+                                    >{{ category?.antrian?.no || "-" }}</span
+                                >
+                                <span
+                                    class="font-weight-bold"
+                                    style="font-size: 1.4em"
+                                >
+                                    {{ category?.name }}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -232,6 +239,8 @@
                 </h6>
             </div>
         </footer>
+
+        <button hidden id="btn-hidden"></button>
     </div>
 </template>
 
@@ -281,6 +290,35 @@ const antrianAkhir = ref(null);
 
 const getNilaiTerakhir = computed(() => {
     return antrianAkhir?.value;
+});
+
+const categoriesMap = computed(() => {
+    const categoriesWithAntrian = categories.value?.map((category) => {
+        return {
+            ...category,
+            antrian: getNilaiTerakhir.value.find(
+                (antrian) => antrian.category_id === category.id
+            ),
+        };
+    });
+    const categoriesWithAntrianStatus4 = categoriesWithAntrian
+        .filter((category) => category.antrian?.status == 4)
+        .sort((a, b) =>
+            a.antrian?.updated_at < b.antrian?.updated_at ? 1 : -1
+        );
+
+    const categoriesWithAntrianNotStatus4 = categoriesWithAntrian
+        .filter((category) => category.antrian?.status != 4)
+        .sort((a, b) =>
+            a.antrian?.updated_at < b.antrian?.updated_at ? 1 : -1
+        );
+
+    const categoriesMerge = [
+        ...categoriesWithAntrianStatus4,
+        ...categoriesWithAntrianNotStatus4,
+    ];
+
+    return categoriesMerge.slice(0, 5);
 });
 
 const getBgClass = (category) => {
@@ -344,38 +382,56 @@ const callNotifications = () => {
 
                 const message = `Nomor antrian ${data?.queue?.no}, silahkan menuju ${data?.counter?.name}.`;
 
-                const audio = new Audio('/assets/audio/tingtung.mp3');
-                if(props.setting?.called == '0') {
+                const audio = new Audio("/assets/audio/tingtung.mp3");
+                if (props.setting?.called == "1") {
                     audio.play();
 
                     audio.onended = () => {
                         if (props?.setting?.status === "online") {
-                            responsiveVoice.speak(message, "Indonesian Female", {
-                                onend: () => {
-                                    isPlay.value = false;
-                                    queue.value.splice(index, 1);
-                                    stackPendingSuccessTrigger.value.push(data?.queue_id);
+                            responsiveVoice.speak(
+                                message,
+                                "Indonesian Female",
+                                {
+                                    onend: () => {
+                                        isPlay.value = false;
+                                        queue.value.splice(index, 1);
+                                        stackPendingSuccessTrigger.value.push(
+                                            data?.queue_id
+                                        );
 
-                                    successTriggerNotification(data?.id, () => {
-                                        stackPendingSuccessTrigger.value = stackPendingSuccessTrigger.value?.filter((v) => v != data?.queue_id);
-                                        if (queue?.value?.length > 0) {
-                                            callNotifications();
-                                        }
-                                    });
-                                },
-                            });
+                                        successTriggerNotification(
+                                            data?.id,
+                                            () => {
+                                                stackPendingSuccessTrigger.value =
+                                                    stackPendingSuccessTrigger.value?.filter(
+                                                        (v) =>
+                                                            v != data?.queue_id
+                                                    );
+                                                if (queue?.value?.length > 0) {
+                                                    callNotifications();
+                                                }
+                                            }
+                                        );
+                                    },
+                                }
+                            );
                         } else if (props?.setting?.status === "offline") {
                             const synth = window.speechSynthesis;
                             const speak = new SpeechSynthesisUtterance(message);
                             speak.lang = "id-ID";
 
-                            stackPendingSuccessTrigger?.value?.push(data?.queue_id);
+                            stackPendingSuccessTrigger?.value?.push(
+                                data?.queue_id
+                            );
                             speak.onend = () => {
                                 queue?.value?.splice(index, 1);
                                 isPlay.value = false;
 
                                 successTriggerNotification(data?.id, () => {
-                                    stackPendingSuccessTrigger.value = stackPendingSuccessTrigger?.value?.filter((v) => v != data?.queue_id);
+                                    stackPendingSuccessTrigger.value =
+                                        stackPendingSuccessTrigger?.value?.filter(
+                                            (v) => v != data?.queue_id
+                                        );
                                     if (queue?.value?.length > 0) {
                                         callNotifications();
                                     }
@@ -384,16 +440,21 @@ const callNotifications = () => {
                             synth.speak(speak);
                         }
                     };
-                } else if(props.setting?.called == '1') {
+                } else if (props.setting?.called == "0") {
                     if (props?.setting?.status === "online") {
                         responsiveVoice.speak(message, "Indonesian Female", {
                             onend: () => {
                                 isPlay.value = false;
                                 queue.value.splice(index, 1);
-                                stackPendingSuccessTrigger.value.push(data?.queue_id);
+                                stackPendingSuccessTrigger.value.push(
+                                    data?.queue_id
+                                );
 
                                 successTriggerNotification(data?.id, () => {
-                                    stackPendingSuccessTrigger.value = stackPendingSuccessTrigger.value?.filter((v) => v != data?.queue_id);
+                                    stackPendingSuccessTrigger.value =
+                                        stackPendingSuccessTrigger.value?.filter(
+                                            (v) => v != data?.queue_id
+                                        );
                                     if (queue?.value?.length > 0) {
                                         callNotifications();
                                     }
@@ -411,7 +472,10 @@ const callNotifications = () => {
                             isPlay.value = false;
 
                             successTriggerNotification(data?.id, () => {
-                                stackPendingSuccessTrigger.value = stackPendingSuccessTrigger?.value?.filter((v) => v != data?.queue_id);
+                                stackPendingSuccessTrigger.value =
+                                    stackPendingSuccessTrigger?.value?.filter(
+                                        (v) => v != data?.queue_id
+                                    );
                                 if (queue?.value?.length > 0) {
                                     callNotifications();
                                 }
@@ -420,13 +484,10 @@ const callNotifications = () => {
                         synth.speak(speak);
                     }
                 }
-
             }
         });
     }
 };
-
-
 
 // const callNotifications = () => {
 //     if (queue?.value?.length > 0) {
@@ -510,7 +571,6 @@ const callNotifications = () => {
 //     }
 // };
 
-
 const getDisplay = (idCat = null) => {
     fetch("/monitor/display")
         .then((res) => res.json())
@@ -561,6 +621,9 @@ onMounted(() => {
     const timeInterval = setInterval(updateCurrentDateTime, 1000);
 
     onBeforeUnmount(() => clearInterval(timeInterval));
+
+    const btnHidden = document.getElementById("btn-hidden");
+    btnHidden.click();
 });
 
 setInterval(() => {

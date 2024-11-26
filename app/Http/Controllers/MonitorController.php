@@ -25,8 +25,9 @@ class MonitorController extends Controller
         $setting = Setting::first();
         $categories = Category::with(['antrian.queue'])->get();
         $AntrianAkhir = Queue::where('status', 4)->with('category')
-        ->orderby('updated_at', 'desc')->get();
-        
+            ->whereBetween('updated_at', [$startOfDay, $endOfDay])
+            ->orderby('updated_at', 'desc')->get();
+
         return Inertia::render('Monitor/Index', [
             'categories' => $categories,
             'setting' => $setting,
@@ -37,16 +38,18 @@ class MonitorController extends Controller
 
     public function getDisplay()
     {
-        $today = \Carbon\Carbon::today(); 
+        $today = \Carbon\Carbon::today();
 
-        $categories = Category::with(['antrian' => function ($query) use ($today) {
-            $query->with('queue')
-                  ->whereDate('created_at', $today) 
-                  ->orderBy('created_at', 'asc')
-                  ->first();
-        }])->get();
-        $AntrianAkhir = Queue::where('status', 4)->with('category')->whereDate('updated_at', $today) 
-        ->orderby('updated_at', 'desc')->get();
+        $categories = Category::with([
+            'antrian' => function ($query) use ($today) {
+                $query->with('queue')
+                    ->whereDate('created_at', $today)
+                    ->orderBy('created_at', 'asc')
+                    ->first();
+            }
+        ])->get();
+        $AntrianAkhir = Queue::where('status', 4)->with('category')->whereDate('updated_at', $today)
+            ->orderby('updated_at', 'desc')->get();
 
 
         return response()->json(['data' => $categories, 'antrianAkhir' => $AntrianAkhir]);
@@ -55,12 +58,16 @@ class MonitorController extends Controller
     public function getTriggerNotification()
     {
 
-        $antrian;
+        $antrian = [];
 
-        if(!Cache::has('antrian')) {
-            $getAntrian = Antrian::with(['queue' => function ($query) {
-                $query->where('status', 2);
-            }, 'counter', 'category'])->whereHas('queue', function($query) {
+        if (!Cache::has('antrian')) {
+            $getAntrian = Antrian::with([
+                'queue' => function ($query) {
+                    $query->where('status', 2);
+                },
+                'counter',
+                'category'
+            ])->whereHas('queue', function ($query) {
                 $query->where('status', 2);
             })->get();
 
@@ -83,6 +90,6 @@ class MonitorController extends Controller
 
         // $antrian->delete();
 
-       return redirect()->back();
+        return redirect()->back();
     }
 }
