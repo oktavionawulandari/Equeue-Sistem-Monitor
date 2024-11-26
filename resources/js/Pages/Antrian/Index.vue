@@ -90,12 +90,13 @@
                                 <div
                                     class="border border-success rounded-5 py-2 mb-4"
                                 >
-                                    <p
-                                        id="antrian"
-                                        class="display-1 text-danger text-bold text-center"
+                                <p
+                                    id="antrian"
+                                    class="display-1 text-danger text-bold text-center"
+                                    :style="{ fontSize: cat.name.length > 20 ? '25px' : '34px' }"
                                     >
-                                        {{ cat.name }}
-                                    </p>
+                                    {{ cat.name }}
+                                </p>
                                 </div>
                                 <button
                                     v-if="
@@ -154,11 +155,6 @@
                         <h5 class="modal-title">
                             Konfirmasi Pengambilan Nomor
                         </h5>
-                        <button
-                            type="button"
-                            class="btn-close"
-                            @click="hideModal"
-                        ></button>
                     </div>
                     <div class="modal-body">
                         <p>Masukkan Nomor HP</p>
@@ -359,6 +355,14 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+.border-success {
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
 .numeric-keypad {
     display: flex;
     flex-wrap: wrap;
@@ -384,9 +388,13 @@ onBeforeUnmount(() => {
 }
 
 #antrian {
-    font-size: 30px;
+    /* font-size: 30px; */
     text-align: center;
     margin: 0;
+}
+
+.text-small {
+  font-size: 26px;
 }
 
 .card {
@@ -394,6 +402,7 @@ onBeforeUnmount(() => {
     background: linear-gradient(135deg, #eaf9d3, #c3e6b4);
     transition: transform 0.3s, box-shadow 0.3s;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    min-height: 220px;
 }
 .card:hover {
     transform: translateY(-5px);

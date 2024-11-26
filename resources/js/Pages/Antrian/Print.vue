@@ -27,11 +27,11 @@
                     <p>=================================</p>
                     <div class="antrian">NO ANTRIAN</div>
                     <div class="queue-number">{{ props.latestQueue.no }}</div>
-                    <div v-for="counter in props.category.counters" :key="counter.id" class="counter">
-                        {{ counter.name }}
+                    <div class="counters">
+                        <div v-for="(counter, index) in props.category.counters" :key="counter.id" class="counter">
+                            {{ counter.name }}<span v-if="index < props.category.counters.length - 1">,</span>
+                        </div>
                     </div>
-                    <!-- <p>=================================</p> -->
-
                     <div class="instructions">
                         Silahkan menunggu nomor antrian dipanggil. Nomor ini hanya
                         berlaku pada hari ini.
@@ -40,6 +40,7 @@
         </body>
     </html>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from "vue";
@@ -59,7 +60,7 @@ const updateCurrentDateTime = () => {
     const dateOptions = {
         weekday: "long",
         year: "numeric",
-        month: "numeric",
+        month: "long",
         day: "numeric",
     };
     const timeOptions = {
@@ -76,7 +77,7 @@ onMounted(() => {
     updateCurrentDateTime();
     setTimeout(() => {
         window.print();
-        // window.close();
+        window.close();
     }, 1000);
 });
 </script>
@@ -151,9 +152,15 @@ body {
     margin-bottom: 10px;
 }
 
+.counters {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
 .counter {
     font-size: 1rem;
-    margin-bottom: 10px;
     font-weight: bold;
     text-transform: uppercase;
 }
