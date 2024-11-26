@@ -4,60 +4,9 @@
         class="d-flex flex-column min-vh-100"
         :style="{ backgroundColor: props.setting?.background }"
     >
-        <header
-            :style="{ backgroundColor: props.setting?.navigasi }"
-            class="d-flex flex-wrap align-items-center justify-content-between py-2 mb-4 border-bottom"
-        >
-            <div class="d-flex align-items-center text-dark ms-3">
-                <Link
-                    class="nav-link me-3"
-                    :href="route('list.instansi')"
-                    title="Kembali"
-                    :style="{ color: props.setting?.text, marginLeft: '20px' }"
-                >
-                    <i class="fas fa-sign-out-alt"></i>
-                </Link>
+    <Header :setting="props.setting" />
 
-                <div class="d-flex align-items-center">
-                    <img
-                        :src="`/storage/${props.setting?.logo}`"
-                        alt="logo"
-                        width="40"
-                        height="40"
-                    />
-                    <span
-                        class="fs-4 text-bold ms-2"
-                        :style="{
-                            color: props.setting?.text,
-                            fontSize: '22px',
-                        }"
-                        >{{ props.setting?.instansi ?? "" }}</span
-                    >
-                </div>
-            </div>
 
-            <div
-                class="d-flex align-items-center text-dark ms-auto ms-5"
-                :style="{ marginRight: '20px' }"
-            >
-                <i
-                    class="fa fa-calendar me-2"
-                    :style="{ color: props.setting?.text }"
-                ></i>
-                <div
-                    class="fs-5 text-bold"
-                    :style="{ color: props.setting?.text, marginLeft: '5px' }"
-                >
-                    {{ currentDate }}
-                </div>
-                <div
-                    class="fs-5 text-bold ms-3"
-                    :style="{ color: props.setting?.text, marginLeft: '5px' }"
-                >
-                    {{ currentTime }}
-                </div>
-            </div>
-        </header>
 
         <div class="container-fluid">
             <form @submit.prevent="submitForm">
@@ -93,6 +42,7 @@
                                     <p
                                         id="antrian"
                                         class="display-1 text-danger text-bold text-center"
+                                        :style="{ fontSize: cat.name.length > 20 ? '25px' : '34px' }"
                                     >
                                         {{ cat.name }}
                                     </p>
@@ -154,11 +104,7 @@
                         <h5 class="modal-title">
                             Konfirmasi Pengambilan Nomor
                         </h5>
-                        <button
-                            type="button"
-                            class="btn-close"
-                            @click="hideModal"
-                        ></button>
+
                     </div>
                     <div class="modal-body">
                         <p>Masukkan Nomor HP</p>
@@ -216,6 +162,19 @@
             </div>
         </div>
 
+        <div class="d-flex justify-content-end mt-auto mb-3">
+            <Link
+                class="nav-link btn btn-primary"
+                :href="route('list.instansi')"
+                title="Kembali"
+                style="font-size:24px"
+                :style="{ color: props.setting?.text, marginRight: '20px' }"
+            >
+                Kembali
+            </Link>
+        </div>
+
+
         <Foot :setting="props?.setting" />
     </div>
 </template>
@@ -224,6 +183,8 @@
 import { onMounted, ref, onBeforeUnmount } from "vue";
 import { useForm, router, Link, usePage } from "@inertiajs/vue3";
 import Foot from "../../Layout/Monitor/Footer.vue";
+import Header from "../../Layout/Monitor/Header.vue";
+
 import "../../../css/dashboard.css";
 import AppMeta from "@/Components/AppMeta.vue";
 
@@ -384,16 +345,26 @@ onBeforeUnmount(() => {
 }
 
 #antrian {
-    font-size: 30px;
+    /* font-size: 30px; */
     text-align: center;
     margin: 0;
 }
+
+.border-success {
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
 
 .card {
     border: none;
     background: linear-gradient(135deg, #eaf9d3, #c3e6b4);
     transition: transform 0.3s, box-shadow 0.3s;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    min-height: 220px;
 }
 .card:hover {
     transform: translateY(-5px);

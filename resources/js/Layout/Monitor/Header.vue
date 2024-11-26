@@ -22,7 +22,7 @@
             </div>
             <span
                 class="fs-4 text-bold ms-2"
-                :style="{ color: props.setting?.text }"
+                :style="{ color: props.setting?.text, marginLeft: '7px' }"
                 style="font-size: 22px"
                 >{{ props.setting?.instansi ?? "" }}</span
             >

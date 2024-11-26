@@ -12,10 +12,13 @@
         </head>
         <body>
             <div class="receipt">
+                <div class="instnsi">
+                    <h2>{{ props.setting?.instansi }}</h2>
+                </div>
                     <div class="header d-flex align-items-center">
-                        <div class="header-text">
+                        <!-- <div class="header-text">
                             <h2>{{ props.setting?.instansi }}</h2>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="datetime">
                         <div class="date">{{ currentDate }}</div>
@@ -24,8 +27,10 @@
                     <p>=================================</p>
                     <div class="antrian">NO ANTRIAN</div>
                     <div class="queue-number">{{ props.latestQueue.no }}</div>
-                    <div v-for="counter in props.category.counters" :key="counter.id" class="counter">
-                        {{ counter.name }}
+                    <div class="counters">
+                        <div v-for="(counter, index) in props.category.counters" :key="counter.id" class="counter">
+                            {{ counter.name }}<span v-if="index < props.category.counters.length - 1">/</span>
+                        </div>
                     </div>
                     <div class="instructions">
                         Silahkan menunggu nomor antrian dipanggil. Nomor ini hanya
@@ -35,6 +40,7 @@
         </body>
     </html>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from "vue";
@@ -89,20 +95,23 @@ body {
     background-color: #fff;
     padding: 18px;
     text-align: center;
-    border: 1px solid #ddd;
+}
+
+.instnsi h2{
+    font-size: 1.4em;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* padding: 10px; */
 }
 
 .header img {
     width: 50px;
     height: auto;
-    /* margin-right: 10px; */
 }
 
 .header-text {
@@ -116,7 +125,7 @@ body {
 }
 
 .header p {
-    font-size: 0.7em;
+    font-size: 0.9em;
 }
 
 .datetime {
@@ -127,13 +136,13 @@ body {
 
 .date {
     flex: 1;
-    font-size: 0.7em;
+    font-size: 0.9em;
     text-align: left;
 }
 
 .time {
     flex: 1;
-    font-size: 0.7em;
+    font-size: 0.9em;
     text-align: right;
 }
 
@@ -143,9 +152,15 @@ body {
     margin-bottom: 10px;
 }
 
+.counters {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
 .counter {
     font-size: 1rem;
-    margin-bottom: 10px;
     font-weight: bold;
     text-transform: uppercase;
 }
@@ -157,6 +172,6 @@ body {
 }
 
 .instructions {
-    font-size: 0.7rem;
+    font-size: 0.9rem;
 }
 </style>
