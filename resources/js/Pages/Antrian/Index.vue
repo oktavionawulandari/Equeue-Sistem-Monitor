@@ -120,9 +120,10 @@
 
         <div class="d-flex justify-content-end mt-auto mb-3">
             <Link
-                class="nav-link btn btn-danger"
+                class="nav-link btn btn-primary"
                 :href="route('list.instansi')"
                 title="Kembali"
+                style="font-size:24px"
                 :style="{ color: props.setting?.text, marginRight: '20px' }"
             >
                 Kembali
