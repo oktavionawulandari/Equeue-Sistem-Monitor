@@ -3,14 +3,14 @@ import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
-    server: {
-        host: true,
-        hmr: {
-            host: "192.168.1.11",
-            overlay: false,
-            clientPort: 5173,
-        },
-    },
+    // server: {
+    //     host: true,
+    //     hmr: {
+    //         host: "192.168.1.11",
+    //         overlay: false,
+    //         clientPort: 5173,
+    //     },
+    // },
     resolve: (name) => {
         const pages = import.meta.glob("./Pages/**/*.vue", { eager: true });
         return pages[`./Pages/${name}.vue`];
