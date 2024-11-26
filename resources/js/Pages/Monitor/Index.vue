@@ -440,7 +440,7 @@ const callNotifications = () => {
                             synth.speak(speak);
                         }
                     };
-                } else if (props.setting?.called == "1") {
+                } else if (props.setting?.called == "0") {
                     if (props?.setting?.status === "online") {
                         responsiveVoice.speak(message, "Indonesian Female", {
                             onend: () => {
