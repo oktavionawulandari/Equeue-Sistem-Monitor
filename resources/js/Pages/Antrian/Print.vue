@@ -12,10 +12,13 @@
         </head>
         <body>
             <div class="receipt">
+                <div class="instnsi">
+                    <h2>{{ props.setting?.instansi }}</h2>
+                </div>
                     <div class="header d-flex align-items-center">
-                        <div class="header-text">
+                        <!-- <div class="header-text">
                             <h2>{{ props.setting?.instansi }}</h2>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="datetime">
                         <div class="date">{{ currentDate }}</div>
@@ -27,6 +30,8 @@
                     <div v-for="counter in props.category.counters" :key="counter.id" class="counter">
                         {{ counter.name }}
                     </div>
+                    <!-- <p>=================================</p> -->
+
                     <div class="instructions">
                         Silahkan menunggu nomor antrian dipanggil. Nomor ini hanya
                         berlaku pada hari ini.
@@ -54,7 +59,7 @@ const updateCurrentDateTime = () => {
     const dateOptions = {
         weekday: "long",
         year: "numeric",
-        month: "long",
+        month: "numeric",
         day: "numeric",
     };
     const timeOptions = {
@@ -71,7 +76,7 @@ onMounted(() => {
     updateCurrentDateTime();
     setTimeout(() => {
         window.print();
-        window.close();
+        // window.close();
     }, 1000);
 });
 </script>
@@ -89,20 +94,23 @@ body {
     background-color: #fff;
     padding: 18px;
     text-align: center;
-    border: 1px solid #ddd;
+}
+
+.instnsi h2{
+    font-size: 1.4em;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* padding: 10px; */
 }
 
 .header img {
     width: 50px;
     height: auto;
-    /* margin-right: 10px; */
 }
 
 .header-text {
@@ -116,7 +124,7 @@ body {
 }
 
 .header p {
-    font-size: 0.7em;
+    font-size: 0.9em;
 }
 
 .datetime {
@@ -127,13 +135,13 @@ body {
 
 .date {
     flex: 1;
-    font-size: 0.7em;
+    font-size: 0.9em;
     text-align: left;
 }
 
 .time {
     flex: 1;
-    font-size: 0.7em;
+    font-size: 0.9em;
     text-align: right;
 }
 
@@ -157,6 +165,6 @@ body {
 }
 
 .instructions {
-    font-size: 0.7rem;
+    font-size: 0.9rem;
 }
 </style>
