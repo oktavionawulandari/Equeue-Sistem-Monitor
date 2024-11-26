@@ -7,29 +7,67 @@
     >
         <Header :setting="props.setting" />
 
-        <div class="container-fluid">
+        <div>
+    <!-- Jika jumlah kategori lebih dari 3 -->
+    <div v-if="categories.length > 4" class="container-fluid py-4">
+            <div class="row g-3">
+                <!-- Kolom Kiri -->
+                <div class="col-md-4">
+                    <div class="card text-center bg-secondary text-white shadow rounded">
+                        <div class="card-header text-uppercase" style="font-size: 30px;">
+                            Panggilan Saat Ini
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text fw-bold" style="font-size: 40px;">
+                                {{ currentQueueNumber }}
+                            </p>
+                        </div>
+                        <div class="card-footer" style="font-size: 30px;">
+                            {{ currentCounterNumber }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan -->
+                <div class="col-md-8">
+                    <div class="row g-3">
+                        <div
+                            class="col-md-6 col-6"
+                            v-for="category in display"
+                            :key="category.id"
+                        >
+                            <div
+                                class="card text-center text-white shadow rounded"
+                                :class="getBgClass(category)"
+                            >
+                                <h5
+                                    class="card-header text-uppercase"
+                                    style="font-size: 25px;"
+                                >
+                                    {{ category.name }}
+                                </h5>
+                                <div class="card-body">
+                                    <h1 class="fw-bold" style="font-size: 30px;">
+                                        {{
+                                            getNilaiTerakhir.find(
+                                                (antrian) =>
+                                                    antrian?.category_id ===
+                                                    category?.id
+                                            )?.no || "-"
+                                        }}
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jika jumlah kategori kurang dari atau sama dengan 3 -->
+        <div v-else class="container-fluid">
             <div class="row">
-                <!-- Video Section -->
-
-                <!-- <div class="col-8">
-                    <video
-                        id="myVideo"
-                        class="rounded"
-                        width="100%"
-                        height="100%"
-                        autoplay
-                        loop
-                        controls
-                        style="object-fit: scale-down; height: 54vh"
-                    >
-                        <source
-                            :src="'/storage/videos/' + props.setting?.video"
-                            type="video/mp4"
-                        />
-                    </video>
-                </div> -->
-
-
+                <!-- Video atau Carousel -->
                 <div class="col-8">
                     <carousel :items-to-show="1" autoplay="5000" :wrapAround="true">
                         <slide
@@ -39,41 +77,34 @@
                             :key="index"
                         >
                             <img
-                            :src="'/storage/' + image"
-                            alt="Image"
-                            class="carousel-item-img"
+                                :src="'/storage/' + image"
+                                alt="Image"
+                                class="carousel-item-img"
                             />
                         </slide>
-
                         <template #addons>
                             <navigation />
                             <pagination />
                         </template>
                     </carousel>
                 </div>
+
                 <!-- Panggilan Section -->
                 <div class="col-4">
                     <div class="card text-center bg-secondary">
-                        <div
-                            class="card-header text-uppercase"
-                            style="font-size: 30px"
-                        >
+                        <div class="card-header text-uppercase" style="font-size: 30px;">
                             Panggilan Saat ini
                         </div>
                         <div class="card-body">
-                            <p
-                                class="card-text text-bold"
-                                style="font-size: 40px"
-                            >
+                            <p class="card-text text-bold" style="font-size: 40px;">
                                 {{ currentQueueNumber }}
                             </p>
                         </div>
-                        <div class="card-footer" style="font-size: 30px">
+                        <div class="card-footer" style="font-size: 30px;">
                             {{ currentCounterNumber }}
                         </div>
                     </div>
                 </div>
-                <!-- {{ category?.antrian?.length > 0 ? category?.antrian[0]?.queue?.no : "-" }} -->
 
                 <!-- Cards Section -->
                 <div class="col-12 mt-3">
@@ -89,14 +120,14 @@
                             >
                                 <h5
                                     class="card-header text-uppercase"
-                                    style="font-size: 25px"
+                                    style="font-size: 25px;"
                                 >
                                     {{ category.name }}
                                 </h5>
                                 <div class="card-body">
                                     <h1
                                         class="text-center fw-bold"
-                                        style="font-size: 30px"
+                                        style="font-size: 30px;"
                                     >
                                         {{
                                             getNilaiTerakhir.find(
@@ -113,6 +144,9 @@
                 </div>
             </div>
         </div>
+    </div>
+
+
 
         <!-- Footer Section -->
         <footer
@@ -366,9 +400,19 @@ setInterval(() => {
 </script>
 
 <style scoped>
+
+.card-header {
+    font-size: 25px;
+    height: 80px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .carousel-item-img {
     width: 100%;
-    height: 400px;
+    height: 350px;
     object-fit: contain;
 }
 

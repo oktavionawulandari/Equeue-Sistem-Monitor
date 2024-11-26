@@ -55,7 +55,7 @@
                                 <div class="logo-image">
                                     <img
                                         :src="`/storage/${ins.logo}`"
-                                        width="125px" style="object-fit: contain;"  height="100%"  :style="{marginRight: '20px' }"
+                                        width="100%" style="object-fit: contain;"  height="100px"  :style="{marginRight: '20px' }"
                                     />
                                 </div>
                                 <h5
@@ -130,7 +130,7 @@ const instansi = props.instansi || [];
 }
 
 .logo {
-    width: 70px;
+    width: 100px;
     height: auto;
     object-fit: contain;
 }

@@ -24,7 +24,7 @@
                             <form @submit.prevent="submit">
                                 <!-- Input untuk Instansi -->
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="instansi"
                                                 >Nama Instansi</label
@@ -49,7 +49,7 @@
                                         </div>
                                     </div>
                                     <!-- Input untuk Alamat -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="address"
                                                 >Alamat Instansi</label
@@ -70,6 +70,37 @@
                                                 class="invalid-feedback"
                                             >
                                                 {{ form.errors.address }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="set_phone"
+                                                >Setting Pemanggilan</label
+                                            >
+                                            <select
+                                                class="form-control"
+                                                v-model="form.set_phone"
+                                                :class="{
+                                                    'is-invalid':
+                                                        form.errors.set_phone,
+                                                }"
+                                                id="set_phone"
+                                                name="set_phone"
+                                            >
+                                                <option value="" disabled>
+                                                    Pilih Pengaturan
+                                                </option>
+                                                <option value="0">Aktif</option>
+                                                <option value="1">
+                                                    Tidak Aktif
+                                                </option>
+                                            </select>
+                                            <div
+                                                v-if="form.errors.set_phone"
+                                                class="invalid-feedback"
+                                            >
+                                                {{ form.errors.set_phone }}
                                             </div>
                                         </div>
                                     </div>

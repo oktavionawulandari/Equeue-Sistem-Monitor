@@ -28,6 +28,7 @@ return new class extends Migration
             $table->text('images')->nullable();
             $table->enum('status', ['online', 'offline']);
             $table->enum('set_phone', ['0', '1']);
+            $table->enum('called', ['0', '1']);
             $table->timestamps();
         });
     }

@@ -66,17 +66,17 @@
               v-for="cat in categories"
               :key="cat.id"
             >
-              <div class="card">
+              <!-- <div class="card">
                 <div
                   class="card-body d-flex justify-content-center align-items-center"
                 >
                   <h1
-                    class="card-title text-bold text-uppercase text-danger" style="font-size: 30px;"
+                    class="card-title text-bold text-uppercase text-danger" style="font-size: 40px;"
                   >
                     {{ cat.name }}
                   </h1>
                 </div>
-              </div>
+              </div> -->
 
               <div
                 class="card"
@@ -89,12 +89,12 @@
                   <div
                     class="border border-success rounded-5 py-2 mb-4"
                   >
-                    <h1
+                    <p
                       id="antrian"
-                      class="display-1 text-danger text-bold text-center lh-1 pb-2"
+                      class="display-1 text-danger text-bold text-center"
                     >
-                      {{ getLatestQueueNumber(cat) }}
-                    </h1>
+                    {{ cat.name }}
+                </p>
                   </div>
                   <button
                     v-if="
@@ -387,6 +387,12 @@
   text-align: center;
   cursor: pointer;
   display: inline-block;
+}
+
+#antrian {
+  font-size: 30px;
+  text-align: center;
+  margin: 0;
 }
 
 .card {
