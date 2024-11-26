@@ -239,6 +239,8 @@
                 </h6>
             </div>
         </footer>
+
+        <button hidden id="btn-hidden"></button>
     </div>
 </template>
 
@@ -381,7 +383,7 @@ const callNotifications = () => {
                 const message = `Nomor antrian ${data?.queue?.no}, silahkan menuju ${data?.counter?.name}.`;
 
                 const audio = new Audio("/assets/audio/tingtung.mp3");
-                if (props.setting?.called == "0") {
+                if (props.setting?.called == "1") {
                     audio.play();
 
                     audio.onended = () => {
@@ -619,6 +621,9 @@ onMounted(() => {
     const timeInterval = setInterval(updateCurrentDateTime, 1000);
 
     onBeforeUnmount(() => clearInterval(timeInterval));
+
+    const btnHidden = document.getElementById("btn-hidden");
+    btnHidden.click();
 });
 
 setInterval(() => {
