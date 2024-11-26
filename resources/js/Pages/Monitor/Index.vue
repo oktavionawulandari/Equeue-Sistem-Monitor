@@ -267,7 +267,7 @@ const callNotifications = () => {
 
                 const playTingtung = (onend) => {
                     if (props?.setting?.called == "0") {
-                        const audio = new Audio("storage/audio/tingtung.mp3");
+                        const audio = new Audio("public/audio/tingtung.mp3");
                         audio.play()
                         audio.onended = onend
                     }
