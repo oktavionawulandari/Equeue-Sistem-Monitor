@@ -60,7 +60,7 @@ const updateCurrentDateTime = () => {
     const dateOptions = {
         weekday: "long",
         year: "numeric",
-        month: "long",
+        month: "numeric",
         day: "numeric",
     };
     const timeOptions = {

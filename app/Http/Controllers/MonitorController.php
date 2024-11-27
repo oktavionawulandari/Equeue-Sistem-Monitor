@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Models\Category;
 use App\Models\Queue;
 use App\Models\Antrian;
+use App\Models\Counter;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
 
@@ -23,6 +24,7 @@ class MonitorController extends Controller
         $endOfDay = now()->endOfDay();
 
         $setting = Setting::first();
+        $counters = Counter::with(['antrian.queue'])->get();
         $categories = Category::with(['antrian.queue'])->get();
         $AntrianAkhir = Queue::where('status', 4)->with('category')
             ->whereBetween('updated_at', [$startOfDay, $endOfDay])
@@ -30,30 +32,31 @@ class MonitorController extends Controller
 
         return Inertia::render('Monitor/Index', [
             'categories' => $categories,
+            'counters' => $counters,
             'setting' => $setting,
             'csrf_token' => csrf_token(),
             'AntrianAkhir' => $AntrianAkhir
         ]);
     }
 
-    public function getDisplay()
-    {
-        $today = \Carbon\Carbon::today();
+    // public function getDisplay()
+    // {
+    //     $today = \Carbon\Carbon::today();
 
-        $categories = Category::with([
-            'antrian' => function ($query) use ($today) {
-                $query->with('queue')
-                    ->whereDate('created_at', $today)
-                    ->orderBy('created_at', 'asc')
-                    ->first();
-            }
-        ])->get();
-        $AntrianAkhir = Queue::where('status', 4)->with('category')->whereDate('updated_at', $today)
-            ->orderby('updated_at', 'desc')->get();
+    //     $categories = Category::with([
+    //         'antrian' => function ($query) use ($today) {
+    //             $query->with('queue')
+    //                 ->whereDate('created_at', $today)
+    //                 ->orderBy('created_at', 'asc')
+    //                 ->first();
+    //         }
+    //     ])->get();
+    //     $AntrianAkhir = Queue::where('status', 4)->with('category')->whereDate('updated_at', $today)
+    //         ->orderby('updated_at', 'desc')->get();
 
 
-        return response()->json(['data' => $categories, 'antrianAkhir' => $AntrianAkhir]);
-    }
+    //     return response()->json(['data' => $categories, 'antrianAkhir' => $AntrianAkhir]);
+    // }
 
     public function getTriggerNotification()
     {
