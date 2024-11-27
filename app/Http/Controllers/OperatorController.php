@@ -19,7 +19,7 @@ class OperatorController extends Controller
     public function callQueue(Request $request, Queue $queue)
     {
         Cache::forget("antrian");
-        $queue->update(['status' => $request->status]);
+        $queue->update(['status' => $request->status, 'counter_id' => $request->counter_id]);
 
         $data = Antrian::create([
             'counter_id' => $request->counter_id,
@@ -105,9 +105,9 @@ class OperatorController extends Controller
             ->where('category_id', $request->category_id)
             ->first();
 
-            if (!$queue) {
-                return redirect()->back()->withErrors(['error' => 'No Antrian tidak tersedia']);
-            }
+        if (!$queue) {
+            return redirect()->back()->withErrors(['error' => 'No Antrian tidak tersedia']);
+        }
 
         $queue->operator_id = Auth::user()->id;
         $queue->save();

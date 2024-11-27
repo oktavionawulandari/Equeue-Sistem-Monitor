@@ -25,7 +25,7 @@ class MonitorController extends Controller
 
         $setting = Setting::first();
         $counters = Counter::with(['antrian.queue'])->get();
-        $categories = Category::with(['antrian.queue'])->get();
+        $categories = Category::with(['antrian.queue', 'counters'])->get();
         $AntrianAkhir = Queue::where('status', 4)->with('category')
             ->whereBetween('updated_at', [$startOfDay, $endOfDay])
             ->orderby('updated_at', 'desc')->get();
@@ -39,24 +39,23 @@ class MonitorController extends Controller
         ]);
     }
 
-    // public function getDisplay()
-    // {
-    //     $today = \Carbon\Carbon::today();
+    public function getDisplay()
+    {
+        $today = \Carbon\Carbon::today();
 
-    //     $categories = Category::with([
-    //         'antrian' => function ($query) use ($today) {
-    //             $query->with('queue')
-    //                 ->whereDate('created_at', $today)
-    //                 ->orderBy('created_at', 'asc')
-    //                 ->first();
-    //         }
-    //     ])->get();
-    //     $AntrianAkhir = Queue::where('status', 4)->with('category')->whereDate('updated_at', $today)
-    //         ->orderby('updated_at', 'desc')->get();
+        $categories = Category::with([
+            'antrian' => function ($query) use ($today) {
+                $query->with('queue')
+                    ->whereDate('created_at', $today)
+                    ->orderBy('created_at', 'asc')
+                    ->first();
+            }
+        ])->get();
+        $AntrianAkhir = Queue::where('status', 4)->with(['category', 'counter'])->whereDate('updated_at', $today)
+            ->orderby('updated_at', 'desc')->get();
 
-
-    //     return response()->json(['data' => $categories, 'antrianAkhir' => $AntrianAkhir]);
-    // }
+        return response()->json(['data' => $categories, 'antrianAkhir' => $AntrianAkhir]);
+    }
 
     public function getTriggerNotification()
     {

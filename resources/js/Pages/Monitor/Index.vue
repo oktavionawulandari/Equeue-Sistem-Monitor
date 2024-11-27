@@ -57,7 +57,14 @@
                                             class="font-weight-bold"
                                             style="font-size: 1.4em"
                                         >
-                                            {{ category?.name }}
+                                            {{
+                                                getNilaiTerakhir.find(
+                                                    (antrian) =>
+                                                        antrian?.category_id ===
+                                                        category?.id
+                                                )?.counter?.name ||
+                                                category?.counters[0]?.name
+                                            }}
                                         </span>
                                     </div>
                                 </div>
@@ -506,6 +513,7 @@ const getDisplay = (idCat = null) => {
     fetch("/monitor/display")
         .then((res) => res.json())
         .then((data) => {
+            console.log(data.antrianAkhir);
             antrianAkhir.value = data?.antrianAkhir;
             if (!idCat) {
                 categories.value = data?.data;
