@@ -18,18 +18,21 @@
                     </div>
 
                     <div class="text-center">
-                        <h2
+                        <span
                             class="header-title"
+                            style="font-size: 33px;"
                             :style="{ color: props.setting?.text }"
                         >
                             SELAMAT DATANG DI
-                        </h2>
-                        <h2
+                        </span><br>
+                        <span
                             class="header-title text-uppercase"
                             :style="{ color: props.setting?.text }"
+                            style="font-size: 33px;"
+
                         >
                             {{ props.setting?.instansi ?? "" }}
-                        </h2>
+                        </span>
                     </div>
 
                     <div class="logo-container">
