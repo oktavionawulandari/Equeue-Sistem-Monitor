@@ -166,7 +166,7 @@
             </div>
         </div>
 
-        <div
+        <!-- <div
             v-if="showPopup"
             style="
                 position: absolute;
@@ -192,7 +192,7 @@
             >
                 Monitor sudah siap!! tolong di click
             </button>
-        </div>
+        </div> -->
 
         <!-- Footer Section -->
         <footer
@@ -205,6 +205,17 @@
                 </h6>
             </div>
         </footer>
+
+        <iframe
+            src=""
+            frameborder="0"
+            id="audio-tingtung"
+            style="display: none"
+            allow="autoplay"
+        ></iframe>
+        <!-- <audio style="display: none" id="audio-tingtung">
+            <source src="/assets/audio/tingtung.mp3" type="audio/mpeg" />
+        </audio> -->
     </div>
 </template>
 
@@ -252,6 +263,7 @@ const page = usePage();
 const stackPendingSuccessTrigger = ref([]);
 const antrianAkhir = ref(null);
 const showPopup = ref(true);
+const isFirstMount = ref(true);
 
 const closePopup = () => (showPopup.value = false);
 
@@ -320,11 +332,12 @@ const callNotifications = () => {
 
                 const message = `Nomor antrian ${data?.queue?.no}, silahkan menuju ${data?.counter?.name}.`;
 
-                const audio = new Audio("/assets/audio/tingtung.mp3");
+                // const audio = new Audio("/assets/audio/tingtung.mp3");
+                const audio = document.getElementById("audio-tingtung");
                 if (props.setting?.called == "1") {
-                    audio.play();
+                    audio.src = "/assets/audio/tingtung.mp3";
 
-                    audio.onended = () => {
+                    setTimeout(() => {
                         if (props?.setting?.status === "online") {
                             responsiveVoice.speak(
                                 message,
@@ -377,7 +390,7 @@ const callNotifications = () => {
                             };
                             synth.speak(speak);
                         }
-                    };
+                    }, 3050);
                 } else if (props.setting?.called == "0") {
                     if (props?.setting?.status === "online") {
                         responsiveVoice.speak(message, "Indonesian Female", {
@@ -513,7 +526,6 @@ const getDisplay = (idCat = null) => {
     fetch("/monitor/display")
         .then((res) => res.json())
         .then((data) => {
-            console.log(data.antrianAkhir);
             antrianAkhir.value = data?.antrianAkhir;
             if (!idCat) {
                 categories.value = data?.data;
