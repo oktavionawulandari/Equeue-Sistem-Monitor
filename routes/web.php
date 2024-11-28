@@ -51,7 +51,8 @@ Route::middleware('role:admin')->group(function () {
 
 
 Route::middleware(['role:operator'])->group(function () {
-    Route::get('/home', [GeneralController::class, 'home'])->name('home');
+    Route::get('/instansi', [GeneralController::class, 'instansi'])->name('instansi');
+    Route::get('/home/{instansi_id}', [GeneralController::class, 'home'])->name('home');
     Route::get('/queue/{category_id}/{counter_id}', [OperatorController::class, 'show'])->name('queue.show');
     Route::post('/queues/{queue}/call', [OperatorController::class, 'callQueue'])->name('queue.call');
     Route::patch('/queues/refresh', [OperatorController::class, 'refresh'])->name('queues.refresh');

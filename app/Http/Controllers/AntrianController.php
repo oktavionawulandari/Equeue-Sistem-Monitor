@@ -20,7 +20,7 @@ class AntrianController extends Controller
      public function antrian()
      {
         $setting = Setting::first();
-        $instansi = Instansi::where('active', '1')->get();
+        $instansi = Instansi::where('active', '1')->orderBy('urutan', 'ASC')->get();
         return Inertia::render('Antrian/Instansi', [
             'setting' => $setting,
             'instansi' => $instansi

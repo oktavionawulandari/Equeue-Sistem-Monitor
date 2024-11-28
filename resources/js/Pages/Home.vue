@@ -7,11 +7,14 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-uppercase">Dashboard</h1>
+                        <h1 class="m-0 text-uppercase">Daftar Kategori</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item active">Home</li>
+                            <li class="breadcrumb-item">
+                                <Link :href="route('instansi')">Home</Link>
+                            </li>
+                            <li class="breadcrumb-item active">Daftar Kategori</li>
                         </ol>
                     </div>
                 </div>
@@ -115,7 +118,7 @@ import "../../css/dashboard.css";
 import AppMeta from "@/Components/AppMeta.vue";
 import Head from "../Layout/Operator/Header.vue";
 import Foot from "../Layout/Monitor/Footer.vue";
-import { usePage } from "@inertiajs/vue3";
+import { usePage, Link } from "@inertiajs/vue3";
 
 const setting = defineProps(["category"]);
 const { props } = usePage();

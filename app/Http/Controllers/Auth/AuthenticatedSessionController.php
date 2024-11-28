@@ -43,7 +43,7 @@ class AuthenticatedSessionController extends Controller
          }
 
          if (Auth::user()->role === 'operator') {
-             return redirect()->route('home');
+             return redirect()->route('instansi');
          }
 
          Auth::guard('web')->logout();

@@ -24,12 +24,12 @@
                         >
                             SELAMAT DATANG DI
                         </h2>
-                        <h4
+                        <h2
                             class="header-title text-uppercase"
                             :style="{ color: props.setting?.text }"
                         >
                             {{ props.setting?.instansi ?? "" }}
-                        </h4>
+                        </h2>
                     </div>
 
                     <div class="logo-container">
@@ -89,7 +89,7 @@ const instansi = props.instansi || [];
 .header-title {
     font-weight: bold;
     color: #264f91;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .badge-layanan {

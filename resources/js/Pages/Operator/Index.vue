@@ -14,7 +14,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item">
-                                <Link :href="route('home')">Dashboard</Link>
+                                <Link :href="route('instansi')">Home</Link>
                             </li>
                             <li class="breadcrumb-item active">Daftar Loket</li>
                         </ol>
@@ -119,7 +119,7 @@
                                                             ) === 3 ||
                                                             Number(
                                                                 queue.status
-                                                            ) === 2,                                                       
+                                                            ) === 2,
                                                     }"
                                                     @click="callQueue(queue)"
                                                     aria-label="Panggil antrian"
@@ -248,7 +248,7 @@ import { toast } from "vue3-toastify";
 import Head from "../../Layout/Operator/Header.vue";
 import Foot from "../../Layout/Monitor/Footer.vue";
 
-import { computed } from "vue";
+import { computed, onMounted, onBeforeUnmount } from "vue";
 import { useForm, Link, usePage, router } from "@inertiajs/vue3";
 import { ref } from "vue";
 
@@ -336,6 +336,18 @@ const pages = computed(() => {
     const totalPages = props.queues.last_page;
     return Array.from({ length: totalPages }, (_, i) => i + 1);
 });
+
+let refreshInterval;
+
+onMounted(() => {
+    refreshInterval = setInterval(() => {
+        router.reload();
+    }, 15000);
+});
+
+onBeforeUnmount(() => {
+    clearInterval(refreshInterval);
+});
 </script>
 
 <style>
@@ -360,6 +372,6 @@ const pages = computed(() => {
 }
 
 .info-box-content {
-    text-align: left; 
+    text-align: left;
 }
 </style>
