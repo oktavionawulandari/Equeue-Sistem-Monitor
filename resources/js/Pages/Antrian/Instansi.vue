@@ -89,7 +89,7 @@ const instansi = props.instansi || [];
 .header-title {
     font-weight: bold;
     color: #264f91;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .badge-layanan {

@@ -35,7 +35,7 @@
                                 <span class="info-box-text text-bold"
                                     >TOTAL ANTRIAN</span
                                 >
-                                <span>{{ totalAntrian }}</span>
+                                <span style="font-size: 25px;" class="text-bold">{{ totalAntrian }}</span>
                             </div>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                                 <span class="info-box-text text-bold"
                                     >SISA ANTRIAN</span
                                 >
-                                <span>{{ SisaAntrian }}</span>
+                                <span style="font-size: 25px;" class="text-bold">{{ SisaAntrian }}</span>
                             </div>
                         </div>
                     </div>
@@ -351,6 +351,11 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
+
+.info-box {
+    height: 60px;
+}
+
 .call-button {
     width: 30px;
     height: 30px;
