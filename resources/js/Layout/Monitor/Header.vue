@@ -1,6 +1,6 @@
 <template>
     <AppMeta>
-        <link rel="icon" :href="`/storage/${props.setting?.logo}`" type="image/x-icon"/>
+        <link rel="icon" :href="`https://antrian.koperasi-bali.my.id/storage/${props.setting?.logo}`" type="image/x-icon"/>
     </AppMeta>
 
     <header
