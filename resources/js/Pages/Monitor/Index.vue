@@ -91,7 +91,7 @@
                                 :key="index"
                             >
                                 <img
-                                    :src="'http://localhost:8000/storage/' + image"
+                                    :src="'https://antrian.koperasi-bali.my.id/storage/' + image"
                                     alt="Image"
                                     class="carousel-item-img"
                                 />

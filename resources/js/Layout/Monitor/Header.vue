@@ -13,7 +13,7 @@
         >
             <div class="bi me-2 ms-5" width="40" height="32" :style="{ marginLeft: '20px' }">
                 <img
-                    :src="`http://localhost:8000/storage/${props.setting?.logo}`"
+                    :src="`https://antrian.koperasi-bali.my.id/storage/${props.setting?.logo}`"
                     alt="logo"
                     width="40"
                     height="40"
