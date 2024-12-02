@@ -91,6 +91,24 @@
                                         width="200"
                                     />
                                 </div>
+                                <div class="form-group">
+                                    <label>No Urut</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        v-model="form.urutan"
+                                        :class="{ 'is-invalid': errors.urutan }"
+                                        id="urutan"
+                                        name="urutan"
+                                    />
+                                    <div
+                                        v-if="errors.urutan"
+                                        class="invalid-feedback"
+                                    >
+                                        {{ errors.urutan }}
+                                    </div>
+                                </div>
+
                                 <div class="row mt-5">
                                     <div class="col-auto">
                                         <button
@@ -136,6 +154,7 @@ const form = useForm({
     name: "",
     logo: "",
     active: "",
+    urutan: ""
 });
 
 const errors = ref({});

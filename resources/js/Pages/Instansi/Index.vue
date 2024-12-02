@@ -41,12 +41,13 @@
                                         <th>Logo</th>
                                         <th>Nama Instansi</th>
                                         <th>Status</th>
+                                        <th>No Urut</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-if="props.instansi.data.length === 0">
-                                        <td colspan="5" class="text-center">
+                                        <td colspan="6" class="text-center">
                                             Data Tidak Tersedia
                                         </td>
                                     </tr>
@@ -76,6 +77,7 @@
                                                 >Tidak Aktif</span
                                             >
                                         </td>
+                                        <td>{{ i.urutan }}</td>
                                         <td>
                                             <div class="d-flex gap-2">
                                                 <button

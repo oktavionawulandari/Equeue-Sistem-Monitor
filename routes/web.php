@@ -31,7 +31,7 @@ use Inertia\Inertia;
 
 
 
-Route::get('/', [GeneralController::class, 'index'])->name('index');
+Route::get('/', [MonitorController::class, 'index'])->name('monitor');
 
 require __DIR__.'/auth.php';
 
@@ -51,7 +51,7 @@ Route::middleware('role:admin')->group(function () {
 
 
 Route::middleware(['role:operator'])->group(function () {
-    Route::get('/instansi', [GeneralController::class, 'instansi'])->name('instansi');
+    Route::get('/home-instansi', [GeneralController::class, 'instansi'])->name('home.instansi');
     Route::get('/home/{instansi_id}', [GeneralController::class, 'home'])->name('home');
     Route::get('/queue/{category_id}/{counter_id}', [OperatorController::class, 'show'])->name('queue.show');
     Route::post('/queues/{queue}/call', [OperatorController::class, 'callQueue'])->name('queue.call');
@@ -65,7 +65,7 @@ Route::get('/antrian/{instansi_id}', [AntrianController::class, 'index'])->name(
 Route::post('/antrian/{instansi_id}', [AntrianController::class, 'store'])->name('antrian.store');
 
 //LAYAR MONITOR
-Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor');
+// Route::get('/monitor', [MonitorController::class, 'index'])->name('monitor');
 Route::get('/monitor/display', [MonitorController::class, 'getDisplay']);
 Route::get('/monitor/trigger-notification', [MonitorController::class, 'getTriggerNotification']);
 Route::patch('/monitor/trigger-notification/{queue}', [MonitorController::class, 'successTriggerNotification']);

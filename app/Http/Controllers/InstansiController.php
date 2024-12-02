@@ -46,12 +46,14 @@ class InstansiController extends Controller
             'logo.required' => 'Logo wajib wajib diisi.',
             'logo.image' => 'Logo harus berupa gambar.',
             'active.required' => 'status wajib diisi.',
+            'urutan.required' =>'urutan wajib diisi.'
         ];
 
         $validatedData = $request->validate([
             'name' => 'required',
             'logo' => 'required|image',
             'active' => 'required',
+            'urutan' => 'required'
         ], $messages);
 
         if ($request->hasFile('logo')) {
@@ -98,13 +100,14 @@ class InstansiController extends Controller
             'name.required' => 'Nama wajib diisi.',
             'logo.image' => 'Logo harus berupa gambar.',
             'active.required' => 'Status wajib diisi.',
+            'urutan.required' => 'Status wajib diisi.',
         ];
 
         $validatedData = $request->validate([
             'name' => 'required',
             'logo' => 'nullable|image',
             'active' => 'required',
-        ], $messages);
+            'urutan' => 'required'        ], $messages);
 
         if ($request->hasFile('logo')) {
             if ($instansi->logo && Storage::exists( $instansi->logo)) {

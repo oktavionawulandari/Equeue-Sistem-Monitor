@@ -9,12 +9,11 @@
     >
         <!-- Logo Section -->
         <Link
-            :href="route('index')"
             class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
         >
             <div class="bi me-2 ms-5" width="40" height="32" :style="{ marginLeft: '20px' }">
                 <img
-                    :src="`/storage/${props.setting?.logo}`"
+                    :src="`http://localhost:8000/storage/${props.setting?.logo}`"
                     alt="logo"
                     width="40"
                     height="40"

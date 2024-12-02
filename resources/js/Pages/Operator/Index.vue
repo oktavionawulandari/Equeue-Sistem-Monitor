@@ -14,7 +14,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item">
-                                <Link :href="route('instansi')">Home</Link>
+                                <Link :href="route('home.instansi')">Home</Link>
                             </li>
                             <li class="breadcrumb-item active">Daftar Loket</li>
                         </ol>

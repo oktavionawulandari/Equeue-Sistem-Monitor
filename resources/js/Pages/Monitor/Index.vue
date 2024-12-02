@@ -91,7 +91,7 @@
                                 :key="index"
                             >
                                 <img
-                                    :src="'/storage/' + image"
+                                    :src="'http://localhost:8000/storage/' + image"
                                     alt="Image"
                                     class="carousel-item-img"
                                 />
@@ -142,7 +142,14 @@
                                         class="card-header text-uppercase"
                                         style="font-size: 25px"
                                     >
-                                        {{ category.name }}
+                                    {{
+                                                getNilaiTerakhir.find(
+                                                    (antrian) =>
+                                                        antrian?.category_id ===
+                                                        category?.id
+                                                )?.counter?.name ||
+                                                category?.counters[0]?.name
+                                            }}
                                     </h5>
                                     <div class="card-body">
                                         <h1
